@@ -257,7 +257,7 @@
         let charts = {};
 
         // Google Apps Script Web App URL - Replace with your actual URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww_dA68E6fQRK2WfRIrOR4pINFNEmX1Qr2cO4_jUjklsLZ_hxdUy5qPP5ysr-hd2AdBQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmjFVRO6bBhRbBUIi6GCog0-kgbc73dOItZfKxxcaLXfB9_8a-1z0tJA3smdCoRR6dkQ/exec';
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -282,43 +282,46 @@
         }
 
         async function handleLogin(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            showLoginLoading(true);
-            hideLoginError();
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    showLoginLoading(true);
+    hideLoginError();
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'login',
-                        username: username,
-                        password: password
-                    })
-                });
+    try {
+        // Usar URLSearchParams para Google Apps Script
+        const formData = new URLSearchParams();
+        formData.append('action', 'login');
+        formData.append('username', username);
+        formData.append('password', password);
 
-                const result = await response.json();
-                
-                if (result.success) {
-                    currentUser = result.user;
-                    localStorage.setItem('gimUser', JSON.stringify(currentUser));
-                    showDashboard();
-                } else {
-                    showLoginError();
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                showLoginError();
-            } finally {
-                showLoginLoading(false);
-            }
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            currentUser = result.user;
+            localStorage.setItem('gimUser', JSON.stringify(currentUser));
+            showDashboard();
+        } else {
+            showLoginError();
         }
+    } catch (error) {
+        console.error('Login error:', error);
+        showLoginError();
+    } finally {
+        showLoginLoading(false);
+    }
+}
+
+
+
+        
 
         function showLoginLoading(show) {
             const spinner = document.getElementById('loginSpinner');
@@ -349,36 +352,37 @@
             await loadDashboardData();
         }
 
+
+
+        
+
         async function loadDashboardData() {
-            try {
-                // Load all data
-                const [capitalResponse, repartoResponse] = await Promise.all([
-                    fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'getCapitalData' })
-                    }),
-                    fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'getRepartoData' })
-                    })
-                ]);
+    try {
+        // Usar GET requests para cargar datos
+        const [capitalResponse, repartoResponse] = await Promise.all([
+            fetch(SCRIPT_URL + '?action=getCapitalData'),
+            fetch(SCRIPT_URL + '?action=getRepartoData')
+        ]);
 
-                capitalData = await capitalResponse.json();
-                repartoData = await repartoResponse.json();
+        capitalData = await capitalResponse.json();
+        repartoData = await repartoResponse.json();
 
-                populateYearFilter();
-                updateDashboard();
-                
-                document.getElementById('loadingState').classList.add('hidden');
-                document.getElementById('dashboardContent').classList.remove('hidden');
-                
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-            }
-        }
+        populateYearFilter();
+        updateDashboard();
+        
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('dashboardContent').classList.remove('hidden');
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+    }
+}
 
+
+
+
+
+        
         function populateYearFilter() {
             const years = [...new Set(capitalData.map(item => new Date(item.Fecha).getFullYear()))].sort((a, b) => b - a);
             const yearFilter = document.getElementById('yearFilter');
