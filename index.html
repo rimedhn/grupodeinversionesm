@@ -281,6 +281,8 @@
             }
         }
 
+
+
         async function handleLogin(e) {
     e.preventDefault();
     
@@ -319,44 +321,7 @@
     }
 }
 
-
-
-        
-
-        function showLoginLoading(show) {
-            const spinner = document.getElementById('loginSpinner');
-            const text = document.getElementById('loginText');
-            
-            if (show) {
-                spinner.classList.remove('hidden');
-                text.classList.add('hidden');
-            } else {
-                spinner.classList.add('hidden');
-                text.classList.remove('hidden');
-            }
-        }
-
-        function showLoginError() {
-            document.getElementById('loginError').classList.remove('hidden');
-        }
-
-        function hideLoginError() {
-            document.getElementById('loginError').classList.add('hidden');
-        }
-
-        async function showDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('userWelcome').textContent = currentUser.Nombre;
-            
-            await loadDashboardData();
-        }
-
-
-
-        
-
-        async function loadDashboardData() {
+async function loadDashboardData() {
     try {
         // Usar GET requests para cargar datos
         const [capitalResponse, repartoResponse] = await Promise.all([
