@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Grupo de Inversiones Múltiples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar-transition { transition: transform 0.3s ease-in-out; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loading { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-chart-line text-blue-600 text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Grupo de Inversiones</h1>
+                <p class="text-gray-600">Dashboard Administrativo</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="username" required 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="password" required 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                
+                <button type="submit" id="loginBtn" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                    <span id="loginBtnText">Iniciar Sesión</span>
+                    <i id="loginSpinner" class="fas fa-spinner loading hidden ml-2"></i>
+                </button>
+            </form>
+            
+            <div id="loginError" class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm"></div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-gray-900" id="userDisplayName">Usuario</p>
+                        <p class="text-xs text-gray-500" id="userRole">Administrador</p>
+                    </div>
+                    <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="bg-white w-64 min-h-screen shadow-lg sidebar-transition transform -translate-x-full lg:translate-x-0 fixed lg:relative z-30">
+                <nav class="mt-8">
+                    <div class="px-4 space-y-2">
+                        <button class="nav-item w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition duration-300" data-section="overview">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            <span>Resumen</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition duration-300" data-section="capital">
+                            <i class="fas fa-coins mr-3"></i>
+                            <span>Capital Social</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition duration-300" data-section="clients">
+                            <i class="fas fa-users mr-3"></i>
+                            <span>Clientes</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition duration-300" data-section="loans">
+                            <i class="fas fa-hand-holding-usd mr-3"></i>
+                            <span>Préstamos</span>
+                        </button>
+                        <button class="nav-item w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition duration-300" data-section="payments">
+                            <i class="fas fa-credit-card mr-3"></i>
+                            <span>Pagos</span>
+                        </button>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6">
+                <!-- Overview Section -->
+                <div id="overviewSection" class="section">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Resumen General</h2>
+                        <p class="text-gray-600">Vista general del estado de la empresa</p>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Capital Total</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="totalCapital">L. 0</p>
+                                </div>
+                                <div class="bg-blue-100 p-3 rounded-full">
+                                    <i class="fas fa-coins text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Total Clientes</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="totalClients">0</p>
+                                </div>
+                                <div class="bg-green-100 p-3 rounded-full">
+                                    <i class="fas fa-users text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Préstamos Activos</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="activeLoans">0</p>
+                                </div>
+                                <div class="bg-yellow-100 p-3 rounded-full">
+                                    <i class="fas fa-hand-holding-usd text-yellow-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600">Pagos del Mes</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="monthlyPayments">L. 0</p>
+                                </div>
+                                <div class="bg-purple-100 p-3 rounded-full">
+                                    <i class="fas fa-credit-card text-purple-600 text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribución de Capital</h3>
+                            <canvas id="capitalChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Préstamos por Estado</h3>
+                            <canvas id="loansChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capital Section -->
+                <div id="capitalSection" class="section hidden">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Capital Social</h2>
+                        <p class="text-gray-600">Gestión del capital y socios</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Registro de Capital</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Socio</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aporte</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Porcentaje</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="capitalTableBody" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clients Section -->
+                <div id="clientsSection" class="section hidden">
+                    <div class="mb-8 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-800 mb-2">Clientes</h2>
+                            <p class="text-gray-600">Gestión de clientes</p>
+                        </div>
+                        <button id="addClientBtn" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Nuevo Cliente
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Lista de Clientes</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientsTableBody" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loans Section -->
+                <div id="loansSection" class="section hidden">
+                    <div class="mb-8 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-800 mb-2">Préstamos</h2>
+                            <p class="text-gray-600">Gestión de préstamos</p>
+                        </div>
+                        <button id="addLoanBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Nuevo Préstamo
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Lista de Préstamos</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. Préstamo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plazo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="loansTableBody" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div id="paymentsSection" class="section hidden">
+                    <div class="mb-8 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-800 mb-2">Pagos</h2>
+                            <p class="text-gray-600">Registro de pagos</p>
+                        </div>
+                        <button id="addPaymentBtn" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
+                            <i class="fas fa-plus mr-2"></i>Registrar Pago
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Historial de Pagos</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Préstamo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capital</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interés</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTableBody" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-4">
+            <i class="fas fa-spinner loading text-blue-600 text-2xl"></i>
+            <span class="text-gray-700 font-medium">Cargando datos...</span>
+        </div>
+    </div>
+
+    <!-- Modals will be added here dynamically -->
+
+    <script>
+        // Configuration
+        const API_URL = 'https://script.google.com/macros/s/AKfycbz8H_0rA-rpzvXf2zHNuKkiiGz2tkG6X3G0oj7-3gnt9nlojw51hiQtNI1dp4mAk5ElLg/exec';
+        
+        // Global variables
+        let currentUser = null;
+        let capitalData = [];
+        let clientsData = [];
+        let loansData = [];
+        let paymentsData = [];
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showError(message, elementId = 'loginError') {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+            setTimeout(() => {
+                errorElement.classList.add('hidden');
+            }, 5000);
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-HN', {
+                style: 'currency',
+                currency: 'HNL',
+                minimumFractionDigits: 2
+            }).format(amount || 0);
+        }
+
+        function formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            return d.toLocaleDateString('es-HN');
+        }
+
+        // API functions
+        async function makeRequest(url, options = {}) {
+            try {
+                console.log('Making request to:', url, 'with options:', options);
+                const response = await fetch(url, {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        ...options.headers
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+                return data;
+            } catch (error) {
+                console.error('Request error:', error);
+                throw error;
+            }
+        }
+
+        async function login(username, password) {
+            const formData = new URLSearchParams();
+            formData.append('action', 'login');
+            formData.append('username', username);
+            formData.append('password', password);
+
+            return await makeRequest(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        async function fetchData(action) {
+            const url = `${API_URL}?action=${action}`;
+            return await makeRequest(url);
+        }
+
+        // Data loading functions
+        async function loadCapitalData() {
+            try {
+                console.log('Loading capital data...');
+                const data = await fetchData('getCapitalData');
+                if (data.error) {
+                    console.error('Error loading capital data:', data.error);
+                    capitalData = [];
+                } else {
+                    capitalData = Array.isArray(data) ? data : [];
+                }
+                console.log('Capital data loaded:', capitalData);
+                updateCapitalTable();
+                updateOverviewStats();
+            } catch (error) {
+                console.error('Error loading capital data:', error);
+                capitalData = [];
+            }
+        }
+
+        async function loadClientsData() {
+            try {
+                console.log('Loading clients data...');
+                const data = await fetchData('getClientsData');
+                if (data.error) {
+                    console.error('Error loading clients data:', data.error);
+                    clientsData = [];
+                } else {
+                    clientsData = Array.isArray(data) ? data : [];
+                }
+                console.log('Clients data loaded:', clientsData);
+                updateClientsTable();
+                updateOverviewStats();
+            } catch (error) {
+                console.error('Error loading clients data:', error);
+                clientsData = [];
+            }
+        }
+
+        async function loadLoansData() {
+            try {
+                console.log('Loading loans data...');
+                const data = await fetchData('getLoansData');
+                if (data.error) {
+                    console.error('Error loading loans data:', data.error);
+                    loansData = [];
+                } else {
+                    loansData = Array.isArray(data) ? data : [];
+                }
+                console.log('Loans data loaded:', loansData);
+                updateLoansTable();
+                updateOverviewStats();
+            } catch (error) {
+                console.error('Error loading loans data:', error);
+                loansData = [];
+            }
+        }
+
+        async function loadPaymentsData() {
+            try {
+                console.log('Loading payments data...');
+                const data = await fetchData('getPaymentsData');
+                if (data.error) {
+                    console.error('Error loading payments data:', data.error);
+                    paymentsData = [];
+                } else {
+                    paymentsData = Array.isArray(data) ? data : [];
+                }
+                console.log('Payments data loaded:', paymentsData);
+                updatePaymentsTable();
+                updateOverviewStats();
+            } catch (error) {
+                console.error('Error loading payments data:', error);
+                paymentsData = [];
+            }
+        }
+
+        // UI Update functions
+        function updateCapitalTable() {
+            const tbody = document.getElementById('capitalTableBody');
+            tbody.innerHTML = '';
+
+            if (capitalData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">No hay datos de capital disponibles</td></tr>';
+                return;
+            }
+
+            capitalData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.Socio || item.Nombre || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(item.Aporte || item.Monto)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${(item.Porcentaje || 0)}%</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(item.Fecha)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateClientsTable() {
+            const tbody = document.getElementById('clientsTableBody');
+            tbody.innerHTML = '';
+
+            if (clientsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No hay clientes registrados</td></tr>';
+                return;
+            }
+
+            clientsData.forEach(client => {
+                const row = document.createElement('tr');
+                const status = client.Estatus || client.Estado || 'Activo';
+                const statusClass = status.toLowerCase() === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${client.Codigo || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${client.Nombre || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${client.Telefono || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button class="text-blue-600 hover:text-blue-900 mr-3">Editar</button>
+                        <button class="text-red-600 hover:text-red-900">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateLoansTable() {
+            const tbody = document.getElementById('loansTableBody');
+            tbody.innerHTML = '';
+
+            if (loansData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No hay préstamos registrados</td></tr>';
+                return;
+            }
+
+            loansData.forEach(loan => {
+                const row = document.createElement('tr');
+                const status = loan.Estatus || loan.Estado || 'Activo';
+                let statusClass = 'bg-gray-100 text-gray-800';
+                
+                switch(status.toLowerCase()) {
+                    case 'activo':
+                        statusClass = 'bg-green-100 text-green-800';
+                        break;
+                    case 'pagado':
+                        statusClass = 'bg-blue-100 text-blue-800';
+                        break;
+                    case 'vencido':
+                        statusClass = 'bg-red-100 text-red-800';
+                        break;
+                }
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${loan.NoPrestamo || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${loan.Cliente || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(loan.Monto)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${loan.Plazo || 0} meses</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button class="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
+                        <button class="text-green-600 hover:text-green-900">Pagar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updatePaymentsTable() {
+            const tbody = document.getElementById('paymentsTableBody');
+            tbody.innerHTML = '';
+
+            if (paymentsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No hay pagos registrados</td></tr>';
+                return;
+            }
+
+            paymentsData.forEach(payment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(payment.Fecha)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${payment.Cliente || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${payment.Prestamo || 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${formatCurrency(payment.Monto)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(payment.Capital)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(payment.Interes)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateOverviewStats() {
+            // Update total capital
+            const totalCapital = capitalData.reduce((sum, item) => sum + (item.Aporte || item.Monto || 0), 0);
+            document.getElementById('totalCapital').textContent = formatCurrency(totalCapital);
+
+            // Update total clients
+            document.getElementById('totalClients').textContent = clientsData.length;
+
+            // Update active loans
+            const activeLoans = loansData.filter(loan => (loan.Estatus || loan.Estado || '').toLowerCase() === 'activo').length;
+            document.getElementById('activeLoans').textContent = activeLoans;
+
+            // Update monthly payments
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const monthlyPayments = paymentsData
+                .filter(payment => {
+                    const paymentDate = new Date(payment.Fecha);
+                    return paymentDate.getMonth() === currentMonth && paymentDate.getFullYear() === currentYear;
+                })
+                .reduce((sum, payment) => sum + (payment.Monto || 0), 0);
+            document.getElementById('monthlyPayments').textContent = formatCurrency(monthlyPayments);
+
+            // Update charts
+            updateCharts();
+        }
+
+        function updateCharts() {
+            // Capital distribution chart
+            const capitalCtx = document.getElementById('capitalChart').getContext('2d');
+            const capitalLabels = capitalData.map(item => item.Socio || item.Nombre || 'N/A');
+            const capitalValues = capitalData.map(item => item.Aporte || item.Monto || 0);
+
+            new Chart(capitalCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: capitalLabels,
+                    datasets: [{
+                        data: capitalValues,
+                        backgroundColor: [
+                            '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+                            '#06B6D4', '#84CC16', '#F97316', '#EC4899', '#6B7280'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Loans status chart
+            const loansCtx = document.getElementById('loansChart').getContext('2d');
+            const loanStatuses = {};
+            loansData.forEach(loan => {
+                const status = loan.Estatus || loan.Estado || 'Activo';
+                loanStatuses[status] = (loanStatuses[status] || 0) + 1;
+            });
+
+            new Chart(loansCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(loanStatuses),
+                    datasets: [{
+                        label: 'Cantidad de Préstamos',
+                        data: Object.values(loanStatuses),
+                        backgroundColor: ['#10B981', '#3B82F6', '#EF4444', '#F59E0B']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Navigation functions
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + 'Section').classList.remove('hidden');
+
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-blue-50', 'text-blue-600');
+                item.classList.add('text-gray-700');
+            });
+
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('bg-blue-50', 'text-blue-600');
+            document.querySelector(`[data-section="${sectionName}"]`).classList.remove('text-gray-700');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const loginBtn = document.getElementById('loginBtn');
+                const loginBtnText = document.getElementById('loginBtnText');
+                const loginSpinner = document.getElementById('loginSpinner');
+
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtnText.textContent = 'Iniciando sesión...';
+                loginSpinner.classList.remove('hidden');
+
+                try {
+                    const result = await login(username, password);
+                    
+                    if (result.success) {
+                        currentUser = result.user;
+                        
+                        // Update user display
+                        document.getElementById('userDisplayName').textContent = currentUser.Nombre;
+                        document.getElementById('userRole').textContent = currentUser.TipoUsuario;
+                        
+                        // Hide login screen and show dashboard
+                        document.getElementById('loginScreen').classList.add('hidden');
+                        document.getElementById('dashboard').classList.remove('hidden');
+                        
+                        // Load initial data
+                        showLoading();
+                        await Promise.all([
+                            loadCapitalData(),
+                            loadClientsData(),
+                            loadLoansData(),
+                            loadPaymentsData()
+                        ]);
+                        hideLoading();
+                        
+                        // Show overview section by default
+                        showSection('overview');
+                    } else {
+                        showError(result.message || 'Error de autenticación');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showError('Error de conexión. Intenta nuevamente.');
+                } finally {
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    loginBtnText.textContent = 'Iniciar Sesión';
+                    loginSpinner.classList.add('hidden');
+                }
+            });
+
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                currentUser = null;
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('loginForm').reset();
+            });
+
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+
+            // Sidebar toggle
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Modal buttons (placeholder)
+            document.getElementById('addClientBtn').addEventListener('click', function() {
+                alert('Funcionalidad de agregar cliente próximamente');
+            });
+
+            document.getElementById('addLoanBtn').addEventListener('click', function() {
+                alert('Funcionalidad de agregar préstamo próximamente');
+            });
+
+            document.getElementById('addPaymentBtn').addEventListener('click', function() {
+                alert('Funcionalidad de registrar pago próximamente');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9811adb39303b4fc',t:'MTc1ODIwNzI2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
