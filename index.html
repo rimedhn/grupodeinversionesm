@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo de Inversiones Múltiples - Tu futuro financiero comienza aquí</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- Logo -->
+                    <div class="bg-white rounded-full p-3">
+                        <svg class="w-10 h-10 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Grupo de Inversiones Múltiples</h1>
+                        <p class="text-purple-100 text-sm">Tu futuro financiero comienza aquí</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" target="_blank" rel="noopener noreferrer" 
+                       class="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-50 transition duration-300">
+                        Acceso Socios
+                    </a>
+                    <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" target="_blank" rel="noopener noreferrer"
+                       class="border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition duration-300">
+                        Portal Clientes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-6">Invierte con Confianza</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Únete a nuestro grupo exclusivo de inversionistas y haz crecer tu patrimonio con estrategias diversificadas y rentables</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToContact()" class="bg-yellow-400 text-purple-900 px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition duration-300">
+                    Quiero Invertir Ahora
+                </button>
+                <button onclick="scrollToBenefits()" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-purple-600 transition duration-300">
+                    Conocer Beneficios
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center text-gray-800 mb-16">¿Por qué elegir nuestro grupo?</h3>
+            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Socios Card -->
+                <div class="card-hover bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl p-8 text-white">
+                    <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6h-4zM10 4h4v2h-4V4zm6 16H8V8h8v12z"/>
+                            <path d="M12 10v4m-2-2h4"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Inversión como Socio</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Participación en utilidades del grupo
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Voz y voto en decisiones importantes
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Acceso a inversiones exclusivas
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Crecimiento patrimonial a largo plazo
+                        </li>
+                    </ul>
+                    <div class="mt-6">
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" target="_blank" rel="noopener noreferrer"
+                           class="inline-block bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                            Acceder como Socio
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ahorrantes Card -->
+                <div class="card-hover bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl p-8 text-white">
+                    <div class="bg-white rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4">Ahorro Inteligente</h4>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Tasas de interés atractivas y competitivas
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Ahorros a plazo fijo con mejor rentabilidad
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Opción de ahorro retirable flexible
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-yellow-300 mr-3">✓</span>
+                            Seguridad y transparencia garantizada
+                        </li>
+                    </ul>
+                    <div class="mt-6">
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" target="_blank" rel="noopener noreferrer"
+                           class="inline-block bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                            Portal de Clientes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-20 bg-purple-600 text-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold mb-2">500+</div>
+                    <div class="text-purple-200">Inversionistas Activos</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">L2M+</div>
+                    <div class="text-purple-200">Capital Gestionado</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">15%</div>
+                    <div class="text-purple-200">Rentabilidad Promedio</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">5</div>
+                    <div class="text-purple-200">Años de Experiencia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center text-gray-800 mb-16">Historias de Éxito</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-2xl p-8 text-center card-hover">
+                    <!-- Business person image using SVG -->
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">María González</h4>
+                    <p class="text-gray-600 mb-4">"En 2 años como socia, mi inversión inicial se ha multiplicado por 3. La transparencia y profesionalismo del grupo es excepcional."</p>
+                    <div class="text-purple-600 font-semibold">Socia desde 2022</div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8 text-center card-hover">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Carlos Rodríguez</h4>
+                    <p class="text-gray-600 mb-4">"Como ahorrante a plazo fijo, he obtenido rendimientos superiores a cualquier banco tradicional. Totalmente recomendado."</p>
+                    <div class="text-green-600 font-semibold">Cliente desde 2021</div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8 text-center card-hover">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Ana Martínez</h4>
+                    <p class="text-gray-600 mb-4">"La flexibilidad del ahorro retirable me permite tener liquidez cuando la necesito, sin sacrificar rentabilidad."</p>
+                    <div class="text-purple-600 font-semibold">Cliente desde 2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h3 class="text-4xl font-bold text-center text-gray-800 mb-16">Nuestra Filosofía</h3>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                    <div>
+                        <!-- Business meeting illustration -->
+                        <div class="bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl p-8 text-white">
+                            <svg class="w-full h-48" viewBox="0 0 400 200" fill="none">
+                                <!-- Conference table -->
+                                <ellipse cx="200" cy="150" rx="180" ry="30" fill="rgba(255,255,255,0.2)"/>
+                                <!-- People around table -->
+                                <circle cx="120" cy="100" r="20" fill="rgba(255,255,255,0.8)"/>
+                                <circle cx="200" cy="80" r="20" fill="rgba(255,255,255,0.8)"/>
+                                <circle cx="280" cy="100" r="20" fill="rgba(255,255,255,0.8)"/>
+                                <circle cx="160" cy="120" r="20" fill="rgba(255,255,255,0.8)"/>
+                                <circle cx="240" cy="120" r="20" fill="rgba(255,255,255,0.8)"/>
+                                <!-- Chart/presentation -->
+                                <rect x="50" y="40" width="80" height="50" rx="5" fill="rgba(255,255,255,0.3)"/>
+                                <path d="M60 70 L80 55 L100 65 L120 50" stroke="rgba(255,255,255,0.8)" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-gray-800 mb-6">Transparencia y Confianza</h4>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Creemos que la transparencia es la base de toda relación financiera exitosa. Cada decisión de inversión es comunicada claramente a nuestros socios y clientes, manteniendo siempre la confianza como nuestro valor fundamental.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Mission -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover">
+                        <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">Misión</h4>
+                        <p class="text-gray-600">
+                            Crear las oportunidades de inversión, ofreciendo a personas y empresas acceso a estrategias financieras diversificadas que generen valor sostenible a largo plazo.
+                        </p>
+                    </div>
+
+                    <!-- Vision -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover">
+                        <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">Visión</h4>
+                        <p class="text-gray-600">
+                            Ser el grupo de inversiones líder en la región, reconocido por nuestra excelencia, innovación y compromiso con el crecimiento financiero de nuestros socios y clientes.
+                        </p>
+                    </div>
+
+                    <!-- Objectives -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover">
+                        <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">Objetivos</h4>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>• Maximizar rendimientos con riesgo controlado</li>
+                            <li>• Mantener transparencia total en operaciones</li>
+                            <li>• Diversificar portafolios de inversión</li>
+                            <li>• Educar financieramente a nuestros clientes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Process Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center text-gray-800 mb-16">Proceso de Inversión</h3>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="bg-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-purple-600">1</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Consulta Inicial</h4>
+                        <p class="text-gray-600">Evaluamos tu perfil y objetivos financieros</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-blue-600">2</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Propuesta Personalizada</h4>
+                        <p class="text-gray-600">Diseñamos una estrategia adaptada a ti</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-green-600">3</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Implementación</h4>
+                        <p class="text-gray-600">Ejecutamos tu plan de inversión</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-yellow-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl font-bold text-yellow-600">4</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Seguimiento</h4>
+                        <p class="text-gray-600">Monitoreamos y optimizamos continuamente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center text-gray-800 mb-16">Preguntas Frecuentes</h3>
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-white rounded-lg shadow-md">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(1)">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold">¿Cuál es la inversión mínima?</h4>
+                            <svg id="icon1" class="w-5 h-5 transform transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq1" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">Para socios inversionistas, la inversión mínima es de L15,000. Para ahorrantes, puedes comenzar con tan solo L500.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(2)">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold">¿Cómo se distribuyen las utilidades?</h4>
+                            <svg id="icon2" class="w-5 h-5 transform transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq2" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">Las utilidades se distribuyen trimestralmente entre los socios según su participación accionaria. Los ahorrantes reciben intereses mensuales.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(3)">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold">¿Puedo retirar mi inversión en cualquier momento?</h4>
+                            <svg id="icon3" class="w-5 h-5 transform transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq3" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">Los ahorros retirables tienen disponibilidad inmediata. Los ahorros a plazo fijo y las inversiones de socios tienen períodos mínimos establecidos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-2xl mx-auto">
+                <h3 class="text-4xl font-bold text-center text-gray-800 mb-8">¡Únete a Nosotros!</h3>
+                <p class="text-xl text-center text-gray-600 mb-12">Completa el formulario y nos pondremos en contacto contigo para comenzar tu camino hacia el éxito financiero</p>
+                
+                <form id="contactForm" class="bg-gray-50 rounded-2xl shadow-xl p-8">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Nombre Completo *</label>
+                            <input type="text" id="nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Ciudad *</label>
+                            <input type="text" id="ciudad" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Teléfono *</label>
+                            <input type="tel" id="telefono" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Tipo de Afiliado *</label>
+                            <select id="tipoAfiliado" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option value="">Selecciona una opción</option>
+                                <option value="Socio Inversionista">Socio Inversionista</option>
+                                <option value="Ahorrante Plazo Fijo">Ahorrante Plazo Fijo</option>
+                                <option value="Ahorrante Retirable">Ahorrante Retirable</option>
+                                <option value="Información General">Información General</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Notas Adicionales</label>
+                        <textarea id="notas" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Cuéntanos más sobre tus objetivos de inversión..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg text-lg font-bold hover:opacity-90 transition duration-300">
+                        Enviar Consulta por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="bg-purple-600 rounded-full p-2">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-bold">Grupo de Inversiones Múltiples</h4>
+                    </div>
+                    <p class="text-gray-300">Tu socio confiable para hacer crecer tu patrimonio con inversiones inteligentes y seguras.</p>
+                </div>
+                
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Contacto</h5>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span>9359-3126</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span>grupodeinversionesm@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">Accesos Rápidos</h5>
+                    <div class="space-y-3">
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" target="_blank" rel="noopener noreferrer" class="block text-purple-400 hover:text-purple-300 transition duration-300">Portal de Socios</a>
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" target="_blank" rel="noopener noreferrer" class="block text-purple-400 hover:text-purple-300 transition duration-300">Portal de Clientes</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Grupo de Inversiones Múltiples. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://web.whatsapp.com/send?phone=50493593126&text=¡Hola!%20Me%20interesa%20conocer%20más%20sobre%20el%20Grupo%20de%20Inversiones%20Múltiples." target="_blank" rel="noopener noreferrer" class="floating-whatsapp">
+        <div class="bg-green-500 rounded-full p-4 shadow-lg hover:bg-green-600 transition duration-300">
+            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/>
+            </svg>
+        </div>
+    </a>
+
+    <script>
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToBenefits() {
+            document.getElementById('benefits').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const ciudad = document.getElementById('ciudad').value;
+            const telefono = document.getElementById('telefono').value;
+            const tipoAfiliado = document.getElementById('tipoAfiliado').value;
+            const notas = document.getElementById('notas').value;
+            
+            if (!nombre || !ciudad || !telefono || !tipoAfiliado) {
+                alert('Por favor completa todos los campos obligatorios.');
+                return;
+            }
+            
+            const mensaje = `¡Hola! Me interesa unirme al Grupo de Inversiones Múltiples.
+
+*Datos de contacto:*
+• Nombre: ${nombre}
+• Ciudad: ${ciudad}
+• Teléfono: ${telefono}
+• Tipo de afiliado: ${tipoAfiliado}
+
+${notas ? `*Notas adicionales:*\n${notas}` : ''}
+
+¡Espero su respuesta para conocer más detalles!`;
+            
+            const whatsappUrl = `https://web.whatsapp.com/send?phone=50493593126&text=${encodeURIComponent(mensaje)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        function toggleFAQ(num) {
+            const faq = document.getElementById(`faq${num}`);
+            const icon = document.getElementById(`icon${num}`);
+            
+            if (faq.classList.contains('hidden')) {
+                faq.classList.remove('hidden');
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                faq.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987f328f05381499',t:'MTc1OTM1NTY1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
