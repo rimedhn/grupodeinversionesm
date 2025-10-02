@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Clientes - En Construcción</title>
+    <link rel="icon" type="image/png" href="https://rimedhn.github.io/grupodeinversionesm/img/favicon.png">
+    
+    <style>
+        /* CSS Integrado */
+        :root {
+            /* Paleta de colores basada en tu sitio: azul oscuro y acentos */
+            --color-primary: #004d99; /* Azul oscuro */
+            --color-accent: #ff6600; /* Naranja/Aciento */
+            --color-light: #f4f4f4;
+            --color-dark: #333;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 500px;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Efecto sutil al cargar */
+        .container.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .logo {
+            margin-bottom: 25px;
+        }
+
+        .logo img {
+            width: 150px; /* Ajusta el tamaño del logo */
+            height: auto;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            color: white;
+            background-color: var(--color-accent);
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background-color: #e65c00; /* Tono más oscuro de naranja */
+            transform: translateY(-2px);
+        }
+
+        .icon-builder {
+            font-size: 3em;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        /* Animación para el icono */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container hidden" id="portalContainer">
+        
+        <div class="logo">
+            <img src="https://rimedhn.github.io/grupodeinversionesm/img/logogrupodeinversionesm.png" alt="Grupo de Inversiones M Logo">
+        </div>
+
+        <div class="icon-builder">🛠️</div>
+
+        <h1>El portal de clientes está en construcción</h1>
+
+        <p>
+            Estamos trabajando arduamente para brindarle una mejor experiencia. ¡Volveremos pronto con grandes novedades!
+        </p>
+
+        <a id="btnRegresar" class="button" href="https://rimedhn.github.io/grupodeinversionesm/">
+            Ir al Sitio General
+        </a>
+    </div>
+
+    <script>
+        // JavaScript Integrado
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('portalContainer');
+            
+            // Elimina la clase 'hidden' para mostrar el contenedor con una transición
+            setTimeout(() => {
+                container.classList.remove('hidden');
+            }, 100); 
+
+            // Pequeña lógica para registrar el clic (opcional, pero útil)
+            const button = document.getElementById('btnRegresar');
+            button.addEventListener('click', (e) => {
+                console.log('Redirigiendo al sitio general...');
+                // La redirección se maneja por el 'href', pero esto permite añadir más lógica (ej. analytics)
+            });
+        });
+    </script>
+</body>
+</html>
