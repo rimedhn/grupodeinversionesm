@@ -1045,12 +1045,22 @@
             hideLoginError();
         }
 
-        // Pequeña lógica para registrar el clic (opcional, pero útil)
+        // JavaScript Integrado
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('portalContainer');
+            
+            // Elimina la clase 'hidden' para mostrar el contenedor con una transición
+            setTimeout(() => {
+                container.classList.remove('hidden');
+            }, 100); 
+
+            // Pequeña lógica para registrar el clic (opcional, pero útil)
             const button = document.getElementById('btnRegresar');
             button.addEventListener('click', (e) => {
                 console.log('Redirigiendo al sitio general...');
                 // La redirección se maneja por el 'href', pero esto permite añadir más lógica (ej. analytics)
             });
+        });
 
         
     </script>
