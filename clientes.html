@@ -619,18 +619,27 @@
                 .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
                 .slice(0, 10);
 
-            tbody.innerHTML = recentPagos.map(pago => {
+            console.log('Updating pagos table with', recentPagos.length, 'payments');
+            console.log('Available prestamos IDs:', prestamosData.map(p => p.noPrestamo));
+            console.log('Payment prestamo IDs:', recentPagos.map(p => p.prestamo));
+
+            tbody.innerHTML = recentPagos.map((pago, index) => {
+                console.log(`Processing payment ${index}:`, pago);
+                
                 // Find the loan to calculate remaining balance after this payment
                 const prestamo = prestamosData.find(p => p.noPrestamo === pago.prestamo);
-                if (!prestamo) return '';
+                console.log(`Found prestamo for ${pago.prestamo}:`, prestamo ? 'YES' : 'NO');
                 
-                // Calculate total capital paid up to this payment (including this one)
-                const pagosAnteriores = abonosData
-                    .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
-                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
-                
-                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.pagoCapital || 0));
-                const saldoActual = prestamo.monto - pagosAnteriores;
+                // Show payment even if prestamo is not found
+                let saldoActual = 0;
+                if (prestamo) {
+                    // Calculate total capital paid up to this payment (including this one)
+                    const pagosAnteriores = abonosData
+                        .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
+                        .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                    
+                    saldoActual = prestamo.monto - pagosAnteriores;
+                }
                 
                 return `
                     <tr class="hover:bg-gray-50">
@@ -642,6 +651,8 @@
                     </tr>
                 `;
             }).join('');
+            
+            console.log('Pagos table HTML generated, rows:', tbody.children.length);
         }
 
         function getStatusColor(status) {
@@ -782,8 +793,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e7af526075fca',t:'MTc1OTY4MzY3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e8cdb359a5fca',t:'MTc1OTY4NDQxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
