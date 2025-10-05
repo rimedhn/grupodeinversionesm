@@ -363,17 +363,19 @@
                         nombreCliente: row.c[2]?.v || '',
                         prestamo: row.c[3]?.v || '',
                         monto: parseFloat(row.c[4]?.v || 0),
-                        capital: parseFloat(row.c[45]?.v || 0),
+                        capital: parseFloat(row.c[5]?.v || 0),
                         interes: parseFloat(row.c[6]?.v || 0),
+                        abonoCapital: parseFloat(row.c[7]?.v || 0),
+                        pagoCapital: parseFloat(row.c[45]?.v || 0), // Column 45: "Pago capital"
                         fecha: row.c[13]?.v || '',
                         medioPago: row.c[11]?.v || '',
                         cajero: row.c[26]?.v || '',
                         nombreCajero: row.c[27]?.v || '',
-                        estado: row.c[31]?.v || ''
+                        estado: row.c[31]?.v || '' // Column 31: "Estado"
                     }))
                     .filter(abono => {
                         // Only show payments with "Activo" status and valid data
-                        return abono.estado === 'Activo' && abono.prestamo && abono.monto > 0;
+                        return abono.estado === 'Activo' && abono.monto > 0;
                     });
 
                 updateDashboard();
@@ -410,11 +412,11 @@
             const montoTotal = prestamosData.reduce((sum, p) => sum + p.monto, 0);
             const totalCobrado = abonosData.reduce((sum, a) => sum + a.monto, 0);
             
-            // Calculate pending balance using capital payments
+            // Calculate pending balance using "Pago capital" payments
             const saldoPendiente = prestamosData.reduce((sum, prestamo) => {
                 const capitalPagado = abonosData
                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
-                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                 const saldoRestante = prestamo.monto - capitalPagado;
                 return sum + Math.max(0, saldoRestante); // Ensure no negative balances
             }, 0);
@@ -546,7 +548,7 @@
             tbody.innerHTML = recentPrestamos.map(prestamo => {
                 const capitalPagado = abonosData
                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
-                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                 const saldo = prestamo.monto - capitalPagado;
                 
                 return `
@@ -579,16 +581,16 @@
                 // Calculate total capital paid up to this payment (including this one)
                 const pagosAnteriores = abonosData
                     .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
-                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                 
-                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.capital || 0));
+                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.pagoCapital || 0));
                 const saldoActual = prestamo.monto - pagosAnteriores;
                 
                 return `
                     <tr class="hover:bg-gray-50">
                         <td class="px-2 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
-                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.capital || 0)}</td>
+                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.pagoCapital || 0)}</td>
                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
                         <td class="px-2 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
                     </tr>
@@ -637,7 +639,7 @@
                             ${prestamosData.map(prestamo => {
                                 const capitalPagado = abonosData
                                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
-                                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                                 const interesPagado = abonosData
                                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
                                     .reduce((total, abono) => total + (abono.interes || 0), 0);
@@ -688,9 +690,9 @@
                                 // Calculate balances
                                 const pagosAnteriores = abonosData
                                     .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
-                                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                                 
-                                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.capital || 0));
+                                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.pagoCapital || 0));
                                 const saldoActual = prestamo.monto - pagosAnteriores;
                                 
                                 return `
@@ -700,7 +702,7 @@
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.interes || 0)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoAnterior))}</td>
-                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.capital || 0)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.pagoCapital || 0)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${pago.medioPago}</td>
@@ -734,7 +736,8 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e345c523b5fca',t:'MTc1OTY4MDc4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e4a4c42725fca',t:'MTc1OTY4MTY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
