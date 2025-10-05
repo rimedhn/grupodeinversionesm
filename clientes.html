@@ -356,7 +356,7 @@
 
                 // Process abonos data
                 abonosData = abonosJson.table.rows
-                    .filter(row => row.c && row.c.length > 0 && (!row.c[30] || row.c[30]?.v !== 'Inactivo')) // Filter out inactive payments
+                    .filter(row => row.c && row.c.length > 0 && (!row.c[31] || row.c[31]?.v !== 'Inactivo')) // Filter out inactive payments
                     .map(row => ({
                         idabono: row.c[0]?.v || '',
                         cliente: row.c[1]?.v || '',
@@ -369,7 +369,7 @@
                         medioPago: row.c[11]?.v || '',
                         cajero: row.c[26]?.v || '',
                         nombreCajero: row.c[27]?.v || '',
-                        estado: row.c[30]?.v || ''
+                        estado: row.c[31]?.v || ''
                     }));
 
                 updateDashboard();
