@@ -328,12 +328,18 @@
                 const prestamosText = await prestamosResponse.text();
                 const abonosText = await abonosResponse.text();
 
+                console.log('Prestamos response length:', prestamosText.length);
+                console.log('Abonos response length:', abonosText.length);
+
                 const prestamosJson = parseGoogleSheetsResponse(prestamosText);
                 const abonosJson = parseGoogleSheetsResponse(abonosText);
 
+                console.log('Prestamos rows:', prestamosJson.table.rows.length);
+                console.log('Abonos rows:', abonosJson.table.rows.length);
+
                 // Process prestamos data
                 prestamosData = prestamosJson.table.rows
-                    .filter(row => row.c[10]?.v !== 'Anulado') // Filter out cancelled loans
+                    .filter(row => row.c && row.c[10]?.v !== 'Anulado') // Filter out cancelled loans
                     .map(row => ({
                         idprestamo: row.c[0]?.v || '',
                         noPrestamo: row.c[1]?.v || '',
@@ -354,23 +360,43 @@
                         fechaFinal: row.c[29]?.v || ''
                     }));
 
-                // Process abonos data
+                // Process abonos data - more flexible filtering
                 abonosData = abonosJson.table.rows
-                    .filter(row => row.c && row.c.length > 0 && (!row.c[31] || row.c[31]?.v !== 'Inactivo')) // Filter out inactive payments
-                    .map(row => ({
-                        idabono: row.c[0]?.v || '',
-                        cliente: row.c[1]?.v || '',
-                        nombreCliente: row.c[2]?.v || '',
-                        prestamo: row.c[3]?.v || '',
-                        monto: parseFloat(row.c[4]?.v || 0),
-                        capital: parseFloat(row.c[45]?.v || 0),
-                        interes: parseFloat(row.c[6]?.v || 0),
-                        fecha: row.c[13]?.v || '',
-                        medioPago: row.c[11]?.v || '',
-                        cajero: row.c[26]?.v || '',
-                        nombreCajero: row.c[27]?.v || '',
-                        estado: row.c[31]?.v || ''
-                    }));
+                    .filter(row => row.c && row.c.length > 3) // Must have at least basic data
+                    .map((row, index) => {
+                        // Log first few rows for debugging
+                        if (index < 3) {
+                            console.log(`Abono row ${index}:`, row.c.map((cell, i) => `${i}: ${cell?.v}`));
+                        }
+                        
+                        return {
+                            idabono: row.c[0]?.v || '',
+                            cliente: row.c[1]?.v || '',
+                            nombreCliente: row.c[2]?.v || '',
+                            prestamo: row.c[3]?.v || '',
+                            monto: parseFloat(row.c[4]?.v || 0),
+                            capital: parseFloat(row.c[5]?.v || 0),
+                            interes: parseFloat(row.c[6]?.v || 0),
+                            abonoCapital: parseFloat(row.c[7]?.v || 0),
+                            fecha: row.c[13]?.v || '',
+                            medioPago: row.c[11]?.v || '',
+                            cajero: row.c[26]?.v || '',
+                            nombreCajero: row.c[27]?.v || '',
+                            // Try different possible positions for Estado and Pago capital
+                            estado: row.c[31]?.v || row.c[30]?.v || 'Activo',
+                            pagoCapital: parseFloat(row.c[45]?.v || row.c[44]?.v || row.c[5]?.v || 0)
+                        };
+                    })
+                    .filter(abono => {
+                        // More lenient filtering - just need prestamo and some amount
+                        const hasValidData = abono.prestamo && (abono.monto > 0 || abono.pagoCapital > 0);
+                        const isActive = !abono.estado || abono.estado === 'Activo' || abono.estado === '';
+                        return hasValidData && isActive;
+                    });
+
+                console.log('Processed prestamos:', prestamosData.length);
+                console.log('Processed abonos:', abonosData.length);
+                console.log('Sample abono:', abonosData[0]);
 
                 updateDashboard();
                 updateLastUpdateTime();
@@ -730,8 +756,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e4a4c42725fca',t:'MTc1OTY4MTY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e644bb2535fca',t:'MTc1OTY4Mjc1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
