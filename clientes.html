@@ -456,9 +456,13 @@
         function updateStatistics() {
             const totalPrestamos = prestamosData.length;
             const montoTotal = prestamosData.reduce((sum, p) => sum + p.monto, 0);
-            const totalCobrado = abonosData.reduce((sum, a) => sum + a.monto, 0);
             
-            // Calculate pending balance using "Pago capital" payments
+            // Calculate real-time totals from payments
+            const totalCobrado = abonosData.reduce((sum, a) => sum + a.monto, 0);
+            const totalCapitalPagado = abonosData.reduce((sum, a) => sum + (a.pagoCapital || 0), 0);
+            const totalInteresPagado = abonosData.reduce((sum, a) => sum + (a.interes || 0), 0);
+            
+            // Calculate pending balance using real-time capital payments
             const saldoPendiente = prestamosData.reduce((sum, prestamo) => {
                 const capitalPagado = abonosData
                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
@@ -592,9 +596,12 @@
                 .slice(0, 10);
 
             tbody.innerHTML = recentPrestamos.map(prestamo => {
+                // Calculate real-time capital paid for this loan
                 const capitalPagado = abonosData
                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
                     .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                
+                // Calculate real-time balance
                 const saldo = prestamo.monto - capitalPagado;
                 
                 return `
@@ -694,12 +701,16 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             ${prestamosData.map(prestamo => {
+                                // Calculate real-time capital and interest paid for this loan
                                 const capitalPagado = abonosData
                                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
                                     .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                                
                                 const interesPagado = abonosData
                                     .filter(abono => abono.prestamo === prestamo.noPrestamo)
                                     .reduce((total, abono) => total + (abono.interes || 0), 0);
+                                
+                                // Calculate real-time balance
                                 const saldo = prestamo.monto - capitalPagado;
                                 
                                 return `
@@ -742,15 +753,20 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             ${abonosData.map(pago => {
                                 const prestamo = prestamosData.find(p => p.noPrestamo === pago.prestamo);
-                                if (!prestamo) return '';
                                 
-                                // Calculate balances
-                                const pagosAnteriores = abonosData
-                                    .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
-                                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                                // Show payment even if prestamo is not found, but with limited info
+                                let saldoAnterior = 0;
+                                let saldoActual = 0;
                                 
-                                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.pagoCapital || 0));
-                                const saldoActual = prestamo.monto - pagosAnteriores;
+                                if (prestamo) {
+                                    // Calculate balances
+                                    const pagosAnteriores = abonosData
+                                        .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
+                                        .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                                    
+                                    saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.pagoCapital || 0));
+                                    saldoActual = prestamo.monto - pagosAnteriores;
+                                }
                                 
                                 return `
                                     <tr class="hover:bg-gray-50">
@@ -793,8 +809,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e8cdb359a5fca',t:'MTc1OTY4NDQxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e974313b25fca',t:'MTc1OTY4NDgzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
