@@ -356,27 +356,21 @@
 
                 // Process abonos data
                 abonosData = abonosJson.table.rows
-                    .filter(row => row.c && row.c.length > 0) // Keep all rows with data
+                    .filter(row => row.c && row.c.length > 0 && (!row.c[31] || row.c[31]?.v !== 'Inactivo')) // Filter out inactive payments
                     .map(row => ({
                         idabono: row.c[0]?.v || '',
                         cliente: row.c[1]?.v || '',
                         nombreCliente: row.c[2]?.v || '',
                         prestamo: row.c[3]?.v || '',
                         monto: parseFloat(row.c[4]?.v || 0),
-                        capital: parseFloat(row.c[5]?.v || 0),
+                        capital: parseFloat(row.c[45]?.v || 0),
                         interes: parseFloat(row.c[6]?.v || 0),
-                        abonoCapital: parseFloat(row.c[7]?.v || 0),
-                        pagoCapital: parseFloat(row.c[45]?.v || 0), // Column 45: "Pago capital"
                         fecha: row.c[13]?.v || '',
                         medioPago: row.c[11]?.v || '',
                         cajero: row.c[26]?.v || '',
                         nombreCajero: row.c[27]?.v || '',
-                        estado: row.c[31]?.v || '' // Column 31: "Estado"
-                    }))
-                    .filter(abono => {
-                        // Only show payments with "Activo" status and valid data
-                        return abono.estado === 'Activo' && abono.monto > 0;
-                    });
+                        estado: row.c[31]?.v || ''
+                    }));
 
                 updateDashboard();
                 updateLastUpdateTime();
