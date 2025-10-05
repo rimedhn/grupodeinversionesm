@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Grupo de Inversiones Múltiples</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzY2N2VlYSIvPgo8cGF0aCBkPSJNOCAxMmg0djhoLTR2LTh6bTYgMGg0djhoLTR2LTh6bTYgMGg0djhoLTR2LTh6IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #128c7e;
+        }
+        
+        .whatsapp-float i {
+            margin-top: 16px;
+        }
+        
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="navbar-brand text-white">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Grupo de Inversiones Múltiples
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="https://rimedhn.github.io/grupodeinversionesm/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gray-200 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Sitio Principal
+                    </a>
+                    <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gray-200 transition-colors">
+                        <i class="fas fa-users mr-2"></i>Socios
+                    </a>
+                    <button id="refreshBtn" class="text-white hover:text-gray-200 transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>Actualizar
+                    </button>
+                    <div id="lastUpdate" class="text-white text-sm opacity-75"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl text-center">
+            <div class="loading mx-auto mb-4"></div>
+            <p class="text-gray-600">Cargando datos...</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-hand-holding-usd text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Préstamos Activos</p>
+                        <p id="totalPrestamos" class="text-2xl font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-dollar-sign text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Monto Total Prestado</p>
+                        <p id="montoTotal" class="text-2xl font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-coins text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Cobrado</p>
+                        <p id="totalCobrado" class="text-2xl font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i class="fas fa-exclamation-triangle text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Saldo Pendiente</p>
+                        <p id="saldoPendiente" class="text-2xl font-bold text-gray-900">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-chart-pie mr-2 text-blue-600"></i>
+                    Distribución por Estado
+                </h3>
+                <div class="relative h-64">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-chart-line mr-2 text-green-600"></i>
+                    Préstamos por Mes
+                </h3>
+                <div class="relative h-64">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tables Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Préstamos Recientes -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        <i class="fas fa-list mr-2 text-purple-600"></i>
+                        Préstamos Recientes
+                    </h3>
+                    <button id="showAllPrestamos" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Ver todos
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital Pagado</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prestamosTable" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagos Recientes -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        <i class="fas fa-money-bill-wave mr-2 text-green-600"></i>
+                        Pagos Recientes
+                    </h3>
+                    <button id="showAllPagos" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Ver todos
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagosTable" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/50493593126" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Modal for detailed views -->
+    <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-lg font-bold text-gray-900"></h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="mt-3">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let prestamosData = [];
+        let abonosData = [];
+        let statusChart, monthlyChart;
+
+        // Google Sheets API configuration
+        const SHEET_ID = '13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE';
+        const PRESTAMOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Prestamo`;
+        const ABONOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Abono%20prestamo`;
+
+        // Utility functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-HN', {
+                style: 'currency',
+                currency: 'HNL'
+            }).format(amount || 0);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            
+            // Handle Google Sheets date format
+            let date;
+            if (typeof dateStr === 'string' && dateStr.includes('Date(')) {
+                // Extract timestamp from Google Sheets Date format: Date(1234567890000)
+                const timestamp = dateStr.match(/Date\((\d+)\)/);
+                if (timestamp) {
+                    date = new Date(parseInt(timestamp[1]));
+                } else {
+                    date = new Date(dateStr);
+                }
+            } else if (typeof dateStr === 'number') {
+                // Handle numeric timestamp
+                date = new Date(dateStr);
+            } else {
+                date = new Date(dateStr);
+            }
+            
+            if (isNaN(date.getTime())) return '-';
+            return date.toLocaleDateString('es-HN');
+        }
+
+        function parseGoogleSheetsResponse(response) {
+            const jsonString = response.substring(47).slice(0, -2);
+            return JSON.parse(jsonString);
+        }
+
+        // Data fetching functions
+        async function fetchData() {
+            try {
+                showLoading(true);
+                
+                const [prestamosResponse, abonosResponse] = await Promise.all([
+                    fetch(PRESTAMOS_URL),
+                    fetch(ABONOS_URL)
+                ]);
+
+                const prestamosText = await prestamosResponse.text();
+                const abonosText = await abonosResponse.text();
+
+                const prestamosJson = parseGoogleSheetsResponse(prestamosText);
+                const abonosJson = parseGoogleSheetsResponse(abonosText);
+
+                // Process prestamos data
+                prestamosData = prestamosJson.table.rows
+                    .filter(row => row.c[10]?.v !== 'Anulado') // Filter out cancelled loans
+                    .map(row => ({
+                        idprestamo: row.c[0]?.v || '',
+                        noPrestamo: row.c[1]?.v || '',
+                        cliente: row.c[2]?.v || '',
+                        nombreCliente: row.c[3]?.v || '',
+                        fechaTramite: row.c[4]?.v || '',
+                        fechaAprobado: row.c[5]?.v || '',
+                        monto: parseFloat(row.c[6]?.v || 0),
+                        gastos: parseFloat(row.c[7]?.v || 0),
+                        plazo: parseInt(row.c[8]?.v || 0),
+                        tasa: parseFloat(row.c[9]?.v || 0),
+                        estatus: row.c[10]?.v || '',
+                        vendedor: row.c[18]?.v || '',
+                        nombreVendedor: row.c[19]?.v || '',
+                        cuota: parseFloat(row.c[26]?.v || 0),
+                        interes: parseFloat(row.c[27]?.v || 0),
+                        total: parseFloat(row.c[28]?.v || 0),
+                        fechaFinal: row.c[29]?.v || ''
+                    }));
+
+                // Process abonos data
+                abonosData = abonosJson.table.rows
+                    .filter(row => row.c && row.c.length > 0 && (!row.c[30] || row.c[30]?.v !== 'Inactivo')) // Filter out inactive payments
+                    .map(row => ({
+                        idabono: row.c[0]?.v || '',
+                        cliente: row.c[1]?.v || '',
+                        nombreCliente: row.c[2]?.v || '',
+                        prestamo: row.c[3]?.v || '',
+                        monto: parseFloat(row.c[4]?.v || 0),
+                        capital: parseFloat(row.c[45]?.v || 0),
+                        interes: parseFloat(row.c[6]?.v || 0),
+                        fecha: row.c[13]?.v || '',
+                        medioPago: row.c[11]?.v || '',
+                        cajero: row.c[26]?.v || '',
+                        nombreCajero: row.c[27]?.v || '',
+                        estado: row.c[30]?.v || ''
+                    }));
+
+                updateDashboard();
+                updateLastUpdateTime();
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('Error al cargar los datos. Por favor, intente nuevamente.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showLoading(show) {
+            const indicator = document.getElementById('loadingIndicator');
+            indicator.style.display = show ? 'flex' : 'none';
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                `Última actualización: ${now.toLocaleTimeString('es-HN')}`;
+        }
+
+        // Dashboard update functions
+        function updateDashboard() {
+            updateStatistics();
+            updateCharts();
+            updateTables();
+        }
+
+        function updateStatistics() {
+            const totalPrestamos = prestamosData.length;
+            const montoTotal = prestamosData.reduce((sum, p) => sum + p.monto, 0);
+            const totalCobrado = abonosData.reduce((sum, a) => sum + a.monto, 0);
+            
+            // Calculate pending balance using capital payments
+            const saldoPendiente = prestamosData.reduce((sum, prestamo) => {
+                const capitalPagado = abonosData
+                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                const saldoRestante = prestamo.monto - capitalPagado;
+                return sum + Math.max(0, saldoRestante); // Ensure no negative balances
+            }, 0);
+
+            document.getElementById('totalPrestamos').textContent = totalPrestamos.toLocaleString();
+            document.getElementById('montoTotal').textContent = formatCurrency(montoTotal);
+            document.getElementById('totalCobrado').textContent = formatCurrency(totalCobrado);
+            document.getElementById('saldoPendiente').textContent = formatCurrency(saldoPendiente);
+        }
+
+        function updateCharts() {
+            updateStatusChart();
+            updateMonthlyChart();
+        }
+
+        function updateStatusChart() {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            
+            if (statusChart) {
+                statusChart.destroy();
+            }
+
+            const statusCounts = prestamosData.reduce((acc, prestamo) => {
+                acc[prestamo.estatus] = (acc[prestamo.estatus] || 0) + 1;
+                return acc;
+            }, {});
+
+            statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: [
+                            '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            if (monthlyChart) {
+                monthlyChart.destroy();
+            }
+
+            const monthlyData = prestamosData.reduce((acc, prestamo) => {
+                if (prestamo.fechaTramite) {
+                    const date = new Date(prestamo.fechaTramite);
+                    const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                }
+                return acc;
+            }, {});
+
+            const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
+                const [monthA, yearA] = a.split('/');
+                const [monthB, yearB] = b.split('/');
+                return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1);
+            });
+
+            monthlyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'Préstamos',
+                        data: sortedMonths.map(month => monthlyData[month]),
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                boxWidth: 12,
+                                padding: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTables() {
+            updatePrestamosTable();
+            updatePagosTable();
+        }
+
+        function updatePrestamosTable() {
+            const tbody = document.getElementById('prestamosTable');
+            const recentPrestamos = prestamosData
+                .sort((a, b) => new Date(b.fechaTramite) - new Date(a.fechaTramite))
+                .slice(0, 10);
+
+            tbody.innerHTML = recentPrestamos.map(prestamo => {
+                const capitalPagado = abonosData
+                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                const saldo = prestamo.monto - capitalPagado;
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-3 py-2 text-sm text-gray-900">${prestamo.nombreCliente}</td>
+                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(prestamo.monto)}</td>
+                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(capitalPagado)}</td>
+                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldo))}</td>
+                        <td class="px-3 py-2 text-sm">
+                            <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(prestamo.estatus)}">
+                                ${prestamo.estatus}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePagosTable() {
+            const tbody = document.getElementById('pagosTable');
+            const recentPagos = abonosData
+                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                .slice(0, 10);
+
+            tbody.innerHTML = recentPagos.map(pago => {
+                // Find the loan to calculate remaining balance after this payment
+                const prestamo = prestamosData.find(p => p.noPrestamo === pago.prestamo);
+                if (!prestamo) return '';
+                
+                // Calculate total capital paid up to this payment (including this one)
+                const pagosAnteriores = abonosData
+                    .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
+                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                
+                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.capital || 0));
+                const saldoActual = prestamo.monto - pagosAnteriores;
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-2 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
+                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
+                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.capital || 0)}</td>
+                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
+                        <td class="px-2 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'Aprobado': 'bg-green-100 text-green-800',
+                'Pendiente': 'bg-yellow-100 text-yellow-800',
+                'Rechazado': 'bg-red-100 text-red-800',
+                'En Proceso': 'bg-blue-100 text-blue-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Modal functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        function showAllPrestamos() {
+            const content = `
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. Préstamo</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cuota</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital Pagado</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés Pagado</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${prestamosData.map(prestamo => {
+                                const capitalPagado = abonosData
+                                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                                const interesPagado = abonosData
+                                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                                    .reduce((total, abono) => total + (abono.interes || 0), 0);
+                                const saldo = prestamo.monto - capitalPagado;
+                                
+                                return `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 text-sm text-gray-900">${prestamo.noPrestamo}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${prestamo.nombreCliente}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(prestamo.monto)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(prestamo.cuota)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(capitalPagado)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(interesPagado)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldo))}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatDate(prestamo.fechaTramite)}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            showModal('Todos los Préstamos', content);
+        }
+
+        function showAllPagos() {
+            const content = `
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Préstamo</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo Anterior</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Medio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${abonosData.map(pago => {
+                                const prestamo = prestamosData.find(p => p.noPrestamo === pago.prestamo);
+                                if (!prestamo) return '';
+                                
+                                // Calculate balances
+                                const pagosAnteriores = abonosData
+                                    .filter(abono => abono.prestamo === pago.prestamo && new Date(abono.fecha) <= new Date(pago.fecha))
+                                    .reduce((total, abono) => total + (abono.capital || 0), 0);
+                                
+                                const saldoAnterior = prestamo.monto - (pagosAnteriores - (pago.capital || 0));
+                                const saldoActual = prestamo.monto - pagosAnteriores;
+                                
+                                return `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.prestamo}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.interes || 0)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoAnterior))}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.capital || 0)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.medioPago}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            showModal('Todos los Pagos', content);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchData();
+            
+            document.getElementById('refreshBtn').addEventListener('click', fetchData);
+            document.getElementById('showAllPrestamos').addEventListener('click', showAllPrestamos);
+            document.getElementById('showAllPagos').addEventListener('click', showAllPagos);
+            document.getElementById('closeModal').addEventListener('click', hideModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideModal();
+                }
+            });
+            
+            // Auto-refresh every 5 minutes
+            setInterval(fetchData, 300000);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e283356bc5fca',t:'MTc1OTY4MDI5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
