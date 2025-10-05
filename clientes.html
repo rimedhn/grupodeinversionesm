@@ -292,12 +292,21 @@
             // Handle Google Sheets date format
             let date;
             if (typeof dateStr === 'string' && dateStr.includes('Date(')) {
-                // Extract timestamp from Google Sheets Date format: Date(1234567890000)
-                const timestamp = dateStr.match(/Date\((\d+)\)/);
-                if (timestamp) {
-                    date = new Date(parseInt(timestamp[1]));
+                // Extract parameters from Google Sheets Date format: Date(year,month,day)
+                const dateMatch = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+                if (dateMatch) {
+                    const year = parseInt(dateMatch[1]);
+                    const month = parseInt(dateMatch[2]); // Google Sheets months are 0-based
+                    const day = parseInt(dateMatch[3]);
+                    date = new Date(year, month, day);
                 } else {
-                    date = new Date(dateStr);
+                    // Try timestamp format: Date(1234567890000)
+                    const timestamp = dateStr.match(/Date\((\d+)\)/);
+                    if (timestamp) {
+                        date = new Date(parseInt(timestamp[1]));
+                    } else {
+                        date = new Date(dateStr);
+                    }
                 }
             } else if (typeof dateStr === 'number') {
                 // Handle numeric timestamp
@@ -385,7 +394,8 @@
                             cajero: row.c[26]?.v || '',
                             nombreCajero: row.c[27]?.v || '',
                             estado: row.c[31]?.v || 'Activo',
-                            pagoCapital: parseFloat(row.c[45]?.v || 0)
+                            // Use the capital payment from position 45, or fallback to position 7
+                            pagoCapital: parseFloat(row.c[45]?.v || row.c[7]?.v || 0)
                         };
                         
                         // Log filtering decision for first few rows
@@ -772,8 +782,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e7035b6ea5fca',t:'MTc1OTY4MzIzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e7af526075fca',t:'MTc1OTY4MzY3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
