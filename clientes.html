@@ -444,7 +444,7 @@
                             interes: parseFloat(row.c[6]?.v || 0),
                             abonoCapital: parseFloat(row.c[7]?.v || 0),
                             recargo: parseFloat(row.c[8]?.v || 0),
-                            noCuota: parseInt(row.c[9]?.v || 0),
+                            noCuota: parseInt(row.c[24]?.v || 0),
                             fecha: row.c[13]?.v || '',
                             medioPago: row.c[11]?.v || '',
                             cajero: row.c[26]?.v || '',
@@ -605,16 +605,44 @@
 
             const monthlyData = prestamosData.reduce((acc, prestamo) => {
                 if (prestamo.fechaTramite) {
-                    const date = new Date(prestamo.fechaTramite);
-                    const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
-                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    let date;
+                    
+                    // Handle Google Sheets date format properly
+                    if (typeof prestamo.fechaTramite === 'string' && prestamo.fechaTramite.includes('Date(')) {
+                        const dateMatch = prestamo.fechaTramite.match(/Date\((\d+),(\d+),(\d+)\)/);
+                        if (dateMatch) {
+                            const year = parseInt(dateMatch[1]);
+                            const month = parseInt(dateMatch[2]);
+                            const day = parseInt(dateMatch[3]);
+                            date = new Date(year, month, day);
+                        } else {
+                            const timestamp = prestamo.fechaTramite.match(/Date\((\d+)\)/);
+                            if (timestamp) {
+                                date = new Date(parseInt(timestamp[1]));
+                            }
+                        }
+                    } else {
+                        date = new Date(prestamo.fechaTramite);
+                    }
+                    
+                    // Only process valid dates
+                    if (date && !isNaN(date.getTime())) {
+                        const monthYear = `${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                        acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    }
                 }
                 return acc;
             }, {});
 
+            // Only proceed if we have valid data
+            if (Object.keys(monthlyData).length === 0) {
+                console.log('No valid date data for monthly chart');
+                return;
+            }
+
             const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
-                const [monthA, yearA] = a.split('/');
-                const [monthB, yearB] = b.split('/');
+                const [monthA, yearA] = a.split('/').map(Number);
+                const [monthB, yearB] = b.split('/').map(Number);
                 return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1);
             });
 
@@ -852,8 +880,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989ef44336745fca',t:'MTc1OTY4ODY0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989f042c16fc5fca',t:'MTc1OTY4OTMwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
