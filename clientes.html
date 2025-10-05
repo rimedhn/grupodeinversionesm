@@ -360,16 +360,18 @@
                         fechaFinal: row.c[29]?.v || ''
                     }));
 
-                // Process abonos data - more flexible filtering
-                abonosData = abonosJson.table.rows
-                    .filter(row => row.c && row.c.length > 3) // Must have at least basic data
+                // Process abonos data - capture ALL rows with data
+                const allAbonosRows = abonosJson.table.rows.filter(row => row.c && row.c.length > 0);
+                console.log('Total abonos rows before filtering:', allAbonosRows.length);
+                
+                abonosData = allAbonosRows
                     .map((row, index) => {
-                        // Log first few rows for debugging
-                        if (index < 3) {
-                            console.log(`Abono row ${index}:`, row.c.map((cell, i) => `${i}: ${cell?.v}`));
+                        // Log first 5 rows for debugging
+                        if (index < 5) {
+                            console.log(`Abono row ${index}:`, row.c.map((cell, i) => `${i}: ${cell?.v || 'undefined'}`));
                         }
                         
-                        return {
+                        const abono = {
                             idabono: row.c[0]?.v || '',
                             cliente: row.c[1]?.v || '',
                             nombreCliente: row.c[2]?.v || '',
@@ -382,16 +384,30 @@
                             medioPago: row.c[11]?.v || '',
                             cajero: row.c[26]?.v || '',
                             nombreCajero: row.c[27]?.v || '',
-                            // Try different possible positions for Estado and Pago capital
-                            estado: row.c[31]?.v || row.c[30]?.v || 'Activo',
-                            pagoCapital: parseFloat(row.c[45]?.v || row.c[44]?.v || row.c[5]?.v || 0)
+                            estado: row.c[31]?.v || 'Activo',
+                            pagoCapital: parseFloat(row.c[45]?.v || 0)
                         };
+                        
+                        // Log filtering decision for first few rows
+                        if (index < 5) {
+                            console.log(`Row ${index} - Prestamo: ${abono.prestamo}, Monto: ${abono.monto}, PagoCapital: ${abono.pagoCapital}, Estado: ${abono.estado}`);
+                        }
+                        
+                        return abono;
                     })
-                    .filter(abono => {
-                        // More lenient filtering - just need prestamo and some amount
-                        const hasValidData = abono.prestamo && (abono.monto > 0 || abono.pagoCapital > 0);
-                        const isActive = !abono.estado || abono.estado === 'Activo' || abono.estado === '';
-                        return hasValidData && isActive;
+                    .filter((abono, index) => {
+                        // Very lenient filtering - just need some identifying data
+                        const hasBasicData = abono.idabono || abono.prestamo || abono.nombreCliente;
+                        const hasAmount = abono.monto > 0 || abono.pagoCapital > 0 || abono.capital > 0;
+                        const isNotCancelled = abono.estado !== 'Anulado' && abono.estado !== 'Cancelado';
+                        
+                        const shouldInclude = hasBasicData && hasAmount && isNotCancelled;
+                        
+                        if (index < 5) {
+                            console.log(`Row ${index} filtering - Basic: ${hasBasicData}, Amount: ${hasAmount}, NotCancelled: ${isNotCancelled}, Include: ${shouldInclude}`);
+                        }
+                        
+                        return shouldInclude;
                     });
 
                 console.log('Processed prestamos:', prestamosData.length);
@@ -756,8 +772,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e644bb2535fca',t:'MTc1OTY4Mjc1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989e7035b6ea5fca',t:'MTc1OTY4MzIzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
