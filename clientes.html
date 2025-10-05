@@ -595,9 +595,9 @@
                 .slice(0, 10);
 
             tbody.innerHTML = recentPrestamos.map(prestamo => {
-                // Calculate real-time capital paid for this loan
+                // Calculate real-time capital paid for this loan using idprestamo
                 const capitalPagado = abonosData
-                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                    .filter(abono => abono.prestamo === prestamo.idprestamo)
                     .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                 
                 // Calculate real-time balance
@@ -680,13 +680,13 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             ${prestamosData.map(prestamo => {
-                                // Calculate real-time capital and interest paid for this loan
+                                // Calculate real-time capital and interest paid for this loan using idprestamo
                                 const capitalPagado = abonosData
-                                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                                    .filter(abono => abono.prestamo === prestamo.idprestamo)
                                     .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
                                 
                                 const interesPagado = abonosData
-                                    .filter(abono => abono.prestamo === prestamo.noPrestamo)
+                                    .filter(abono => abono.prestamo === prestamo.idprestamo)
                                     .reduce((total, abono) => total + (abono.interes || 0), 0);
                                 
                                 // Calculate real-time balance
@@ -776,8 +776,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989eaecf87af5fca',t:'MTc1OTY4NTgwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989ec02df0ef5fca',t:'MTc1OTY4NjUxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
