@@ -91,10 +91,10 @@
                 </div>
                 <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                     <div class="flex items-center space-x-2 sm:space-x-4">
-                        <a href="https://rimedhn.github.io/grupodeinversionesm/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gray-200 transition-colors text-sm">
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/" class="text-white hover:text-gray-200 transition-colors text-sm">
                             <i class="fas fa-home mr-1 sm:mr-2"></i><span class="hidden sm:inline">Sitio Principal</span><span class="sm:hidden">Inicio</span>
                         </a>
-                        <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" target="_blank" rel="noopener noreferrer" class="text-white hover:text-gray-200 transition-colors text-sm">
+                        <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" class="text-white hover:text-gray-200 transition-colors text-sm">
                             <i class="fas fa-users mr-1 sm:mr-2"></i>Socios
                         </a>
                         <button id="refreshBtn" class="text-white hover:text-gray-200 transition-colors text-sm">
@@ -444,6 +444,7 @@
                             interes: parseFloat(row.c[6]?.v || 0),
                             abonoCapital: parseFloat(row.c[7]?.v || 0),
                             recargo: parseFloat(row.c[8]?.v || 0),
+                            noCuota: parseInt(row.c[9]?.v || 0),
                             fecha: row.c[13]?.v || '',
                             medioPago: row.c[11]?.v || '',
                             cajero: row.c[26]?.v || '',
@@ -794,7 +795,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
-                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Préstamo</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">No Cuota</th>
                                 <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
                                 <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés</th>
                                 <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo Anterior</th>
@@ -813,7 +814,7 @@
                                 return `
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-2 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
-                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.prestamo}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.noCuota || '-'}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.interes || 0)}</td>
                                         <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoAnterior))}</td>
@@ -851,8 +852,9 @@
             setInterval(fetchData, 300000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989edc39d6da5fca',t:'MTc1OTY4NzY2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'989ef44336745fca',t:'MTc1OTY4ODY0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
