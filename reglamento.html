@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reglamento GIM</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 90%;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 60px;
+      margin: 40px auto;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #1e3c72;
+      padding-bottom: 30px;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      color: #1e3c72;
+      font-size: 42px;
+      margin: 0 0 10px 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      color: #5a6c7d;
+      font-size: 20px;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .intro {
+      background: #f8f9fa;
+      padding: 25px;
+      border-left: 4px solid #1e3c72;
+      margin-bottom: 40px;
+      border-radius: 8px;
+    }
+
+    .intro p {
+      color: #2c3e50;
+      line-height: 1.8;
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .section {
+      margin-bottom: 35px;
+    }
+
+    .section h2 {
+      color: #1e3c72;
+      font-size: 26px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e6ed;
+    }
+
+    .rule-item {
+      background: #ffffff;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-left: 4px solid #2a5298;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .rule-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .rule-number {
+      display: inline-block;
+      background: #1e3c72;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+      font-weight: bold;
+      margin-right: 15px;
+      font-size: 16px;
+    }
+
+    .rule-content {
+      display: inline;
+      color: #2c3e50;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 50px auto 0;
+      padding: 18px 40px;
+      background: #1e3c72;
+      color: #ffffff;
+      text-align: center;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+      text-decoration: none;
+    }
+
+    .cta-button:hover {
+      background: #2a5298;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 2px solid #e0e6ed;
+      color: #5a6c7d;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+      .container {
+        box-shadow: none;
+        padding: 40px;
+      }
+      .cta-button {
+        display: none;
+      }
+    }
+
+    .print-document {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 60px;
+    }
+
+    .print-document.active {
+      display: block;
+    }
+
+    .print-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .print-header h1 {
+      color: #1e3c72;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .print-header h2 {
+      color: #5a6c7d;
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: 30px;
+    }
+
+    .print-date {
+      color: #5a6c7d;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+
+    .print-section {
+      margin-bottom: 40px;
+      page-break-inside: avoid;
+    }
+
+    .print-section h3 {
+      color: #1e3c72;
+      font-size: 22px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #1e3c72;
+      padding-bottom: 10px;
+    }
+
+    .print-article {
+      margin-bottom: 25px;
+      padding-left: 20px;
+    }
+
+    .print-article-title {
+      color: #1e3c72;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .print-article-content {
+      color: #2c3e50;
+      line-height: 1.8;
+      font-size: 15px;
+      text-align: justify;
+    }
+
+    .close-print {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1e3c72;
+      color: #ffffff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .close-print:hover {
+      background: #2a5298;
+      transform: translateY(-2px);
+    }
+
+    .print-button {
+      display: block;
+      margin: 40px auto;
+      background: #1e3c72;
+      color: #ffffff;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .print-button:hover {
+      background: #2a5298;
+      transform: translateY(-2px);
+    }
+
+    @media print {
+      .close-print,
+      .print-button {
+        display: none;
+      }
+      .print-document {
+        padding: 40px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <h1 id="group-name">Grupo de Inversiones Múltiples</h1>
+    <p id="subtitle">Reglamento Interno</p>
+   </div>
+   <div class="intro">
+    <p>El presente reglamento establece las normas y procedimientos que rigen el funcionamiento del Grupo de Inversiones Múltiples (GIM), aprobado por consenso de todos los socios en las sesiones ordinarias celebradas. Este documento tiene como objetivo garantizar la transparencia, equidad y crecimiento sostenible del grupo.</p>
+   </div>
+   <div class="section">
+    <h2>I. Aportes y Contribuciones</h2>
+    <div class="rule-item"><span class="rule-number">1</span> <span class="rule-content"><strong>Plazo de Aportes Mensuales:</strong> Todos los socios deben entregar sus aportes mensuales a más tardar el día 3 de cada mes. Los aportes pueden realizarse anticipadamente si el socio lo desea. Se establece un período de gracia de 3 días naturales.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">2</span> <span class="rule-content"><strong>Penalización por Retraso:</strong> Los aportes entregados después del tercer día del mes siguiente generarán automáticamente una penalización de L250.00 (doscientos cincuenta lempiras), que será distribuida equitativamente entre todos los socios activos del grupo.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">3</span> <span class="rule-content"><strong>Montos de Aporte:</strong> No existen límites máximos en el monto que cada socio desea aportar, ya sea al momento de ingresar al grupo o en sus contribuciones mensuales. Cada socio es libre de determinar su nivel de inversión.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>II. Comisiones y Gastos Operativos</h2>
+    <div class="rule-item"><span class="rule-number">4</span> <span class="rule-content"><strong>Comisión por Colocación:</strong> Se pagará una comisión del 10% sobre los intereses recibidos al socio que gestione y coloque exitosamente un préstamo o inversión del grupo.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">5</span> <span class="rule-content"><strong>Gastos de Gestión:</strong> Se destinará un 10% de los intereses recibidos para cubrir costos de gestión administrativa, desarrollo y mantenimiento de sistemas tecnológicos, y el sitio web de consulta para los socios.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>III. Retiros y Préstamos</h2>
+    <div class="rule-item"><span class="rule-number">6</span> <span class="rule-content"><strong>Retiro de Intereses:</strong> Los socios podrán retirar sus intereses generados únicamente al inicio de cada mes, siempre que lo soliciten durante el mes anterior. La entrega se realizará si hay capital disponible para ello, de lo contrario se tendrá que esperar a que haya disponibilidad de recursos. Las solicitudes extemporáneas no serán procesadas hasta el siguiente período.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">7</span> <span class="rule-content"><strong>Retiro de Capital:</strong> Los retiros de capital solo pueden realizarse mediante dos modalidades: (a) préstamo al socio con una tasa de interés del 10% mensual, o (b) retiro definitivo del grupo. En ambos casos, la solicitud debe presentarse con un mes de anticipación. La entrega se realizará si hay capital disponible para ello, de lo contrario se tendrá que esperar a que haya disponibilidad de recursos.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>IV. Ingreso de Nuevos Socios</h2>
+    <div class="rule-item"><span class="rule-number">8</span> <span class="rule-content"><strong>Requisitos de Ingreso:</strong> Las personas que deseen formar parte del grupo deberán ponerse al día con los aportes base que ya hayan realizado los socios actuales, garantizando así la equidad en la participación.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">9</span> <span class="rule-content"><strong>Límite de Socios:</strong> No existe un límite máximo para la cantidad de socios que pueden ingresar al grupo. El crecimiento del grupo es bienvenido siempre que se cumplan los requisitos establecidos.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>V. Distribución de Resultados</h2>
+    <div class="rule-item"><span class="rule-number">10</span> <span class="rule-content"><strong>Ganancias y Pérdidas:</strong> Las ganancias y pérdidas generadas por las inversiones del grupo se distribuirán entre todos los socios en proporción directa al capital que cada uno tenga invertido en el momento del cálculo, independientemente de si el socio participó o no en la toma de decisiones o en las actividades de inversión.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>VI. Participación y Gestión Activa</h2>
+    <div class="rule-item"><span class="rule-number">11</span> <span class="rule-content"><strong>Prevención de Capital Ocioso:</strong> Para evitar que el capital permanezca improductivo, se desarrollarán actividades de inversión en las que todos los socios deben participar de forma activa para incrementar el patrimonio del grupo.</span>
+    </div>
+    <div class="rule-item"><span class="rule-number">12</span> <span class="rule-content"><strong>Aporte de Ideas:</strong> Todos los socios tienen la responsabilidad de aportar ideas, propuestas y oportunidades de inversión para el beneficio colectivo del grupo. La participación activa es fundamental para el éxito común.</span>
+    </div>
+   </div>
+   <div class="section">
+    <h2>VII. Toma de Decisiones</h2>
+    <div class="rule-item"><span class="rule-number">13</span> <span class="rule-content"><strong>Decisiones Colectivas:</strong> Las decisiones generales que afecten al grupo se tomarán en conjunto mediante encuestas enviadas por WhatsApp u otro medio de comunicación oficial establecido. Se respetará el principio democrático en la toma de decisiones.</span>
+    </div>
+   </div><button class="cta-button" onclick="openPrintView()">📄 Ver Documento Completo para Imprimir</button>
+   <div class="footer">
+    <p id="footer-text">Documento oficial aprobado por los socios</p>
+   </div>
+  </div>
+  <div class="print-document" id="printDocument"><button class="close-print" onclick="closePrintView()">✕ Cerrar</button>
+   <div class="print-header">
+    <h1 id="print-group-name">GRUPO DE INVERSIONES MÚLTIPLES</h1>
+    <h2 id="print-subtitle">REGLAMENTO INTERNO</h2>
+    <div class="print-date">
+     Documento Oficial - Versión vigente desde la fecha de aprobación por los socios
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO I: DISPOSICIONES GENERALES</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 1. Objeto del Reglamento
+     </div>
+     <div class="print-article-content">
+      El presente reglamento tiene por objeto establecer las normas, procedimientos y lineamientos que regirán el funcionamiento del Grupo de Inversiones Múltiples (en adelante "GIM" o "el Grupo"), así como los derechos y obligaciones de sus socios. Este documento ha sido elaborado y aprobado por consenso de todos los socios en las sesiones ordinarias celebradas para tal efecto.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 2. Naturaleza del Grupo
+     </div>
+     <div class="print-article-content">
+      El GIM es un grupo de inversionistas que aportan capital de forma periódica con el propósito de realizar inversiones diversificadas que generen rendimientos para todos sus miembros. El grupo se fundamenta en los principios de transparencia, equidad, participación activa y crecimiento sostenible.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 3. Objetivos del Grupo
+     </div>
+     <div class="print-article-content">
+      Los objetivos principales del GIM son: (a) maximizar los rendimientos de las inversiones realizadas con el capital aportado por los socios; (b) diversificar el portafolio de inversiones para minimizar riesgos; (c) fomentar la educación financiera y el crecimiento patrimonial de todos los socios; (d) mantener un ambiente de colaboración y transparencia en todas las operaciones.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO II: APORTES Y CONTRIBUCIONES</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 4. Plazo de Aportes Mensuales
+     </div>
+     <div class="print-article-content">
+      Todos los socios están obligados a entregar sus aportes mensuales a más tardar el día 3 (tres) de cada mes calendario. Los socios podrán realizar sus aportes de manera anticipada si así lo desean. Se establece un período de gracia de 3 (tres) días naturales contados a partir del día 1 de cada mes.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 5. Penalización por Retraso
+     </div>
+     <div class="print-article-content">
+      Los aportes que sean entregados después del tercer día del mes correspondiente generarán automáticamente una penalización de L250.00 (doscientos cincuenta lempiras exactos). El monto total de las penalizaciones recaudadas será distribuido equitativamente entre todos los socios activos del grupo que hayan cumplido con sus obligaciones en tiempo y forma.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 6. Montos de Aporte
+     </div>
+     <div class="print-article-content">
+      No existen límites máximos en el monto que cada socio desea aportar, ya sea al momento de su ingreso al grupo o en sus contribuciones mensuales subsecuentes. Cada socio tiene la libertad de determinar su nivel de inversión de acuerdo con su capacidad financiera y objetivos personales. Los aportes mínimos, de existir, serán establecidos por acuerdo de los socios.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO III: COMISIONES Y GASTOS OPERATIVOS</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 7. Comisión por Colocación de Inversiones
+     </div>
+     <div class="print-article-content">
+      Se reconocerá y pagará una comisión equivalente al 10% (diez por ciento) calculada sobre los intereses recibidos, al socio que gestione, negocie y coloque exitosamente un préstamo o inversión utilizando el capital del grupo. Esta comisión tiene como propósito incentivar la participación activa de los socios en la búsqueda de oportunidades de inversión.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 8. Gastos de Gestión y Administración
+     </div>
+     <div class="print-article-content">
+      Se destinará un 10% (diez por ciento) de los intereses recibidos por el grupo para cubrir los siguientes conceptos: (a) costos de gestión administrativa; (b) desarrollo y mantenimiento de sistemas tecnológicos; (c) hosting y mantenimiento del sitio web de consulta para los socios; (d) otros gastos operativos necesarios para el funcionamiento eficiente del grupo.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO IV: RETIROS Y PRÉSTAMOS</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 9. Retiro de Intereses
+     </div>
+     <div class="print-article-content">
+      Los socios tendrán derecho a retirar los intereses generados por sus inversiones únicamente al inicio de cada mes calendario. Para ejercer este derecho, el socio deberá presentar su solicitud de retiro durante el mes inmediato anterior al retiro deseado. La entrega se realizará si hay capital disponible para ello, de lo contrario se tendrá que esperar a que haya disponibilidad de recursos. Las solicitudes presentadas de manera extemporánea no serán procesadas hasta el siguiente período establecido.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 10. Retiro de Capital
+     </div>
+     <div class="print-article-content">
+      Los retiros de capital únicamente podrán realizarse mediante las siguientes dos modalidades: (a) Préstamo al socio: el socio podrá solicitar un préstamo de su propio capital invertido, el cual devengará una tasa de interés del 10% (diez por ciento) mensual a favor del grupo; (b) Retiro definitivo: el socio que desee retirarse permanentemente del grupo podrá solicitar el retiro total de su capital. En ambos casos, la solicitud deberá presentarse con un mínimo de un mes de anticipación para permitir la liquidez necesaria. La entrega se realizará si hay capital disponible para ello, de lo contrario se tendrá que esperar a que haya disponibilidad de recursos.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO V: INGRESO DE NUEVOS SOCIOS</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 11. Requisitos de Ingreso
+     </div>
+     <div class="print-article-content">
+      Las personas interesadas en formar parte del GIM deberán cumplir con los siguientes requisitos: (a) ponerse al día con los aportes base que ya hayan realizado los socios actuales, garantizando así la equidad en la participación desde el momento de su ingreso; (b) aceptar y comprometerse a cumplir con todas las disposiciones establecidas en el presente reglamento; (c) participar activamente en las actividades y decisiones del grupo.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 12. Límite de Socios
+     </div>
+     <div class="print-article-content">
+      No existe un límite máximo para la cantidad de socios que pueden formar parte del grupo. El crecimiento del GIM es bienvenido y fomentado, siempre y cuando los nuevos miembros cumplan con los requisitos establecidos y compartan los valores y objetivos del grupo.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO VI: DISTRIBUCIÓN DE RESULTADOS</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 13. Distribución de Ganancias y Pérdidas
+     </div>
+     <div class="print-article-content">
+      Las ganancias y pérdidas generadas por las inversiones realizadas por el grupo se distribuirán entre todos los socios en proporción directa al capital que cada uno tenga invertido en el momento del cálculo, independientemente de si el socio participó o no en la toma de decisiones o en las actividades de inversión. Este sistema garantiza que cada socio participe de los resultados del grupo de manera equitativa y proporcional a su nivel de inversión.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 14. Cálculo y Liquidación
+     </div>
+     <div class="print-article-content">
+      Los cálculos de distribución de ganancias y pérdidas se realizarán mensualmente, considerando el capital invertido por cada socio al cierre del período correspondiente. La liquidación de los montos correspondientes se efectuará de acuerdo con los procedimientos establecidos por el grupo.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO VII: PARTICIPACIÓN Y GESTIÓN ACTIVA</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 15. Prevención de Capital Ocioso
+     </div>
+     <div class="print-article-content">
+      Con el objetivo de evitar que el capital del grupo permanezca improductivo, se desarrollarán de manera continua actividades de inversión en las cuales todos los socios deberán participar de forma activa. Esta participación incluye la búsqueda de oportunidades, el análisis de propuestas y la ejecución de estrategias que permitan incrementar el patrimonio colectivo del grupo.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 16. Aporte de Ideas y Oportunidades
+     </div>
+     <div class="print-article-content">
+      Todos los socios tienen la responsabilidad y el derecho de aportar ideas, propuestas y oportunidades de inversión para el beneficio colectivo del grupo. La participación activa, el intercambio de conocimientos y la colaboración son fundamentales para el éxito y crecimiento sostenible del GIM.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO VIII: TOMA DE DECISIONES Y GOBERNANZA</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 17. Decisiones Colectivas
+     </div>
+     <div class="print-article-content">
+      Las decisiones generales que afecten al funcionamiento, estrategia o patrimonio del grupo se tomarán de manera colectiva mediante encuestas o votaciones enviadas por WhatsApp u otro medio de comunicación oficial que el grupo establezca. Se respetará el principio democrático en la toma de decisiones, procurando el consenso y la participación de todos los socios.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 18. Quórum y Mayorías
+     </div>
+     <div class="print-article-content">
+      Para que una decisión sea válida, se requerirá la participación de al menos el 50% (cincuenta por ciento) de los socios activos. Las decisiones se aprobarán por mayoría simple de los votos emitidos, salvo que se trate de modificaciones al presente reglamento, las cuales requerirán una mayoría calificada del 75% (setenta y cinco por ciento) de los votos.
+     </div>
+    </div>
+   </div>
+   <div class="print-section">
+    <h3>CAPÍTULO IX: MODIFICACIONES Y VIGENCIA</h3>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 19. Modificaciones al Reglamento
+     </div>
+     <div class="print-article-content">
+      El presente reglamento podrá ser modificado mediante acuerdo de los socios, requiriendo una mayoría calificada del 75% (setenta y cinco por ciento) de los votos emitidos. Cualquier socio podrá proponer modificaciones, las cuales deberán ser comunicadas con al menos 15 (quince) días de anticipación a la votación correspondiente.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 20. Vigencia
+     </div>
+     <div class="print-article-content">
+      El presente reglamento entra en vigor a partir de su aprobación por los socios del Grupo de Inversiones Múltiples y permanecerá vigente hasta que sea modificado o derogado mediante los procedimientos establecidos en el artículo anterior.
+     </div>
+    </div>
+    <div class="print-article">
+     <div class="print-article-title">
+      Artículo 21. Interpretación
+     </div>
+     <div class="print-article-content">
+      En caso de dudas sobre la interpretación de cualquier disposición del presente reglamento, los socios resolverán mediante votación colectiva. Se privilegiará siempre la interpretación que mejor refleje los principios de equidad, transparencia y beneficio colectivo que fundamentan al grupo.
+     </div>
+    </div>
+   </div>
+   <div style="margin-top: 80px; text-align: center; color: #5a6c7d; font-size: 14px; font-style: italic;">
+    <p>Documento oficial del Grupo de Inversiones Múltiples</p>
+    <p>Aprobado por consenso de todos los socios</p>
+    <p style="margin-top: 40px;">_______________________________</p>
+    <p>Firma y fecha de aprobación</p>
+   </div><button class="print-button" onclick="window.print()">🖨️ Imprimir Documento</button>
+  </div>
+  <script>
+    const defaultConfig = {
+      group_name: "Grupo de Inversiones Múltiples",
+      subtitle: "Reglamento Interno",
+      footer_text: "Documento oficial aprobado por los socios"
+    };
+
+    const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+
+    async function onConfigChange(config) {
+      const groupName = config.group_name || defaultConfig.group_name;
+      const subtitle = config.subtitle || defaultConfig.subtitle;
+      const footerText = config.footer_text || defaultConfig.footer_text;
+
+      document.getElementById('group-name').textContent = groupName;
+      document.getElementById('subtitle').textContent = subtitle;
+      document.getElementById('footer-text').textContent = footerText;
+      document.getElementById('print-group-name').textContent = groupName.toUpperCase();
+      document.getElementById('print-subtitle').textContent = subtitle.toUpperCase();
+    }
+
+    function openPrintView() {
+      document.getElementById('printDocument').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePrintView() {
+      document.getElementById('printDocument').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["group_name", config.group_name || defaultConfig.group_name],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["footer_text", config.footer_text || defaultConfig.footer_text]
+        ])
+      });
+    }
+
+    onConfigChange(config);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b8f0d411d531c0',t:'MTc2MjY0NTQ5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
