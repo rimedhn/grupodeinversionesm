@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grupo de Inversiones Multiples - Dashboard</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23667eea'/%3E%3Ctext x='50' y='60' font-family='Arial,sans-serif' font-size='32' font-weight='bold' fill='white' text-anchor='middle'%3EGIM%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23667eea'/%3E%3Ctext x='50' cy='50' text-anchor='middle' dy='.3em' font-size='48' fill='white' font-family='Arial'%3EGIM%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .gradient-bg {
+        . gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .card-shadow {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow:  0 10px 25px rgba(0,0,0,0.1);
         }
         .animate-fade-in {
             animation: fadeIn 0.5s ease-in;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            to { opacity: 1; transform:  translateY(0); }
         }
-        .loading-spinner {
+        . loading-spinner {
             border: 3px solid #f3f3f3;
             border-top: 3px solid #667eea;
-            border-radius: 50%;
+            border-radius:  50%;
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
@@ -37,7 +37,7 @@
         .button {
             display: inline-block;
             padding: 12px 25px;
-            font-size: 1.1em;
+            font-size: 1. 1em;
             color: white;
             background-color: var(--color-accent);
             border: none;
@@ -82,21 +82,21 @@
                 </div>
                 
                 <button type="submit" 
-                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105">
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-[1.02]">
                     <span id="loginText">Iniciar Sesión</span>
                     <div id="loginSpinner" class="loading-spinner mx-auto hidden"></div>
                 </button>
-
-                <button  id="btnRegresar"
-                        class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-blue-orange hover:to-red-700 transition-all transform hover:scale-105">
-                    <span><a href="https://rimedhn.github.io/grupodeinversionesm/">Ir al Sitio General</span>
-                                        
-                </button>
-                
             </form>
+
+            <div class="mt-4">
+                <a href="https://rimedhn.github.io/grupodeinversionesm/" 
+                   class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white py-3 rounded-lg font-semibold hover: from-orange-600 hover: to-red-700 transition-all transform hover:scale-[1.02] block text-center">
+                    Ir al Sitio General
+                </a>
+            </div>
             
             <div id="loginError" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
-                <span id="loginErrorText">Credenciales incorrectas. Verifique su usuario y contraseña.</span>
+                <span id="loginErrorText">Credenciales incorrectas.  Verifique su usuario y contraseña.</span>
             </div>
         </div>
     </div>
@@ -135,7 +135,7 @@
                             <select id="yearFilterMobile" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
                                 <option value="">Todos los años</option>
                             </select>
-                            <select id="monthFilterMobile" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
+                            <select id="monthFilterMobile" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus: ring-2 focus:ring-blue-500">
                                 <option value="">Todos los meses</option>
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
@@ -178,7 +178,7 @@
                                 <select id="yearFilter" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
                                     <option value="">Todos los años</option>
                                 </select>
-                                <select id="monthFilter" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
+                                <select id="monthFilter" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus: ring-blue-500">
                                     <option value="">Todos los meses</option>
                                     <option value="1">Enero</option>
                                     <option value="2">Febrero</option>
@@ -214,7 +214,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main class="max-w-7xl mx-auto px-4 sm: px-6 lg:px-8 py-8">
             <!-- Loading State -->
             <div id="loadingState" class="text-center py-12">
                 <div class="loading-spinner mx-auto mb-4"></div>
@@ -236,7 +236,7 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <span class="text-sm text-gray-600">Participación: <span id="participation" class="font-semibold">0%</span></span>
+                            <span class="text-sm text-gray-600">Participación:  <span id="participation" class="font-semibold">0%</span></span>
                         </div>
                     </div>
 
@@ -376,7 +376,7 @@
                         <div class="ml-3">
                             <h3 class="text-sm font-medium text-blue-800">Instrucciones Importantes</h3>
                             <p class="text-sm text-blue-700 mt-1">
-                                Puede realizar su depósito o transferencia a la cuenta de su preferencia. 
+                                Puede realizar su depósito o transferencia a la cuenta de su preferencia.  
                                 <strong>Verifique que los datos de nombre y cuenta sean correctos</strong> antes de realizar la transacción.
                             </p>
                         </div>
@@ -515,7 +515,7 @@
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
                             <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M8. 257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
                         <div class="ml-3">
@@ -530,7 +530,7 @@
             </div>
 
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-2xl">
-                <button onclick="closeBankAccountsModal()" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all">
+                <button onclick="closeBankAccountsModal()" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-[1.02]">
                     Cerrar
                 </button>
             </div>
@@ -563,9 +563,9 @@
             
             // Mobile filters
             document.getElementById('yearFilterMobile').addEventListener('change', applyFilters);
-            document.getElementById('monthFilterMobile').addEventListener('change', applyFilters);
+            document. getElementById('monthFilterMobile').addEventListener('change', applyFilters);
             document.getElementById('dateFromMobile').addEventListener('change', applyFilters);
-            document.getElementById('dateToMobile').addEventListener('change', applyFilters);
+            document. getElementById('dateToMobile').addEventListener('change', applyFilters);
         }
 
         function checkSession() {
@@ -580,7 +580,7 @@
             e.preventDefault();
             
             const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const password = document. getElementById('password').value;
             
             showLoginLoading(true);
             hideLoginError();
@@ -622,8 +622,8 @@
                 spinner.classList.remove('hidden');
                 text.classList.add('hidden');
             } else {
-                spinner.classList.add('hidden');
-                text.classList.remove('hidden');
+                spinner.classList. add('hidden');
+                text. classList.remove('hidden');
             }
         }
 
@@ -631,18 +631,26 @@
             const errorDiv = document.getElementById('loginError');
             const errorText = document.getElementById('loginErrorText');
             errorText.textContent = message || 'Error de autenticación';
-            errorDiv.classList.remove('hidden');
+            errorDiv. classList.remove('hidden');
         }
 
         function hideLoginError() {
             document.getElementById('loginError').classList.add('hidden');
         }
 
+        function logout() {
+            localStorage.removeItem('gimUser');
+            currentUser = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document. getElementById('password').value = '';
+        }
+
         async function showDashboard() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('userWelcome').textContent = currentUser.Nombre || currentUser.Usuario;
-            document.getElementById('userWelcomeMobile').textContent = currentUser.Nombre || currentUser.Usuario;
+            document.getElementById('userWelcome').textContent = currentUser. Nombre || currentUser.Usuario;
             document.getElementById('userWelcomeMobile').textContent = currentUser.Nombre || currentUser.Usuario;
             
             await loadDashboardData();
@@ -664,8 +672,8 @@
                     console.error('Error cargando capital:', capitalData.error);
                     capitalData = [];
                 }
-                if (repartoData.error) {
-                    console.error('Error cargando reparto:', repartoData.error);
+                if (repartoData. error) {
+                    console. error('Error cargando reparto:', repartoData.error);
                     repartoData = [];
                 }
 
@@ -679,7 +687,7 @@
                 console.error('Error loading dashboard data:', error);
                 document.getElementById('loadingState').innerHTML = `
                     <div class="text-center py-12">
-                        <p class="text-red-600">Error cargando datos: ${error.message}</p>
+                        <p class="text-red-600">Error cargando datos:  ${error.message}</p>
                         <button onclick="loadDashboardData()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
                             Reintentar
                         </button>
@@ -689,7 +697,7 @@
         }
 
         function populateYearFilter() {
-            const years = [...new Set(capitalData.map(item => new Date(item.Fecha).getFullYear()))].sort((a, b) => b - a);
+            const years = [... new Set(capitalData.map(item => new Date(item. Fecha).getFullYear()))].sort((a, b) => b - a);
             const yearFilter = document.getElementById('yearFilter');
             const yearFilterMobile = document.getElementById('yearFilterMobile');
             
@@ -697,12 +705,12 @@
             while (yearFilter.children.length > 1) {
                 yearFilter.removeChild(yearFilter.lastChild);
             }
-            while (yearFilterMobile.children.length > 1) {
+            while (yearFilterMobile.children. length > 1) {
                 yearFilterMobile.removeChild(yearFilterMobile.lastChild);
             }
             
             years.forEach(year => {
-                if (!isNaN(year)) {
+                if (! isNaN(year)) {
                     // Desktop filter
                     const option = document.createElement('option');
                     option.value = year;
@@ -721,7 +729,7 @@
         function updateDashboard() {
             const filteredData = getFilteredData();
             const userCapitalData = filteredData.filter(item => 
-                item.idSocio === currentUser.Empleadoid && 
+                item.idSocio === currentUser. Empleadoid && 
                 (item.Estado === 'Activo' || item.estado === 'Activo')
             );
             
@@ -749,7 +757,7 @@
             }
 
             if (dateFrom) {
-                filtered = filtered.filter(item => new Date(item.Fecha) >= new Date(dateFrom));
+                filtered = filtered. filter(item => new Date(item.Fecha) >= new Date(dateFrom));
             }
 
             if (dateTo) {
@@ -760,28 +768,28 @@
         }
 
         function updateSummaryCards(userCapitalData) {
-            // Calcular capital: suma de Aportes menos Retiros
-            const totalAportes = userCapitalData.reduce((sum, item) => sum + (parseFloat(item.Aporte) || 0), 0);
-            const totalRetiros = userCapitalData.filter(item => item.Tipo === 'Retiro').reduce((sum, item) => sum + (parseFloat(item.Monto) || 0), 0);
+            // Calcular capital:  suma de Aportes menos Retiros
+            const totalAportes = userCapitalData. reduce((sum, item) => sum + (parseFloat(item. Aporte) || 0), 0);
+            const totalRetiros = userCapitalData.filter(item => item. Tipo === 'Retiro').reduce((sum, item) => sum + (parseFloat(item.Monto) || 0), 0);
             const totalCapital = totalAportes - totalRetiros;
             
             const totalUtilities = userCapitalData.reduce((sum, item) => sum + (parseFloat(item.Utilidades) || 0), 0);
             const totalPlacements = userCapitalData.reduce((sum, item) => sum + (parseFloat(item.Colocación) || 0), 0);
             const currentBalance = userCapitalData.length > 0 ? parseFloat(userCapitalData[userCapitalData.length - 1].Saldo) || 0 : 0;
             
-            // Calcular participación dinámicamente: saldo del socio / capital total del proyecto
-            const activeCapitalData = capitalData.filter(item => item.Estado === 'Activo' || item.estado === 'Activo');
-            const projectTotalAportes = activeCapitalData.reduce((sum, item) => sum + (parseFloat(item.Aporte) || 0), 0);
-            const projectTotalRetiros = activeCapitalData.filter(item => item.Tipo === 'Retiro').reduce((sum, item) => sum + (parseFloat(item.Monto) || 0), 0);
+            // Calcular participación dinámicamente:  saldo del socio / capital total del proyecto
+            const activeCapitalData = capitalData.filter(item => item. Estado === 'Activo' || item.estado === 'Activo');
+            const projectTotalAportes = activeCapitalData. reduce((sum, item) => sum + (parseFloat(item. Aporte) || 0), 0);
+            const projectTotalRetiros = activeCapitalData. filter(item => item.Tipo === 'Retiro').reduce((sum, item) => sum + (parseFloat(item.Monto) || 0), 0);
             const projectTotalPenalizaciones = activeCapitalData.reduce((sum, item) => sum + (parseFloat(item.Penalizacion) || 0), 0);
             const projectTotalCapital = projectTotalAportes - projectTotalRetiros + projectTotalPenalizaciones;
             
-            const participation = projectTotalCapital > 0 ? (currentBalance / projectTotalCapital) : 0;
+            const participation = projectTotalCapital > 0 ? (currentBalance / projectTotalCapital) :  0;
 
             document.getElementById('totalCapital').textContent = formatCurrency(totalCapital);
             document.getElementById('totalUtilities').textContent = formatCurrency(totalUtilities);
             document.getElementById('totalPlacements').textContent = formatCurrency(totalPlacements);
-            document.getElementById('currentBalance').textContent = formatCurrency(currentBalance);
+            document. getElementById('currentBalance').textContent = formatCurrency(currentBalance);
             document.getElementById('participation').textContent = (participation * 100).toFixed(2) + '%';
         }
 
@@ -790,12 +798,12 @@
             const capitalCtx = document.getElementById('capitalChart').getContext('2d');
             
             if (charts.capital) {
-                charts.capital.destroy();
+                charts.capital. destroy();
             }
 
-            const sortedData = userCapitalData.sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha));
+            const sortedData = userCapitalData. sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha));
             const labels = sortedData.map(item => formatDate(item.Fecha));
-            const balances = sortedData.map(item => parseFloat(item.Saldo) || 0);
+            const balances = sortedData.map(item => parseFloat(item. Saldo) || 0);
 
             charts.capital = new Chart(capitalCtx, {
                 type: 'line',
@@ -805,7 +813,7 @@
                         label: 'Saldo de Capital',
                         data: balances,
                         borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        backgroundColor:  'rgba(102, 126, 234, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4
@@ -840,23 +848,23 @@
             const utilitiesCtx = document.getElementById('utilitiesChart').getContext('2d');
             
             if (charts.utilities) {
-                charts.utilities.destroy();
+                charts. utilities.destroy();
             }
 
             const utilitiesData = userCapitalData.filter(item => parseFloat(item.Utilidades) > 0);
             const utilitiesLabels = utilitiesData.map(item => formatDate(item.Fecha));
             const utilitiesValues = utilitiesData.map(item => parseFloat(item.Utilidades) || 0);
 
-            charts.utilities = new Chart(utilitiesCtx, {
-                type: 'bar',
-                data: {
+            charts. utilities = new Chart(utilitiesCtx, {
+                type:  'bar',
+                data:  {
                     labels: utilitiesLabels,
                     datasets: [{
                         label: 'Utilidades',
                         data: utilitiesValues,
                         backgroundColor: '#10b981',
                         borderColor: '#059669',
-                        borderWidth: 1
+                        borderWidth:  1
                     }]
                 },
                 options: {
@@ -875,7 +883,7 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: function(value) {
+                                callback:  function(value) {
                                     return formatCurrency(value);
                                 }
                             }
@@ -886,17 +894,17 @@
         }
 
         function updateProjectOverview() {
-            const activeCapitalData = capitalData.filter(item => item.Estado === 'Activo' || item.estado === 'Activo');
+            const activeCapitalData = capitalData.filter(item => item.Estado === 'Activo' || item. estado === 'Activo');
             const activeRepartoData = repartoData.filter(item => item.estado === 'Activo' || item.Estado === 'Activo');
             
-            // Calcular capital del proyecto: suma de Aportes menos Retiros más Penalizaciones
+            // Calcular capital del proyecto:  suma de Aportes menos Retiros más Penalizaciones
             const projectTotalAportes = activeCapitalData.reduce((sum, item) => sum + (parseFloat(item.Aporte) || 0), 0);
             const projectTotalRetiros = activeCapitalData.filter(item => item.Tipo === 'Retiro').reduce((sum, item) => sum + (parseFloat(item.Monto) || 0), 0);
             const projectTotalPenalizaciones = activeCapitalData.reduce((sum, item) => sum + (parseFloat(item.Penalizacion) || 0), 0);
             const projectTotalCapital = projectTotalAportes - projectTotalRetiros + projectTotalPenalizaciones;
             
             const projectTotalIncome = activeRepartoData.reduce((sum, item) => sum + (parseFloat(item.ingresos || item.Ingresos) || 0), 0);
-            const projectTotalExpenses = activeRepartoData.reduce((sum, item) => sum + (parseFloat(item.gastos || item.Gastos) || 0), 0);
+            const projectTotalExpenses = activeRepartoData. reduce((sum, item) => sum + (parseFloat(item.gastos || item.Gastos) || 0), 0);
 
             document.getElementById('projectTotalCapital').textContent = formatCurrency(projectTotalCapital);
             document.getElementById('projectTotalIncome').textContent = formatCurrency(projectTotalIncome);
@@ -923,22 +931,22 @@
             }
 
             recentTransactions.forEach(transaction => {
-                const row = document.createElement('tr');
+                const row = document. createElement('tr');
                 row.className = 'hover:bg-gray-50';
                 
                 row.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatDate(transaction.Fecha)}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeColor(transaction.Tipo)}">
-                            ${transaction.Tipo || 'N/A'}
+                            ${transaction. Tipo || 'N/A'}
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${formatCurrency(transaction.Monto)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(transaction.Penalizacion)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(transaction. Penalizacion)}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(transaction.Colocación || transaction.Colocacion)}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">${formatCurrency(transaction.Utilidades)}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${formatCurrency(transaction.MontoNeto)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(transaction.Saldo)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(transaction. Saldo)}</td>
                     <td class="px-6 py-4 text-sm text-gray-500">${transaction.Observacion || '-'}</td>
                 `;
                 
@@ -987,7 +995,7 @@
 
         function closeBankAccountsModal() {
             document.getElementById('bankAccountsModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            document.body.style. overflow = 'auto';
         }
 
         function copyToClipboard(text) {
@@ -998,72 +1006,13 @@
                 notification.textContent = `Número de cuenta copiado: ${text}`;
                 document.body.appendChild(notification);
                 
-                // Remover notificación después de 3 segundos
-                setTimeout(() => {
-                    notification.remove();
+                setTimeout(function() {
+                    notification. remove();
                 }, 3000);
-            }).catch(function(err) {
+            }, function(err) {
                 console.error('Error al copiar: ', err);
-                // Fallback para navegadores que no soportan clipboard API
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                
-                const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-                notification.textContent = `Número de cuenta copiado: ${text}`;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
             });
         }
-
-        // Cerrar modal al hacer clic fuera de él
-        document.getElementById('bankAccountsModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBankAccountsModal();
-            }
-        });
-
-        // Cerrar modal con tecla Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBankAccountsModal();
-            }
-        });
-
-        function logout() {
-            localStorage.removeItem('gimUser');
-            currentUser = null;
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('loginForm').reset();
-            hideLoginError();
-        }
-
-        // JavaScript Integrado
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('portalContainer');
-            
-            // Elimina la clase 'hidden' para mostrar el contenedor con una transición
-            setTimeout(() => {
-                container.classList.remove('hidden');
-            }, 100); 
-
-            // Pequeña lógica para registrar el clic (opcional, pero útil)
-            const button = document.getElementById('btnRegresar');
-            button.addEventListener('click', (e) => {
-                console.log('Redirigiendo al sitio general...');
-                // La redirección se maneja por el 'href', pero esto permite añadir más lógica (ej. analytics)
-            });
-        });
-
-        
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9810ad6bc7c8b4fc',t:'MTc1ODE5Njc2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
