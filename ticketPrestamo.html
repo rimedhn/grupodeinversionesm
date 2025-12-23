@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TICKET PRESTAMO</title>
+    <link rel="icon" href="https://github.com/rimedhn/grupodeinversionesm/blob/main/Logo%20Demo%20Finan.png?raw=true" type="image/x-icon">
+    <style>
+      #thermal-pos {
+        box-shadow: 0 0 0mm #eee;
+        margin: 0mm;
+        max-width: 80mm;
+        line-height: 4mm;
+      }
+
+      #thermal-pos h2 {
+        font-size: 4mm;
+        line-height: 13px;
+      }
+
+      #thermal-pos .label {
+        text-align: center;
+        font-size: 5mm;
+        line-height: 1.3;
+      }
+      #thermal-pos .informasi {
+        vertical-align: text-top;
+        text-align: left;
+        max-width: 45mm;
+        word-wrap: break-word;
+      }
+
+      #thermal-pos .listitem {
+        font-size: 4mm;
+        height: 0mm;
+        text-align: center;
+      }
+      #thermal-pos table {
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      #thermal-pos .item {
+        max-width: 80mm;
+        font-size: 4.2mm;
+        word-wrap: break-word;
+        width: 100%;
+      }
+      #thermal-pos .amount {
+        vertical-align: center;
+        text-align: right;
+        font-size: 4.2mm;
+      }
+
+      #thermal-pos .price {
+        vertical-align: center;
+        text-align: center;
+        font-size: 4.2mm;
+      }
+
+      #thermal-pos .desc {
+        vertical-align: center;
+        text-align: center;
+        font-size: 4.2mm;
+      }
+
+      #thermal-pos .qty {
+        vertical-align: center;
+        text-align: center;
+        font-size: 4.2mm;
+      }
+
+      #thermal-pos .Isv {
+        vertical-align: center;
+        text-align: right;
+        font-size: 4.2mm;
+      }
+      #thermal-pos .bawah {
+        margin-top: 5mm;
+        text-align: center;
+        height: 90px;
+        page-break-after: auto;
+      }
+      #thermal-pos .detail1 {
+        margin-top: 5mm;
+        text-align: right;
+        page-break-after: auto;
+      }
+
+      #thermal-pos .detail {
+        margin-top: 5mm;
+        text-align: left;
+        page-break-after: auto;
+      }
+
+      #all {
+        font-family: Arial, sans-serif;
+      }
+
+      .mi-imagen {
+        width: 150px;
+        height: 150px;
+      }
+
+      #thermal-pos .listitem td {
+        width: 20%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #thermal-pos .descriptions {
+        width: 100%;
+        text-align: left;
+        font-weight: bold;
+        padding-top: 1px;
+        padding-bottom: 1px;
+      }
+
+      /* Alineación específica para cada columna */
+      #thermal-pos .listitem .qty {
+        width: 15%;
+        text-align: left;
+      }
+
+      #thermal-pos .listitem .Price,
+      #thermal-pos .listitem .Desc,
+      #thermal-pos .listitem .Isv {
+        width: 20%;
+        text-align: center;
+      }
+
+      #thermal-pos .listitem .Amount {
+        width: 25%;
+        text-align: right;
+      }
+
+      .separador {
+            border-top: 1px dashed #bbb;
+            margin: 0.5em 0;
+        }
+    </style>
+  </head>
+  <body id="all">
+    <div id="thermal-pos">
+      <div class="label">
+        <img src="https://github.com/rimedhn/grupodeinversionesm/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Mi imagen" class="mi-imagen" /><br />
+        <span id="empresa"></span><br />
+        <span>CONTRATO DE PRESTAMO PERSONAL</span>
+      </div>
+
+      <div class="separador"></div>
+      <div align="center">DATOS GENERALES</div>
+      <div class="separador"></div>
+      <span> CLIENTE:          <span id="cliente"></span></span><br />
+      <table>
+        <tr>
+          <td class="informasi" style="width: 50%;">IDENTIDAD:</td>
+          <td class="informasi" style="width: 50%;" id="identidad"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">PRESTAMO:</td>
+          <td class="informasi" style="width: 50%;" id="prestamo"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">FECHA INICIAL:</td>
+          <td class="informasi" style="width: 50%;" id="fechaInicial"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">FECHA FINAL:</td>
+          <td class="informasi" style="width: 50%;" id="fechaFinal"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">FOLIO:</td>
+          <td class="informasi" style="width: 50%;" id="folio"></td>
+        </tr>
+      </table>
+      <div class="separador"></div>
+      <div align="center">CONDICIONES DE PAGO</div>
+      <div class="separador"></div>
+      <table>
+        <tr>
+          <td class="informasi" style="width: 50%;">CAPITAL:</td>
+          <td class="informasi" style="width: 50%;" id="capital"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">PAGOS:</td>
+          <td class="informasi" style="width: 50%;" id="pagos"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">FRECUENCIA:</td>
+          <td class="informasi" style="width: 50%;" id="frecuencia"></td>
+        </tr>
+      </table>
+      <div class="separador"></div>
+      <div align="center">OBLIGACIÓN DEL DEUDOR</div>
+      <div class="separador"></div>
+      <table>
+        <tr>
+          <td class="informasi" style="width: 50%;">CUOTA:</td>
+          <td class="informasi" style="width: 50%;" id="cuota"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">INTERÉS:</td>
+          <td class="informasi" style="width: 50%;"  id="interes"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;">TOTAL:</td>
+          <td class="informasi" style="width: 50%;"  id="total"></td>
+        </tr>
+        <tr>
+          <td class="informasi" style="width: 50%;"></td>
+          <td class="informasi" style="width: 50%;" ><span></span></td>
+        </tr>
+      </table>
+      <div class="separador"></div>
+      <div id="montoLetras" style="text-align: center"></div>
+      <div class="separador"></div>
+      <div align="center">CONTRATO</div>
+      <div class="separador"></div>
+          <span id="contrato"></span><br />
+      <div class="separador"></div>
+      <div align="center">PAGARÉ</div>
+      <div class="separador"></div>
+          <span id="pagare"></span><br />
+      <div class="separador"></div>
+      <div align="center">FIRMA</div>
+      <div class="separador"></div>
+      <br /><br /><br /><br /><br /><br /><br />
+      <div class="separador"></div>
+      <div align="center">OBSERVACIONES</div>
+      <div class="separador"></div>
+          <span id="observaciones"></span><br />
+      <div class="separador"></div>
+      <div align="center">Gracias por su preferencia!!</div><br />
+      <div align="center">Original: Cliente, Copia: Emisor</div>
+      <div class="separador"></div>
+
+      <div style="text-align: center">
+        <img alt="Barcode Generator TEC-IT" id="barcode" />
+      </div>
+      <div class="separador"></div>
+      <div
+        style="
+          padding-top: 8px;
+          text-align: center;
+          font-size: 15px;
+          font-family: Source Sans Pro, Arial, sans-serif;
+        "
+      >
+        <span>www.rmposhn.com</span><br />
+        <span>indime.hn@gmail.com</span><br />
+        <span>(+504) 9359-3126</span>
+      </div>
+    </div>
+
+    <script>
+      // Function to get URL parameters
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        var results = regex.exec(location.search);
+        return results === null
+          ? ""
+          : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      // Function to set text content of an element
+      function setTextContent(id, value) {
+        document.getElementById(id).textContent = value;
+      }
+
+      // Populate the receipt with data from URL parameters
+      setTextContent("empresa", getUrlParameter("empresa"));
+      setTextContent("prestamo", getUrlParameter("prestamo"));
+      setTextContent("cliente", getUrlParameter("cliente"));
+      setTextContent("fechaInicial", getUrlParameter("fechaInicial"));
+      setTextContent("fechaFinal", getUrlParameter("fechaFinal"));
+      setTextContent("folio", getUrlParameter("folio"));
+      setTextContent("identidad", getUrlParameter("identidad"));
+      setTextContent("capital", getUrlParameter("capital"));
+      setTextContent("pagos", getUrlParameter("pagos"));
+      setTextContent("frecuencia", getUrlParameter("frecuencia"));
+      setTextContent("cuota", getUrlParameter("cuota"));
+      setTextContent("interes", getUrlParameter("interes"));
+      setTextContent("total", getUrlParameter("total"));
+      setTextContent("contrato", getUrlParameter("contrato"));
+      setTextContent("pagare", getUrlParameter("pagare"));
+      setTextContent("observaciones", getUrlParameter("observaciones"));
+      
+      document.getElementById("barcode").src =
+        "https://barcode.tec-it.com/barcode.ashx?data=" +
+        getUrlParameter("folio_1");
+
+      // Function to convert number to words (Spanish)
+      function numeroALetras(numero) {
+        const unidades = [
+          "",
+          "UN",
+          "DOS",
+          "TRES",
+          "CUATRO",
+          "CINCO",
+          "SEIS",
+          "SIETE",
+          "OCHO",
+          "NUEVE",
+          "DIEZ",
+          "ONCE",
+          "DOCE",
+          "TRECE",
+          "CATORCE",
+          "QUINCE",
+          "DIECISEIS",
+          "DIECISIETE",
+          "DIECIOCHO",
+          "DIECINUEVE",
+        ];
+        const decenas = [
+          "",
+          "",
+          "VEINTE",
+          "TREINTA",
+          "CUARENTA",
+          "CINCUENTA",
+          "SESENTA",
+          "SETENTA",
+          "OCHENTA",
+          "NOVENTA",
+        ];
+        const centenas = [
+          "",
+          "CIENTO",
+          "DOSCIENTOS",
+          "TRESCIENTOS",
+          "CUATROCIENTOS",
+          "QUINIENTOS",
+          "SEISCIENTOS",
+          "SETECIENTOS",
+          "OCHOCIENTOS",
+          "NOVECIENTOS",
+        ];
+
+        function convertirGrupo(n) {
+          let resultado = "";
+
+          if (n === 100) {
+            return "CIEN";
+          }
+
+          if (n >= 100) {
+            resultado += centenas[Math.floor(n / 100)] + " ";
+            n %= 100;
+          }
+
+          if (n >= 20) {
+            resultado += decenas[Math.floor(n / 10)];
+            if (n % 10 !== 0) {
+              resultado += " Y " + unidades[n % 10];
+            }
+          } else if (n > 0) {
+            resultado += unidades[n];
+          }
+
+          return resultado.trim();
+        }
+
+        function convertirMiles(n) {
+          if (n === 0) return "";
+          if (n === 1) return "MIL";
+          return convertirGrupo(n) + " MIL";
+        }
+
+        function convertirMillones(n) {
+          if (n === 0) return "";
+          if (n === 1) return "UN MILLON";
+          return convertirGrupo(n) + " MILLONES";
+        }
+
+        if (numero === 0) return "CERO LEMPIRAS";
+
+        let resultado = "";
+        let esNegativo = numero < 0;
+        numero = Math.abs(numero);
+
+        let millones = Math.floor(numero / 1000000);
+        let miles = Math.floor((numero % 1000000) / 1000);
+        let resto = numero % 1000;
+
+        if (millones > 0) {
+          resultado += convertirMillones(millones) + " ";
+        }
+
+        if (miles > 0) {
+          resultado += convertirMiles(miles) + " ";
+        }
+
+        if (resto > 0 || resultado === "") {
+          resultado += convertirGrupo(resto);
+        }
+
+        resultado = resultado.trim();
+        if (esNegativo) {
+          resultado = "MENOS " + resultado;
+        }
+
+        // Agregar 'LEMPIRAS' o 'LEMPIRA' según corresponda
+        resultado += numero === 1 ? " LEMPIRA" : " LEMPIRAS";
+
+        return resultado;
+      }
+
+      // Set monto en letras
+      var total = parseFloat(getUrlParameter("total"));
+      document.getElementById("montoLetras").textContent =
+        "SON " + numeroALetras(total);
+
+      // Trigger print when the page loads
+      window.onload = function () {
+        window.print();
+      };
+    </script>
+  </body>
+</html>
