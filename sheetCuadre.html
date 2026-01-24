@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuadre de Caja</title>
+    <link rel="icon" href="https://github.com/rimedhn/grupodeinversionesm/blob/main/Logo%20Demo%20Finan.png?raw=true" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10mm auto; /* Centrar en la página */
+            box-sizing: border-box; /* Asegura que padding no afecte el ancho total */
+            padding: 5mm;
+        }
+
+        #arqueo-flexible {
+            width: 100%; /* Ancho adaptable al contenedor body */
+            max-width: 800px; /* Ancho máximo para evitar que se extienda demasiado */
+        }
+
+        #arqueo-flexible h2 {
+            font-size: 1.2em; /* Tamaño relativo */
+            line-height: 1.2;
+            text-align: center;
+            margin-top: 0.3em;
+            margin-bottom: 0.3em;
+        }
+
+        #arqueo-flexible .label {
+            text-align: center;
+            font-size: 1.5em; /* Tamaño relativo */
+            line-height: 1.5;
+            margin-bottom: 0.5em;
+        }
+
+        #arqueo-flexible .informasi {
+            vertical-align: top;
+            text-align: left;
+            word-wrap: break-word;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible .listitem {
+            font-size: 0.9em; /* Tamaño relativo */
+            line-height: 1.2;
+        }
+
+        #arqueo-flexible table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        #arqueo-flexible th, #arqueo-flexible td {
+            padding: 0.3em;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible th {
+            font-weight: bold;
+        }
+
+        #arqueo-flexible .descriptions {
+            width: 100%;
+            text-align: left;
+            font-weight: bold;
+            padding-top: 0.2em;
+            padding-bottom: 0.2em;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible .qty {
+            width: 20%;
+            text-align: left;
+        }
+
+        #arqueo-flexible .Amount {
+            width: 80%;
+            text-align: right;
+        }
+
+        #arqueo-flexible .detail {
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible .detail1 {
+            text-align: right;
+            font-weight: bold;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible .bawah {
+            margin-top: 1em;
+            text-align: center;
+            font-size: 0.9em; /* Tamaño relativo */
+        }
+
+        #arqueo-flexible .mi-imagen {
+            max-width: 150px; /* Ancho máximo relativo al contenedor */
+            height: auto; /* Altura automática para mantener la proporción */
+            display: block;
+            margin: 0 auto 0.5em auto;
+        }
+
+        #arqueo-flexible .separador {
+            border-top: 1px dashed #bbb;
+            margin: 0.5em 0;
+        }
+
+        /* Ajuste para la tabla de productos */
+        #arqueo-flexible #productTable .listitem td:first-child {
+            width: 70%; /* Porcentaje del ancho disponible */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #arqueo-flexible #productTable .listitem td:last-child {
+            width: 30%; /* Porcentaje del ancho disponible */
+            text-align: right;
+        }
+    </style>
+</head>
+<body id="all">
+    <div id="arqueo-flexible">
+        <div class="label">
+            <img src="https://github.com/rimedhn/grupodeinversionesm/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Mi imagen" class="mi-imagen" />
+            <b><span id="empresa"></span></b><br />
+            <span id="sucursal"></span><br /><br />
+            <b><span>CUADRE DE CAJA</span></b><br />
+        </div>
+
+        <div class="separador"></div>
+        <div style="text-align: center;"><b>DATOS GENERALES</b></div>
+        <div class="separador"></div>
+
+        <table>
+            <tr>
+                <td class="informasi" style="width: 30%;">FECHA:</td>
+                <td class="informasi" style="width: 70%;" id="fecha"></td>
+            </tr>
+            <tr>
+                <td class="informasi" style="width: 30%;">CAJA:</td>
+                <td class="informasi" style="width: 70%;" id="caja"></td>
+            </tr>
+            <tr>
+                <td class="informasi" style="width: 30%;">CAJERO:</td>
+                <td class="informasi" style="width: 70%;" id="cajero"></td>
+            </tr>
+        </table>
+
+        <div class="separador"></div>
+        <div style="text-align: center;">DETALLE DEL CUADRE</div>
+        <div class="separador"></div>
+
+        <table>
+            <thead>
+                <tr class="listitem">
+                    <th>DETALLE</th>
+                    <th style="text-align: right;">INGRESOS</th>
+                    <th style="text-align: right;">EGRESOS</th>
+                    <th style="text-align: right;">SALDO CAJA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="listitem">
+                    <th>DEPOSITOS Y RETIROS CLIENTES</th>
+                    <th style="text-align: right;">L<span id="depositosCuentas"></span></th>
+                    <th style="text-align: right;">L<span id="retirosCuentas"></span></th>
+                    <th style="text-align: right;">L<span id="saldoDepositosRetiros"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th>INGRESOS Y EGRESOS DE CAJA</th>
+                    <th style="text-align: right;">L<span id="ingresosCaja"></span></th>
+                    <th style="text-align: right;">L<span id="egresosCaja"></span></th>
+                    <th style="text-align: right;">L<span id="saldoIngresosEgresosCaja"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th>TOTALES</th>
+                    <th style="text-align: right;">L<span id="totalIngresos"></span></th>
+                    <th style="text-align: right;">L<span id="totalEgresos"></span></th>
+                    <th style="text-align: right;">L<span id="ingresosVsEgresos"></span></th>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="separador"></div>
+        <table>
+                <tr>
+                    <td class="detail" style="text-align: right;">EFECTIVO INICIAL</td>
+                    <td class="detail1" style="text-align: right;">L<span id="efectivoInicial"></span></td>
+                </tr>
+                <tr class="listitem">
+                    <th style="text-align: right;" colspan:3>TOTAL INGRESOS</th>
+                    <th style="text-align: right;">L<span id="ingresosTotales"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th style="text-align: right;">TOTAL EGRESOS</th>
+                    <th style="text-align: right;">L<span id="egresosTotales"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th style="text-align: right;">SALDO CAJA</th>
+                    <th style="text-align: right;">L<span id="saldoCaja"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th style="text-align: right;">EFECTIVO EN CAJA</th>
+                    <th style="text-align: right;">L<span id="efectivoEnCaja"></span></th>
+                </tr>
+                <tr class="listitem">
+                    <th style="text-align: right;">DIFERENCIA</th>
+                    <th style="text-align: right;">L<span id="diferencia"></span></th>
+                </tr>
+        </table>
+
+        <div class="separador"></div>
+        <div style="text-align: center;">REFERENCIA: <span id="folio"></span></div>
+        <div class="separador"></div>
+        <div class="bawah">Gracias por su preferencia!!</div>
+        <div class="separador"></div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+            var results = regex.exec(location.search);
+            return results === null
+                ? ""
+                : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        // Function to set text content of an element
+        function setTextContent(id, value) {
+            document.getElementById(id).textContent = value;
+        }
+
+        // Populate the receipt with data from URL parameters
+        setTextContent("empresa", getUrlParameter("empresa"));
+        setTextContent("sucursal", getUrlParameter("sucursal"));
+        setTextContent("fecha", getUrlParameter("fecha"));
+        setTextContent("caja", getUrlParameter("caja"));
+        setTextContent("cajero", getUrlParameter("cajero"));
+        setTextContent("folio", getUrlParameter("folio"));
+        setTextContent("depositosCuentas", getUrlParameter("depositosCuentas"));
+        setTextContent("retirosCuentas", getUrlParameter("retirosCuentas"));
+        setTextContent("saldoDepositosRetiros", getUrlParameter("saldoDepositosRetiros"));
+        setTextContent("efectivoInicial", getUrlParameter("efectivoInicial"));
+        setTextContent("ingresosCaja", getUrlParameter("ingresosCaja"));
+        setTextContent("egresosCaja", getUrlParameter("egresosCaja"));
+        setTextContent("saldoIngresosEgresosCaja", getUrlParameter("saldoIngresosEgresosCaja"));
+        setTextContent("totalIngresos", getUrlParameter("totalIngresos"));
+        setTextContent("totalEgresos", getUrlParameter("totalEgresos"));
+        setTextContent("ingresosVsEgresos", getUrlParameter("ingresosVsEgresos"));
+        setTextContent("ingresosTotales", getUrlParameter("ingresosTotales"));
+        setTextContent("egresosTotales", getUrlParameter("egresosTotales"));
+        setTextContent("saldoCaja", getUrlParameter("saldoCaja"));
+        setTextContent("efectivoEnCaja", getUrlParameter("efectivoEnCaja"));
+        setTextContent("diferencia", getUrlParameter("diferencia"));
+
+        // Populate product table
+        //var descriptions = getUrlParameter("descriptions").split(",");
+        //var quantitys = getUrlParameter("quantitys").split(",");
+        //var amounts = getUrlParameter("amounts").split(",");
+
+        //var productTable = document.getElementById("productTable");
+        //for (var i = 0; i < descriptions.length; i++) {
+            // Create a new row for the details
+            //var detailsRow = productTable.insertRow();
+            //detailsRow.className = "listitem";
+            //detailsRow.innerHTML = `
+                //<td>${descriptions[i]}</td>
+                //<td style="text-align: right;">${amounts[i]}</td>
+            //`;
+        //}
+
+        // Trigger print when the page loads
+        window.onload = function () {
+            window.print();
+        };
+    </script>
+</body>
+</html>
