@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imprimir Transacción Libreta</title>
+    <style>
+        body {
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding-top: 5.5cm;
+        }
+
+        .print-area {
+            height: 23cm;
+            margin-left: 0.5cm;
+            position: relative;
+        }
+
+        .print-line {
+            position: absolute;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body onload="imprimirEnLibreta()">
+    <div class="print-area" id="printArea">
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function imprimirEnLibreta() {
+            const no = getQueryParam("No") || "";
+            const fecha = getQueryParam("Fecha") || "";
+            const deposito = getQueryParam("Deposito") || "";
+            const retiro = getQueryParam("Retiro") || "";
+            const interes = getQueryParam("Interes") || "";
+            const saldo = getQueryParam("Saldo") || "";
+            const lineaImpresion = parseInt(getQueryParam("linea")) || 1;
+
+            const printArea = document.getElementById("printArea");
+            const lineHeightCm = 23 / 43;
+            const lineHeightPx = lineHeightCm * 37.795;
+
+            for (let i = 1; i <= 50; i++) {
+                const lineDiv = document.createElement("div");
+                lineDiv.classList.add("print-line");
+                lineDiv.style.top = `${(i - 1) * lineHeightPx}px`;
+
+                if (i === lineaImpresion) {
+                    const formattedLine = formatTransaction(no, fecha, deposito, retiro, interes, saldo);
+                    // Usamos innerHTML para procesar el HTML y mostrar los espacios correctamente
+                    lineDiv.innerHTML = formattedLine.replace(/ /g, '&nbsp;');
+                } else {
+                    // También usamos innerHTML para las líneas vacías
+                    lineDiv.innerHTML = "&nbsp;".repeat(100);
+                }
+                printArea.appendChild(lineDiv);
+            }
+            window.print();
+        }
+
+        function formatTransaction(no, fecha, deposito, retiro, interes, saldo) {
+            // Se usa el espacio normal para que los métodos padEnd y padStart funcionen bien
+            const formattedNo = no.padEnd(6, ' ');
+            const formattedFecha = fecha.padEnd(12, ' ');
+            const formattedDeposito = deposito ? `L${parseFloat(deposito).toFixed(2)}`.padStart(14, ' ') : "".padStart(14, ' ');
+            const formattedRetiro = retiro ? `L${parseFloat(retiro).toFixed(2)}`.padStart(14, ' ') : "".padStart(14, ' ');
+            const formattedInteres = interes ? `L${parseFloat(interes).toFixed(2)}`.padStart(14, ' ') : "".padStart(14, ' ');
+            const formattedSaldo = saldo ? `L${parseFloat(saldo).toFixed(2)}`.padStart(17, ' ') : "".padStart(17, ' ');
+
+            return `${formattedNo}${formattedFecha}${formattedDeposito}${formattedRetiro}${formattedInteres}${formattedSaldo}`;
+        }
+    </script>
+</body>
+</html>
