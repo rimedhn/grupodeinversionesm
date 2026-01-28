@@ -1,8 +1,1630 @@
-<nav class="navbar">
-    <div class="business-name">Your Business Name</div>
-    <div class="nav-buttons">
-        <a href="https://rimedhn.github.io/grupodeinversionesm/" style="background: linear-gradient(90deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-right: 5px;">Sitio Principal</a>
-        <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" style="background: linear-gradient(90deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-right: 5px;">Portal de Socios</a>
-        <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" style="background: linear-gradient(90deg, #667eea, #764ba2); color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Portal de Clientes</a>
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Préstamos</title>
+  <link rel="icon" href="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+            color: #333;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .business-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #4caf50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-item {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .payment-schedule {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .footer {
+            background: white;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .credits {
+            font-size: 0.9rem;
+            color: #666;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 2px 2px 20px rgba(37, 211, 102, 0.5);
+        }
+
+        .print-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 100px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .print-float:hover {
+            transform: scale(1.1);
+            box-shadow: 2px 2px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .print-float.active {
+            display: flex;
+        }
+
+        .print-section {
+            display: none;
+        }
+
+        .summary-table {
+            display: none;
+        }
+
+        .info-table {
+            display: none;
+        }
+
+        .client-info-table {
+            display: none;
+        }
+
+        .manager-info-table {
+            display: none;
+        }
+
+        .print-hide {
+            display: none !important;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            .navbar, .footer, .whatsapp-float, .print-float, .button-group, .steps-indicator {
+                display: none !important;
+            }
+
+            .step-content {
+                display: none !important;
+            }
+
+            .card:not(.result-section .card) {
+                display: none !important;
+            }
+
+            .result-section {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 1cm;
+            }
+
+            .card {
+                box-shadow: none;
+                page-break-inside: avoid;
+                padding: 0;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .print-section {
+                display: block !important;
+            }
+
+            .print-hide {
+                display: none !important;
+            }
+
+            .print-header {
+                margin-bottom: 1.5rem;
+                padding-bottom: 1rem;
+                border-bottom: 2px solid #667eea;
+            }
+
+            .print-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+                color: #667eea;
+            }
+
+            .print-date {
+                font-size: 0.9rem;
+                color: #666;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem !important;
+                margin-top: 1.5rem !important;
+                color: #667eea;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem !important;
+                margin-top: 1.2rem !important;
+                color: #667eea;
+            }
+
+            .info-section {
+                display: none !important;
+            }
+
+            .info-table {
+                display: table !important;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .info-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+                border: none;
+            }
+
+            .info-table .label-cell {
+                font-weight: 600;
+                background: #f5f5f5;
+                width: 40%;
+            }
+
+            .client-info-table {
+                display: table !important;
+            }
+
+            .manager-info-table {
+                display: table !important;
+            }
+
+            .summary-grid {
+                display: none !important;
+            }
+
+            .summary-table {
+                display: table !important;
+                width: 100%;
+                margin-bottom: 1rem;
+                border-collapse: collapse;
+            }
+
+            .summary-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+                border: none;
+            }
+
+            .summary-table .label-cell {
+                font-weight: 600;
+                background: #f5f5f5;
+                width: 25%;
+            }
+
+            .payment-schedule {
+                overflow-x: visible;
+            }
+
+            table {
+                page-break-inside: auto;
+                font-size: 0.85rem;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+            }
+
+            th {
+                font-size: 0.85rem;
+                background: #f5f5f5;
+                font-weight: 600;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            tbody tr:nth-child(even) {
+                background: #fafafa;
+            }
+        }
+
+        .print-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .print-header h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .print-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box {
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .signature-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .signature-box {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #333;
+            margin-bottom: 0.5rem;
+            height: 60px;
+        }
+
+        .signature-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .signature-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .config-section {
+            margin-bottom: 2rem;
+        }
+
+        .config-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: #f5f5f5;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        @media print {
+            .signature-section {
+                page-break-inside: avoid;
+                margin-top: 2rem;
+            }
+
+            .modal-overlay {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                flex: 1;
+                text-align: center;
+                min-width: 100px;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <nav class="navbar">
+   <div class="logo-section">
+    <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" class="logo" onerror="this.style.display='none'">
+    <div class="business-name" id="navBusinessName">
+     GRUPO DE INVERSIONES MÚLTIPLES
     </div>
-</nav>
+   </div>
+   <div class="nav-buttons">
+    <a href="https://rimedhn.github.io/grupodeinversionesm/" class="nav-btn">🏠 Sitio Principal</a>
+    <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" class="nav-btn">👥 Portal de Socios</a>
+    <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" class="nav-btn">💼 Portal de Clientes</a>
+   </div>
+  </nav>
+  <div class="container">
+   <div class="card">
+    <div class="steps-indicator">
+     <div class="step active" data-step="1">
+      <div class="step-number">
+       1
+      </div>
+      <div class="step-label">
+       Datos del Cliente
+      </div>
+     </div>
+     <div class="step" data-step="2">
+      <div class="step-number">
+       2
+      </div>
+      <div class="step-label">
+       Datos del Préstamo
+      </div>
+     </div>
+     <div class="step" data-step="3">
+      <div class="step-number">
+       3
+      </div>
+      <div class="step-label">
+       Datos del Gestor
+      </div>
+     </div>
+    </div>
+    <div style="margin-bottom: 1.5rem;"><button class="btn btn-secondary" onclick="openPrintSettings()" style="width: 100%;"> ⚙️ Configurar Reporte PDF </button>
+    </div>
+    <div class="step-content active" id="step1">
+     <h2 style="margin-bottom: 1.5rem; color: #667eea;">Paso 1: Datos del Cliente</h2>
+     <div class="form-group"><label for="clientName">Nombre Completo</label> <input type="text" id="clientName" placeholder="Ingrese nombre completo">
+     </div>
+     <div class="form-group"><label for="clientPhone">Teléfono</label> <input type="tel" id="clientPhone" placeholder="+504 0000-0000">
+     </div>
+     <div class="form-group"><label for="clientAddress">Dirección</label> <input type="text" id="clientAddress" placeholder="Ingrese dirección completa">
+     </div>
+     <div class="button-group"><button class="btn btn-primary" onclick="nextStep(2)">Siguiente</button>
+     </div>
+    </div>
+    <div class="step-content" id="step2">
+     <h2 style="margin-bottom: 1.5rem; color: #667eea;">Paso 2: Datos del Préstamo</h2>
+     <div class="form-group"><label for="loanType">Tipo de Préstamo *</label> <select id="loanType" onchange="handleLoanTypeChange()"> <option value="amortizado">Amortizado (Cuotas Niveladas)</option> <option value="personalizado">Personalizado (Interés sobre Saldo)</option> </select>
+     </div>
+     <div class="form-group"><label for="interestType">Tipo de Interés *</label> <select id="interestType"> <option value="simple">Simple</option> <option value="redescontado">Redescontado</option> </select>
+     </div>
+     <div class="form-group"><label for="rateType">Tipo de Tasa *</label> <select id="rateType"> <option value="diaria">Diaria</option> <option value="semanal">Semanal</option> <option value="quincenal">Quincenal</option> <option value="mensual">Mensual</option> </select>
+     </div>
+     <div class="form-group"><label for="loanAmount">Monto del Préstamo *</label> <input type="number" id="loanAmount" required placeholder="0.00" step="0.01" min="0">
+     </div>
+     <div class="form-group"><label for="interestRate">Tasa de Interés (%) *</label> <input type="number" id="interestRate" required placeholder="0.00" step="0.01" min="0">
+     </div>
+     <div class="form-group"><label for="downPayment">Prima / Enganche</label> <input type="number" id="downPayment" placeholder="0.00" step="0.01" min="0" value="0">
+     </div>
+     <div class="form-group"><label for="numberOfPayments">Cantidad de Pagos *</label> <input type="number" id="numberOfPayments" required placeholder="12" min="1" step="1">
+     </div>
+     <div class="button-group"><button class="btn btn-secondary" onclick="previousStep(1)">Anterior</button> <button class="btn btn-primary" onclick="nextStep(3)">Siguiente</button>
+     </div>
+    </div>
+    <div class="step-content" id="step3">
+     <h2 style="margin-bottom: 1.5rem; color: #667eea;">Paso 3: Datos del Gestor</h2>
+     <div class="form-group"><label for="managerName">Nombre del Gestor</label> <input type="text" id="managerName" placeholder="Ingrese nombre del gestor">
+     </div>
+     <div class="form-group"><label for="managerPhone">Teléfono del Gestor</label> <input type="tel" id="managerPhone" placeholder="+504 0000-0000">
+     </div>
+     <div class="button-group"><button class="btn btn-secondary" onclick="previousStep(2)">Anterior</button> <button class="btn btn-success" onclick="calculateLoan()">Calcular Préstamo</button>
+     </div>
+    </div>
+   </div>
+   <div class="result-section" id="resultSection">
+    <div class="card">
+     <div class="print-section print-header" id="printHeaderSection">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.5rem;"><img id="printLogo" src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo" style="width: 60px; height: 60px; object-fit: contain;" onerror="this.style.display='none'">
+       <h1 id="printBusinessName" style="margin: 0;">Nombre del Negocio</h1>
+      </div>
+      <div style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">
+       <div id="printBusinessAddress"></div>
+       <div id="printBusinessContact"></div>
+      </div>
+      <div class="print-date" id="printDate"></div>
+     </div>
+     <h2 style="margin-bottom: 1.5rem; color: #667eea;">Resumen del Préstamo</h2>
+     <div class="info-section" id="infoSection">
+      <div class="info-box" id="clientInfoBox">
+       <h3>Información del Cliente</h3>
+       <div class="info-row" id="clientNameRow"><span class="info-label">Nombre:</span> <span class="info-value" id="resultClientName"></span>
+       </div>
+       <div class="info-row" id="clientPhoneRow"><span class="info-label">Teléfono:</span> <span class="info-value" id="resultClientPhone"></span>
+       </div>
+       <div class="info-row" id="clientAddressRow"><span class="info-label">Dirección:</span> <span class="info-value" id="resultClientAddress"></span>
+       </div>
+      </div>
+      <div class="info-box" id="managerInfoBox">
+       <h3>Información del Gestor</h3>
+       <div class="info-row" id="managerNameRow"><span class="info-label">Nombre:</span> <span class="info-value" id="resultManagerName"></span>
+       </div>
+       <div class="info-row" id="managerPhoneRow"><span class="info-label">Teléfono:</span> <span class="info-value" id="resultManagerPhone"></span>
+       </div>
+      </div>
+     </div>
+     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+      <table class="info-table client-info-table" id="clientInfoTablePrint">
+       <tbody>
+        <tr id="clientNameRowTable">
+         <td class="label-cell">Cliente</td>
+         <td id="resultClientNameTable"></td>
+        </tr>
+        <tr id="clientPhoneRowTable">
+         <td class="label-cell">Teléfono</td>
+         <td id="resultClientPhoneTable"></td>
+        </tr>
+        <tr id="clientAddressRowTable">
+         <td class="label-cell">Dirección</td>
+         <td id="resultClientAddressTable"></td>
+        </tr>
+       </tbody>
+      </table>
+      <table class="info-table manager-info-table" id="managerInfoTablePrint">
+       <tbody>
+        <tr id="managerNameRowTable">
+         <td class="label-cell">Gestor</td>
+         <td id="resultManagerNameTable"></td>
+        </tr>
+        <tr id="managerPhoneRowTable">
+         <td class="label-cell">Teléfono</td>
+         <td id="resultManagerPhoneTable"></td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="summary-grid">
+      <div class="summary-item" id="summaryLoanType">
+       <div class="summary-label">
+        Tipo de Préstamo
+       </div>
+       <div class="summary-value" id="resultLoanType"></div>
+      </div>
+      <div class="summary-item" id="summaryLoanAmount">
+       <div class="summary-label">
+        Monto Solicitado
+       </div>
+       <div class="summary-value" id="resultLoanAmount"></div>
+      </div>
+      <div class="summary-item" id="summaryDownPayment">
+       <div class="summary-label">
+        Prima
+       </div>
+       <div class="summary-value" id="resultDownPayment"></div>
+      </div>
+      <div class="summary-item" id="summaryFinancedAmount">
+       <div class="summary-label">
+        Monto a Financiar
+       </div>
+       <div class="summary-value" id="resultFinancedAmount"></div>
+      </div>
+      <div class="summary-item" id="summaryInterestRate">
+       <div class="summary-label">
+        Tasa de Interés
+       </div>
+       <div class="summary-value" id="resultInterestRate"></div>
+      </div>
+      <div class="summary-item" id="summaryTotalInterest">
+       <div class="summary-label">
+        Total de Intereses
+       </div>
+       <div class="summary-value" id="resultTotalInterest"></div>
+      </div>
+      <div class="summary-item" id="summaryTotalAmount">
+       <div class="summary-label">
+        Total a Pagar
+       </div>
+       <div class="summary-value" id="resultTotalAmount"></div>
+      </div>
+      <div class="summary-item" id="monthlyPaymentItem">
+       <div class="summary-label">
+        Cuota
+       </div>
+       <div class="summary-value" id="resultMonthlyPayment"></div>
+      </div>
+     </div>
+     <table class="summary-table">
+      <tbody>
+       <tr>
+        <td class="label-cell">Tipo de Préstamo</td>
+        <td id="resultLoanTypeTable"></td>
+        <td class="label-cell">Monto Solicitado</td>
+        <td id="resultLoanAmountTable"></td>
+       </tr>
+       <tr>
+        <td class="label-cell">Prima</td>
+        <td id="resultDownPaymentTable"></td>
+        <td class="label-cell">Monto a Financiar</td>
+        <td id="resultFinancedAmountTable"></td>
+       </tr>
+       <tr>
+        <td class="label-cell">Tasa de Interés</td>
+        <td id="resultInterestRateTable"></td>
+        <td class="label-cell">Total de Intereses</td>
+        <td id="resultTotalInterestTable"></td>
+       </tr>
+       <tr>
+        <td class="label-cell">Total a Pagar</td>
+        <td id="resultTotalAmountTable"></td>
+        <td class="label-cell">Cuota</td>
+        <td id="resultMonthlyPaymentTable"></td>
+       </tr>
+      </tbody>
+     </table>
+     <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #667eea;">Tabla de Amortización</h3>
+     <div class="payment-schedule">
+      <table id="paymentTable">
+       <thead>
+        <tr>
+         <th>Pago #</th>
+         <th>Fecha</th>
+         <th>Saldo Inicial</th>
+         <th>Cuota</th>
+         <th>Interés</th>
+         <th>Abono Capital</th>
+         <th>Saldo Final</th>
+        </tr>
+       </thead>
+       <tbody id="paymentTableBody"></tbody>
+      </table>
+     </div>
+     <div class="signature-section" id="signatureSection">
+      <div class="signature-box">
+       <div class="signature-line"></div>
+       <div class="signature-name" id="signatureName">Nombre del Cliente</div>
+       <div class="signature-label">Firma del Cliente</div>
+      </div>
+     </div>
+     <div class="button-group print-hide"><button class="btn btn-secondary" onclick="resetCalculator()">Nueva Cotización</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="modal-overlay" id="printSettingsModal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2>⚙️ Configurar Reporte PDF</h2><button class="close-btn" onclick="closePrintSettings()">×</button>
+    </div>
+    <div class="config-section">
+     <h3>📄 Encabezado del Reporte</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="showPrintHeader" checked> <label for="showPrintHeader">Mostrar Encabezado Completo</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showPrintLogo" checked> <label for="showPrintLogo">Mostrar Logo</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showPrintDate" checked> <label for="showPrintDate">Mostrar Fecha de Emisión</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>👤 Información del Cliente</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="showClientInfo" checked> <label for="showClientInfo">Mostrar Sección Completa</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showClientName" checked> <label for="showClientName">Nombre del Cliente</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showClientPhone" checked> <label for="showClientPhone">Teléfono del Cliente</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showClientAddress" checked> <label for="showClientAddress">Dirección del Cliente</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>👨‍💼 Información del Gestor</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="showManagerInfo" checked> <label for="showManagerInfo">Mostrar Sección Completa</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showManagerName" checked> <label for="showManagerName">Nombre del Gestor</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showManagerPhone" checked> <label for="showManagerPhone">Teléfono del Gestor</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>💰 Resumen del Préstamo</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="showLoanType" checked> <label for="showLoanType">Tipo de Préstamo</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showLoanAmount" checked> <label for="showLoanAmount">Monto Solicitado</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showDownPayment" checked> <label for="showDownPayment">Prima / Enganche</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showFinancedAmount" checked> <label for="showFinancedAmount">Monto a Financiar</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showInterestRate" checked> <label for="showInterestRate">Tasa de Interés</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showTotalInterest" checked> <label for="showTotalInterest">Total de Intereses</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showTotalAmount" checked> <label for="showTotalAmount">Total a Pagar</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showMonthlyPayment" checked> <label for="showMonthlyPayment">Cuota</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>📋 Otros Elementos</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="showPaymentTable" checked> <label for="showPaymentTable">Tabla de Amortización</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="showSignature" checked> <label for="showSignature">Sección de Firma</label>
+      </div>
+     </div>
+    </div>
+    <div class="button-group"><button class="btn btn-secondary" onclick="closePrintSettings()">Cancelar</button> <button class="btn btn-primary" onclick="applyPrintSettings()">Aplicar y Cerrar</button>
+    </div>
+   </div>
+  </div><button class="print-float" id="printButton" onclick="window.print()"> 🖨️ </button> <a href="https://wa.me/50494482992?text=Hola,%20tengo%20una%20consulta%20sobre%20préstamos" class="whatsapp-float" target="_blank"> 📱 </a> <script>
+        let currentStep = 1;
+        let loanData = {};
+
+        function nextStep(step) {
+            if (validateCurrentStep()) {
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+
+                currentStep = step;
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                document.getElementById(`step${currentStep}`).classList.add('active');
+            }
+        }
+
+        function previousStep(step) {
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            if (currentStep !== 1) {
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('completed');
+            }
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+
+            currentStep = step;
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('completed');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+
+        function validateCurrentStep() {
+            if (currentStep === 2) {
+                const loanAmount = document.getElementById('loanAmount').value;
+                const interestRate = document.getElementById('interestRate').value;
+                const numberOfPayments = document.getElementById('numberOfPayments').value;
+
+                if (!loanAmount || !interestRate || !numberOfPayments) {
+                    alert('Por favor complete todos los campos requeridos (*)');
+                    return false;
+                }
+
+                if (parseFloat(loanAmount) <= 0) {
+                    alert('El monto del préstamo debe ser mayor a 0');
+                    return false;
+                }
+
+                if (parseFloat(interestRate) <= 0) {
+                    alert('La tasa de interés debe ser mayor a 0');
+                    return false;
+                }
+
+                if (parseInt(numberOfPayments) <= 0) {
+                    alert('La cantidad de pagos debe ser mayor a 0');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function handleLoanTypeChange() {
+            const loanType = document.getElementById('loanType').value;
+            const monthlyPaymentItem = document.getElementById('monthlyPaymentItem');
+
+            if (loanType === 'personalizado') {
+                monthlyPaymentItem.style.display = 'none';
+            } else {
+                monthlyPaymentItem.style.display = 'block';
+            }
+        }
+
+        function calculateLoan() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            const clientName = document.getElementById('clientName').value || 'No especificado';
+            const clientPhone = document.getElementById('clientPhone').value || 'No especificado';
+            const clientAddress = document.getElementById('clientAddress').value || 'No especificado';
+            const managerName = document.getElementById('managerName').value || 'No especificado';
+            const managerPhone = document.getElementById('managerPhone').value || 'No especificado';
+
+            const loanType = document.getElementById('loanType').value;
+            const interestType = document.getElementById('interestType').value;
+            const rateType = document.getElementById('rateType').value;
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const numberOfPayments = parseInt(document.getElementById('numberOfPayments').value);
+
+            const financedAmount = loanAmount - downPayment;
+
+            let ratePerPeriod = interestRate / 100;
+            let totalInterest, totalAmount, monthlyPayment;
+            let paymentSchedule = [];
+
+            const today = new Date();
+
+            if (interestType === 'simple') {
+                totalInterest = financedAmount * ratePerPeriod * numberOfPayments;
+                totalAmount = financedAmount + totalInterest;
+
+                if (loanType === 'amortizado') {
+                    monthlyPayment = totalAmount / numberOfPayments;
+
+                    let balance = financedAmount;
+                    for (let i = 1; i <= numberOfPayments; i++) {
+                        const interest = balance * ratePerPeriod;
+                        const principal = monthlyPayment - interest;
+                        const newBalance = balance - principal;
+
+                        const paymentDate = new Date(today);
+                        if (rateType === 'diaria') {
+                            paymentDate.setDate(paymentDate.getDate() + i);
+                        } else if (rateType === 'semanal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
+                        } else if (rateType === 'quincenal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
+                        } else if (rateType === 'mensual') {
+                            paymentDate.setMonth(paymentDate.getMonth() + i);
+                        }
+
+                        paymentSchedule.push({
+                            number: i,
+                            date: paymentDate,
+                            initialBalance: balance,
+                            payment: monthlyPayment,
+                            interest: interest,
+                            principal: principal,
+                            finalBalance: Math.max(0, newBalance)
+                        });
+
+                        balance = newBalance;
+                    }
+                } else {
+                    let balance = financedAmount;
+                    for (let i = 1; i <= numberOfPayments; i++) {
+                        const interest = balance * ratePerPeriod;
+                        const payment = interest + (financedAmount / numberOfPayments);
+                        const principal = financedAmount / numberOfPayments;
+                        const newBalance = balance - principal;
+
+                        const paymentDate = new Date(today);
+                        if (rateType === 'diaria') {
+                            paymentDate.setDate(paymentDate.getDate() + i);
+                        } else if (rateType === 'semanal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
+                        } else if (rateType === 'quincenal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
+                        } else if (rateType === 'mensual') {
+                            paymentDate.setMonth(paymentDate.getMonth() + i);
+                        }
+
+                        paymentSchedule.push({
+                            number: i,
+                            date: paymentDate,
+                            initialBalance: balance,
+                            payment: payment,
+                            interest: interest,
+                            principal: principal,
+                            finalBalance: Math.max(0, newBalance)
+                        });
+
+                        balance = newBalance;
+                    }
+
+                    monthlyPayment = 'Variable';
+                }
+            } else {
+                const totalInterestRediscounted = financedAmount * ratePerPeriod * numberOfPayments;
+                totalAmount = financedAmount + totalInterestRediscounted;
+                const amountReceived = financedAmount - totalInterestRediscounted;
+
+                if (loanType === 'amortizado') {
+                    monthlyPayment = totalAmount / numberOfPayments;
+
+                    let balance = financedAmount;
+                    for (let i = 1; i <= numberOfPayments; i++) {
+                        const interest = (totalInterestRediscounted / numberOfPayments);
+                        const principal = monthlyPayment - interest;
+                        const newBalance = balance - principal;
+
+                        const paymentDate = new Date(today);
+                        if (rateType === 'diaria') {
+                            paymentDate.setDate(paymentDate.getDate() + i);
+                        } else if (rateType === 'semanal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
+                        } else if (rateType === 'quincenal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
+                        } else if (rateType === 'mensual') {
+                            paymentDate.setMonth(paymentDate.getMonth() + i);
+                        }
+
+                        paymentSchedule.push({
+                            number: i,
+                            date: paymentDate,
+                            initialBalance: balance,
+                            payment: monthlyPayment,
+                            interest: interest,
+                            principal: principal,
+                            finalBalance: Math.max(0, newBalance)
+                        });
+
+                        balance = newBalance;
+                    }
+                } else {
+                    let balance = financedAmount;
+                    for (let i = 1; i <= numberOfPayments; i++) {
+                        const interest = (totalInterestRediscounted / numberOfPayments);
+                        const principal = financedAmount / numberOfPayments;
+                        const payment = interest + principal;
+                        const newBalance = balance - principal;
+
+                        const paymentDate = new Date(today);
+                        if (rateType === 'diaria') {
+                            paymentDate.setDate(paymentDate.getDate() + i);
+                        } else if (rateType === 'semanal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
+                        } else if (rateType === 'quincenal') {
+                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
+                        } else if (rateType === 'mensual') {
+                            paymentDate.setMonth(paymentDate.getMonth() + i);
+                        }
+
+                        paymentSchedule.push({
+                            number: i,
+                            date: paymentDate,
+                            initialBalance: balance,
+                            payment: payment,
+                            interest: interest,
+                            principal: principal,
+                            finalBalance: Math.max(0, newBalance)
+                        });
+
+                        balance = newBalance;
+                    }
+
+                    monthlyPayment = 'Variable';
+                }
+
+                totalInterest = totalInterestRediscounted;
+            }
+
+            loanData = {
+                clientName,
+                clientPhone,
+                clientAddress,
+                managerName,
+                managerPhone,
+                loanType,
+                interestType,
+                rateType,
+                loanAmount,
+                interestRate,
+                downPayment,
+                financedAmount,
+                numberOfPayments,
+                totalInterest,
+                totalAmount,
+                monthlyPayment,
+                paymentSchedule
+            };
+
+            displayResults();
+        }
+
+        function displayResults() {
+            document.getElementById('resultClientName').textContent = loanData.clientName;
+            document.getElementById('resultClientPhone').textContent = loanData.clientPhone;
+            document.getElementById('resultClientAddress').textContent = loanData.clientAddress;
+            document.getElementById('resultManagerName').textContent = loanData.managerName;
+            document.getElementById('resultManagerPhone').textContent = loanData.managerPhone;
+
+            document.getElementById('resultClientNameTable').textContent = loanData.clientName;
+            document.getElementById('resultClientPhoneTable').textContent = loanData.clientPhone;
+            document.getElementById('resultClientAddressTable').textContent = loanData.clientAddress;
+            document.getElementById('resultManagerNameTable').textContent = loanData.managerName;
+            document.getElementById('resultManagerPhoneTable').textContent = loanData.managerPhone;
+
+            const loanTypeText = loanData.loanType === 'amortizado' ? 'Amortizado' : 'Personalizado';
+            const interestTypeText = loanData.interestType === 'simple' ? 'Simple' : 'Redescontado';
+            const rateTypeMap = {
+                'diaria': 'Diaria',
+                'semanal': 'Semanal',
+                'quincenal': 'Quincenal',
+                'mensual': 'Mensual'
+            };
+            const rateTypeText = rateTypeMap[loanData.rateType];
+
+            document.getElementById('resultLoanType').textContent = `${loanTypeText} - ${interestTypeText}`;
+            document.getElementById('resultLoanAmount').textContent = formatCurrency(loanData.loanAmount);
+            document.getElementById('resultDownPayment').textContent = formatCurrency(loanData.downPayment);
+            document.getElementById('resultFinancedAmount').textContent = formatCurrency(loanData.financedAmount);
+            document.getElementById('resultInterestRate').textContent = `${loanData.interestRate}% ${rateTypeText}`;
+            document.getElementById('resultTotalInterest').textContent = formatCurrency(loanData.totalInterest);
+            document.getElementById('resultTotalAmount').textContent = formatCurrency(loanData.totalAmount);
+
+            document.getElementById('resultLoanTypeTable').textContent = `${loanTypeText} - ${interestTypeText}`;
+            document.getElementById('resultLoanAmountTable').textContent = formatCurrency(loanData.loanAmount);
+            document.getElementById('resultDownPaymentTable').textContent = formatCurrency(loanData.downPayment);
+            document.getElementById('resultFinancedAmountTable').textContent = formatCurrency(loanData.financedAmount);
+            document.getElementById('resultInterestRateTable').textContent = `${loanData.interestRate}% ${rateTypeText}`;
+            document.getElementById('resultTotalInterestTable').textContent = formatCurrency(loanData.totalInterest);
+            document.getElementById('resultTotalAmountTable').textContent = formatCurrency(loanData.totalAmount);
+
+            if (typeof loanData.monthlyPayment === 'number') {
+                document.getElementById('resultMonthlyPayment').textContent = formatCurrency(loanData.monthlyPayment);
+                document.getElementById('resultMonthlyPaymentTable').textContent = formatCurrency(loanData.monthlyPayment);
+            } else {
+                document.getElementById('resultMonthlyPayment').textContent = loanData.monthlyPayment;
+                document.getElementById('resultMonthlyPaymentTable').textContent = loanData.monthlyPayment;
+            }
+
+            const tableBody = document.getElementById('paymentTableBody');
+            tableBody.innerHTML = '';
+
+            loanData.paymentSchedule.forEach(payment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${payment.number}</td>
+                    <td>${formatDate(payment.date)}</td>
+                    <td>${formatCurrency(payment.initialBalance)}</td>
+                    <td>${formatCurrency(payment.payment)}</td>
+                    <td>${formatCurrency(payment.interest)}</td>
+                    <td>${formatCurrency(payment.principal)}</td>
+                    <td>${formatCurrency(payment.finalBalance)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            const printDate = new Date().toLocaleDateString('es-HN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('printDate').textContent = `Fecha de emisión: ${printDate}`;
+
+            const businessName = document.getElementById('navBusinessName').textContent;
+            document.getElementById('printBusinessName').textContent = businessName;
+
+            document.getElementById('signatureName').textContent = loanData.clientName;
+
+            document.getElementById('resultSection').classList.add('active');
+            document.getElementById('printButton').classList.add('active');
+
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatCurrency(amount) {
+            return `L ${amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('es-HN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        }
+
+        function resetCalculator() {
+            currentStep = 1;
+            loanData = {};
+
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            document.querySelector(`.step[data-step="1"]`).classList.add('active');
+
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('step1').classList.add('active');
+
+            document.querySelectorAll('input').forEach(input => {
+                if (input.type !== 'checkbox') {
+                    input.value = '';
+                }
+            });
+
+            document.getElementById('downPayment').value = '0';
+
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('printButton').classList.remove('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openPrintSettings() {
+            document.getElementById('printSettingsModal').classList.add('active');
+        }
+
+        function closePrintSettings() {
+            document.getElementById('printSettingsModal').classList.remove('active');
+        }
+
+        function applyPrintSettings() {
+            const showPrintHeader = document.getElementById('showPrintHeader').checked;
+            document.getElementById('printHeaderSection').style.display = showPrintHeader ? 'block' : 'none';
+
+            const showPrintLogo = document.getElementById('showPrintLogo').checked;
+            document.getElementById('printLogo').style.display = showPrintLogo ? 'block' : 'none';
+
+            const showPrintDate = document.getElementById('showPrintDate').checked;
+            document.getElementById('printDate').style.display = showPrintDate ? 'block' : 'none';
+
+            const showClientInfo = document.getElementById('showClientInfo').checked;
+            document.getElementById('clientInfoBox').style.display = showClientInfo ? 'block' : 'none';
+            document.getElementById('clientInfoTablePrint').style.display = showClientInfo ? 'table' : 'none';
+
+            const showClientName = document.getElementById('showClientName').checked;
+            document.getElementById('clientNameRow').style.display = showClientName ? 'flex' : 'none';
+            document.getElementById('clientNameRowTable').style.display = showClientName ? 'table-row' : 'none';
+
+            const showClientPhone = document.getElementById('showClientPhone').checked;
+            document.getElementById('clientPhoneRow').style.display = showClientPhone ? 'flex' : 'none';
+            document.getElementById('clientPhoneRowTable').style.display = showClientPhone ? 'table-row' : 'none';
+
+            const showClientAddress = document.getElementById('showClientAddress').checked;
+            document.getElementById('clientAddressRow').style.display = showClientAddress ? 'flex' : 'none';
+            document.getElementById('clientAddressRowTable').style.display = showClientAddress ? 'table-row' : 'none';
+
+            const showManagerInfo = document.getElementById('showManagerInfo').checked;
+            document.getElementById('managerInfoBox').style.display = showManagerInfo ? 'block' : 'none';
+            document.getElementById('managerInfoTablePrint').style.display = showManagerInfo ? 'table' : 'none';
+
+            const showManagerName = document.getElementById('showManagerName').checked;
+            document.getElementById('managerNameRow').style.display = showManagerName ? 'flex' : 'none';
+            document.getElementById('managerNameRowTable').style.display = showManagerName ? 'table-row' : 'none';
+
+            const showManagerPhone = document.getElementById('showManagerPhone').checked;
+            document.getElementById('managerPhoneRow').style.display = showManagerPhone ? 'flex' : 'none';
+            document.getElementById('managerPhoneRowTable').style.display = showManagerPhone ? 'table-row' : 'none';
+
+            const showLoanType = document.getElementById('showLoanType').checked;
+            document.getElementById('summaryLoanType').style.display = showLoanType ? 'block' : 'none';
+
+            const showLoanAmount = document.getElementById('showLoanAmount').checked;
+            document.getElementById('summaryLoanAmount').style.display = showLoanAmount ? 'block' : 'none';
+
+            const showDownPayment = document.getElementById('showDownPayment').checked;
+            document.getElementById('summaryDownPayment').style.display = showDownPayment ? 'block' : 'none';
+
+            const showFinancedAmount = document.getElementById('showFinancedAmount').checked;
+            document.getElementById('summaryFinancedAmount').style.display = showFinancedAmount ? 'block' : 'none';
+
+            const showInterestRate = document.getElementById('showInterestRate').checked;
+            document.getElementById('summaryInterestRate').style.display = showInterestRate ? 'block' : 'none';
+
+            const showTotalInterest = document.getElementById('showTotalInterest').checked;
+            document.getElementById('summaryTotalInterest').style.display = showTotalInterest ? 'block' : 'none';
+
+            const showTotalAmount = document.getElementById('showTotalAmount').checked;
+            document.getElementById('summaryTotalAmount').style.display = showTotalAmount ? 'block' : 'none';
+
+            const showMonthlyPayment = document.getElementById('showMonthlyPayment').checked;
+            document.getElementById('monthlyPaymentItem').style.display = showMonthlyPayment ? 'block' : 'none';
+
+            const showPaymentTable = document.getElementById('showPaymentTable').checked;
+            document.querySelector('.payment-schedule').parentElement.querySelector('h3').style.display = showPaymentTable ? 'block' : 'none';
+            document.querySelector('.payment-schedule').style.display = showPaymentTable ? 'block' : 'none';
+
+            const showSignature = document.getElementById('showSignature').checked;
+            document.getElementById('signatureSection').style.display = showSignature ? 'block' : 'none';
+
+            closePrintSettings();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('printSettingsModal');
+            if (event.target === modal) {
+                closePrintSettings();
+            }
+        }
+    </script>
+ </body>
+</html>
