@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Clientes - Grupo de Inversiones Múltiples</title>
+    <link rel="icon" type="image/png" href="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #128c7e;
+        }
+        
+        .whatsapp-float i {
+            margin-top: 16px;
+        }
+        
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .calculator-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+
+        .calculator-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Logout button fixed position for large screens */
+        .logout-btn-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+
+        @media (max-width: 1023px) {
+            .logout-btn-fixed {
+                position: static;
+            }
+        }
+
+        /* Logo styles */
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            background: white;
+            padding: 0.25rem;
+        }
+
+        .logo-img-navbar {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 0.375rem;
+            background: white;
+            padding: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" 
+                         alt="GIM Logo" 
+                         class="logo-img">
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Grupo de Inversiones Múltiples</h1>
+                <p class="text-gray-600">Dashboard de Clientes</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Usuario o Email</label>
+                    <input type="text" id="username" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                    <input type="password" id="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-[1.02]">
+                    <span id="loginText">Iniciar Sesión</span>
+                    <div id="loginSpinner" class="loading-spinner mx-auto hidden"></div>
+                </button>
+            </form>
+
+            <div class="mt-4 space-y-2">
+                <a href="https://rimedhn.github.io/grupodeinversionesm/" 
+                   class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-orange-600 hover:to-red-700 transition-all transform hover:scale-[1.02] block text-center">
+                    Ir al Sitio General
+                </a>
+                
+                <a href="https://rimedhn.github.io/grupodeinversionesm/calculadoradeprestamo" 
+                   class="w-full calculator-btn text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2">
+                    <i class="fas fa-calculator"></i>
+                    <span>Calculadora de Préstamos</span>
+                </a>
+            </div>
+            
+            <div id="loginError" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+                <span id="loginErrorText">Credenciales incorrectas. Verifique su usuario y contraseña.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboard" class="hidden">
+        <!-- Logout Button - Fixed on large screens -->
+        <button onclick="logout()" 
+                class="logout-btn-fixed inline-flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm font-medium shadow-lg">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Salir</span>
+        </button>
+
+        <!-- Navigation -->
+        <nav class="gradient-bg shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                    <!-- Brand -->
+                    <div class="flex items-center gap-3">
+                        <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" 
+                             alt="GIM Logo" 
+                             class="logo-img-navbar">
+                        <div class="navbar-brand text-white text-center lg:text-left">
+                            <span class="hidden sm:inline">Dashboard de Clientes</span>
+                            <span class="sm:hidden">GIM Dashboard</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Items -->
+                    <div class="flex flex-col lg:flex-row items-center gap-3 w-full lg:w-auto">
+                        <!-- User Welcome -->
+                        <span class="text-white text-sm text-center lg:text-left">
+                            Bienvenido, <span id="userWelcome" class="font-semibold"></span>
+                        </span>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                            <a href="https://rimedhn.github.io/grupodeinversionesm/calculadoradeprestamo" 
+                               class="inline-flex items-center gap-1 px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-sm whitespace-nowrap">
+                                <i class="fas fa-calculator"></i>
+                                <span class="hidden md:inline">Calculadora</span>
+                            </a>
+                            
+                            <a href="https://rimedhn.github.io/grupodeinversionesm/" 
+                               class="inline-flex items-center gap-1 px-3 py-2 text-white hover:bg-white/10 rounded-lg transition-colors text-sm whitespace-nowrap">
+                                <i class="fas fa-home"></i>
+                                <span class="hidden md:inline">Sitio Principal</span>
+                            </a>
+                            
+                            <button id="refreshBtn" 
+                                    class="inline-flex items-center gap-1 px-3 py-2 text-white hover:bg-white/10 rounded-lg transition-colors text-sm whitespace-nowrap">
+                                <i class="fas fa-sync-alt"></i>
+                                <span class="hidden md:inline">Actualizar</span>
+                            </button>
+                            
+                            <!-- Logout button for mobile only -->
+                            <button onclick="logout()" 
+                                    class="lg:hidden inline-flex items-center gap-1 px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm whitespace-nowrap">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Salir</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Last Update -->
+                        <div id="lastUpdate" class="text-white text-xs opacity-75 text-center lg:text-left whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-xl text-center">
+                <div class="loading mx-auto mb-4"></div>
+                <p class="text-gray-600">Cargando datos...</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-hand-holding-usd text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Préstamos Activos</p>
+                            <p id="totalPrestamos" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-dollar-sign text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Monto Total Prestado</p>
+                            <p id="montoTotal" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-yellow-100 text-yellow-600">
+                            <i class="fas fa-coins text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Total Cobrado</p>
+                            <p id="totalCobrado" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-red-100 text-red-600">
+                            <i class="fas fa-exclamation-triangle text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Saldo Pendiente</p>
+                            <p id="saldoPendiente" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Statistics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-purple-100 text-purple-600">
+                            <i class="fas fa-users text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Clientes Únicos</p>
+                            <p id="totalClientes" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-indigo-100 text-indigo-600">
+                            <i class="fas fa-piggy-bank text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Capital Cobrado</p>
+                            <p id="capitalCobrado" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-teal-100 text-teal-600">
+                            <i class="fas fa-percentage text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Interés Cobrado</p>
+                            <p id="interesCobrado" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-2 lg:p-3 rounded-full bg-orange-100 text-orange-600">
+                            <i class="fas fa-plus-circle text-xl lg:text-2xl"></i>
+                        </div>
+                        <div class="ml-3 lg:ml-4">
+                            <p class="text-xs lg:text-sm font-medium text-gray-600">Recargo Cobrado</p>
+                            <p id="recargoCobrado" class="text-lg lg:text-2xl font-bold text-gray-900">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-chart-pie mr-2 text-blue-600"></i>
+                        Distribución por Estado
+                    </h3>
+                    <div class="relative h-64">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-chart-line mr-2 text-green-600"></i>
+                        Préstamos por Mes
+                    </h3>
+                    <div class="relative h-64">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Section -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
+                <!-- Préstamos Recientes -->
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
+                        <h3 class="text-base lg:text-lg font-semibold text-gray-900">
+                            <i class="fas fa-list mr-2 text-purple-600"></i>
+                            Préstamos Recientes
+                        </h3>
+                        <button id="showAllPrestamos" class="text-blue-600 hover:text-blue-800 text-sm">
+                            Ver todos
+                        </button>
+                    </div>
+                    <div class="table-container overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-2 lg:px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                    <th class="px-2 lg:px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                    <th class="px-2 lg:px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Capital Pagado</th>
+                                    <th class="px-2 lg:px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                    <th class="px-2 lg:px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prestamosTable" class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagos Recientes -->
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
+                        <h3 class="text-base lg:text-lg font-semibold text-gray-900">
+                            <i class="fas fa-money-bill-wave mr-2 text-green-600"></i>
+                            Pagos Recientes
+                        </h3>
+                        <button id="showAllPagos" class="text-blue-600 hover:text-blue-800 text-sm">
+                            Ver todos
+                        </button>
+                    </div>
+                    <div class="table-container overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Capital</th>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pagosTable" class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/50493593126" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Modal for detailed views -->
+    <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-lg font-bold text-gray-900"></h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="mt-3">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let prestamosData = [];
+        let abonosData = [];
+        let statusChart, monthlyChart;
+
+        // Google Apps Script Web App URL - Same as socios.html
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwR796_zX4R1GTWbWZf1U9kA4WtuS55ZU_KC_e5SPqe1DMjbQMlumzJLq7Xs-ck0ercBg/exec';
+
+        // Google Sheets API configuration
+        const SHEET_ID = '13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE';
+        const PRESTAMOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Prestamo`;
+        const ABONOS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Abono%20prestamo`;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            checkSession();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('refreshBtn').addEventListener('click', fetchData);
+            document.getElementById('showAllPrestamos').addEventListener('click', showAllPrestamos);
+            document.getElementById('showAllPagos').addEventListener('click', showAllPagos);
+            document.getElementById('closeModal').addEventListener('click', hideModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideModal();
+                }
+            });
+            
+            // Auto-refresh every 5 minutes
+            setInterval(fetchData, 300000);
+        }
+
+        function checkSession() {
+            const savedUser = localStorage.getItem('gimUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            showLoginLoading(true);
+            hideLoginError();
+
+            try {
+                // Use URLSearchParams for compatibility with Google Apps Script
+                const formData = new URLSearchParams();
+                formData.append('action', 'login');
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    localStorage.setItem('gimUser', JSON.stringify(currentUser));
+                    showDashboard();
+                } else {
+                    showLoginError(result.message || 'Credenciales incorrectas');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginError('Error de conexión. Verifique su conexión a internet.');
+            } finally {
+                showLoginLoading(false);
+            }
+        }
+
+        function showLoginLoading(show) {
+            const spinner = document.getElementById('loginSpinner');
+            const text = document.getElementById('loginText');
+            
+            if (show) {
+                spinner.classList.remove('hidden');
+                text.classList.add('hidden');
+            } else {
+                spinner.classList.add('hidden');
+                text.classList.remove('hidden');
+            }
+        }
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            const errorText = document.getElementById('loginErrorText');
+            errorText.textContent = message || 'Error de autenticación';
+            errorDiv.classList.remove('hidden');
+        }
+
+        function hideLoginError() {
+            document.getElementById('loginError').classList.add('hidden');
+        }
+
+        function logout() {
+            localStorage.removeItem('gimUser');
+            currentUser = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        async function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('userWelcome').textContent = currentUser.Nombre || currentUser.Usuario;
+            
+            await fetchData();
+        }
+
+        // Utility functions
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-HN', {
+                style: 'currency',
+                currency: 'HNL'
+            }).format(amount || 0);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            
+            // Handle Google Sheets date format
+            let date;
+            if (typeof dateStr === 'string' && dateStr.includes('Date(')) {
+                // Extract parameters from Google Sheets Date format: Date(year,month,day)
+                const dateMatch = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+                if (dateMatch) {
+                    const year = parseInt(dateMatch[1]);
+                    const month = parseInt(dateMatch[2]); // Google Sheets months are 0-based
+                    const day = parseInt(dateMatch[3]);
+                    date = new Date(year, month, day);
+                } else {
+                    // Try timestamp format: Date(1234567890000)
+                    const timestamp = dateStr.match(/Date\((\d+)\)/);
+                    if (timestamp) {
+                        date = new Date(parseInt(timestamp[1]));
+                    } else {
+                        date = new Date(dateStr);
+                    }
+                }
+            } else if (typeof dateStr === 'number') {
+                // Handle numeric timestamp
+                date = new Date(dateStr);
+            } else {
+                date = new Date(dateStr);
+            }
+            
+            if (isNaN(date.getTime())) return '-';
+            return date.toLocaleDateString('es-HN');
+        }
+
+        function parseGoogleSheetsResponse(response) {
+            const jsonString = response.substring(47).slice(0, -2);
+            return JSON.parse(jsonString);
+        }
+
+        // Data fetching functions
+        async function fetchData() {
+            try {
+                showLoading(true);
+                
+                const [prestamosResponse, abonosResponse] = await Promise.all([
+                    fetch(PRESTAMOS_URL),
+                    fetch(ABONOS_URL)
+                ]);
+
+                const prestamosText = await prestamosResponse.text();
+                const abonosText = await abonosResponse.text();
+
+                console.log('Prestamos response length:', prestamosText.length);
+                console.log('Abonos response length:', abonosText.length);
+
+                const prestamosJson = parseGoogleSheetsResponse(prestamosText);
+                const abonosJson = parseGoogleSheetsResponse(abonosText);
+
+                console.log('Prestamos rows:', prestamosJson.table.rows.length);
+                console.log('Abonos rows:', abonosJson.table.rows.length);
+
+                // Process prestamos data
+                prestamosData = prestamosJson.table.rows
+                    .filter(row => row.c && row.c[10]?.v !== 'Anulado') // Filter out cancelled loans
+                    .map(row => ({
+                        idprestamo: row.c[0]?.v || '',
+                        noPrestamo: row.c[1]?.v || '',
+                        cliente: row.c[2]?.v || '',
+                        nombreCliente: row.c[3]?.v || '',
+                        fechaTramite: row.c[4]?.v || '',
+                        fechaAprobado: row.c[5]?.v || '',
+                        monto: parseFloat(row.c[6]?.v || 0),
+                        gastos: parseFloat(row.c[7]?.v || 0),
+                        plazo: parseInt(row.c[8]?.v || 0),
+                        tasa: parseFloat(row.c[9]?.v || 0),
+                        estatus: row.c[10]?.v || '',
+                        vendedor: row.c[18]?.v || '',
+                        nombreVendedor: row.c[19]?.v || '',
+                        cuota: parseFloat(row.c[26]?.v || 0),
+                        interes: parseFloat(row.c[27]?.v || 0),
+                        total: parseFloat(row.c[28]?.v || 0),
+                        fechaFinal: row.c[29]?.v || ''
+                    }));
+
+                // Process abonos data
+                const allAbonosRows = abonosJson.table.rows.filter(row => row.c && row.c.length > 0);
+                console.log('Total abonos rows before filtering:', allAbonosRows.length);
+                
+                abonosData = allAbonosRows
+                    .map((row, index) => {
+                        const abono = {
+                            idabono: row.c[0]?.v || '',
+                            cliente: row.c[1]?.v || '',
+                            nombreCliente: row.c[2]?.v || '',
+                            prestamo: row.c[3]?.v || '',
+                            monto: parseFloat(row.c[4]?.v || 0),
+                            capital: parseFloat(row.c[5]?.v || 0),
+                            interes: parseFloat(row.c[6]?.v || 0),
+                            abonoCapital: parseFloat(row.c[7]?.v || 0),
+                            recargo: parseFloat(row.c[9]?.v || 0),
+                            noCuota: parseInt(row.c[24]?.v || 0),
+                            fecha: row.c[13]?.v || '',
+                            medioPago: row.c[11]?.v || '',
+                            cajero: row.c[26]?.v || '',
+                            nombreCajero: row.c[27]?.v || '',
+                            estado: row.c[31]?.v || 'Activo',
+                            pagoCapital: parseFloat(row.c[45]?.v || row.c[7]?.v || 0),
+                            saldoAnterior: parseFloat(row.c[10]?.v || 0)
+                        };
+                        
+                        return abono;
+                    })
+                    .filter((abono) => {
+                        const hasBasicData = abono.idabono || abono.prestamo || abono.nombreCliente;
+                        const hasAmount = abono.monto > 0 || abono.pagoCapital > 0 || abono.capital > 0;
+                        const isNotCancelled = abono.estado !== 'Anulado' && abono.estado !== 'Cancelado';
+                        
+                        return hasBasicData && hasAmount && isNotCancelled;
+                    });
+
+                console.log('Processed prestamos:', prestamosData.length);
+                console.log('Processed abonos:', abonosData.length);
+
+                updateDashboard();
+                updateLastUpdateTime();
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('Error al cargar los datos. Por favor, intente nuevamente.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showLoading(show) {
+            const indicator = document.getElementById('loadingIndicator');
+            indicator.classList.toggle('hidden', !show);
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                `Última actualización: ${now.toLocaleTimeString('es-HN')}`;
+        }
+
+        // Dashboard update functions
+        function updateDashboard() {
+            updateStatistics();
+            updateCharts();
+            updateTables();
+        }
+
+        function updateStatistics() {
+            const totalPrestamos = prestamosData.length;
+            const montoTotal = prestamosData.reduce((sum, p) => sum + p.monto, 0);
+            const totalCobrado = abonosData.reduce((sum, a) => sum + a.monto, 0);
+            const totalCapitalPagado = abonosData.reduce((sum, a) => sum + (a.pagoCapital || 0), 0);
+            const saldoPendiente = montoTotal - totalCapitalPagado;
+
+            const uniqueClients = new Set();
+            prestamosData.forEach(p => {
+                if (p.nombreCliente) uniqueClients.add(p.nombreCliente);
+            });
+            const totalClientes = uniqueClients.size;
+
+            const capitalCobrado = totalCapitalPagado;
+            const interesCobrado = abonosData.reduce((sum, a) => sum + (a.interes || 0), 0);
+            const recargoCobrado = abonosData.reduce((sum, a) => sum + (a.recargo || 0), 0);
+
+            document.getElementById('totalPrestamos').textContent = totalPrestamos.toLocaleString();
+            document.getElementById('montoTotal').textContent = formatCurrency(montoTotal);
+            document.getElementById('totalCobrado').textContent = formatCurrency(totalCobrado);
+            document.getElementById('saldoPendiente').textContent = formatCurrency(Math.max(0, saldoPendiente));
+            document.getElementById('totalClientes').textContent = totalClientes.toLocaleString();
+            document.getElementById('capitalCobrado').textContent = formatCurrency(capitalCobrado);
+            document.getElementById('interesCobrado').textContent = formatCurrency(interesCobrado);
+            document.getElementById('recargoCobrado').textContent = formatCurrency(recargoCobrado);
+        }
+
+        function updateCharts() {
+            updateStatusChart();
+            updateMonthlyChart();
+        }
+
+        function updateStatusChart() {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            
+            if (statusChart) {
+                statusChart.destroy();
+            }
+
+            const statusCounts = prestamosData.reduce((acc, prestamo) => {
+                acc[prestamo.estatus] = (acc[prestamo.estatus] || 0) + 1;
+                return acc;
+            }, {});
+
+            statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: [
+                            '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            if (monthlyChart) {
+                monthlyChart.destroy();
+            }
+
+            const monthlyData = prestamosData.reduce((acc, prestamo) => {
+                if (prestamo.fechaTramite) {
+                    let date;
+                    
+                    if (typeof prestamo.fechaTramite === 'string' && prestamo.fechaTramite.includes('Date(')) {
+                        const dateMatch = prestamo.fechaTramite.match(/Date\((\d+),(\d+),(\d+)\)/);
+                        if (dateMatch) {
+                            const year = parseInt(dateMatch[1]);
+                            const month = parseInt(dateMatch[2]);
+                            const day = parseInt(dateMatch[3]);
+                            date = new Date(year, month, day);
+                        } else {
+                            const timestamp = prestamo.fechaTramite.match(/Date\((\d+)\)/);
+                            if (timestamp) {
+                                date = new Date(parseInt(timestamp[1]));
+                            }
+                        }
+                    } else {
+                        date = new Date(prestamo.fechaTramite);
+                    }
+                    
+                    if (date && !isNaN(date.getTime())) {
+                        const monthYear = `${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                        acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    }
+                }
+                return acc;
+            }, {});
+
+            if (Object.keys(monthlyData).length === 0) {
+                console.log('No valid date data for monthly chart');
+                return;
+            }
+
+            const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
+                const [monthA, yearA] = a.split('/').map(Number);
+                const [monthB, yearB] = b.split('/').map(Number);
+                return new Date(yearA, monthA - 1) - new Date(yearB, monthB - 1);
+            });
+
+            monthlyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'Préstamos',
+                        data: sortedMonths.map(month => monthlyData[month]),
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                boxWidth: 12,
+                                padding: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTables() {
+            updatePrestamosTable();
+            updatePagosTable();
+        }
+
+        function updatePrestamosTable() {
+            const tbody = document.getElementById('prestamosTable');
+            const recentPrestamos = prestamosData
+                .sort((a, b) => new Date(b.fechaTramite) - new Date(a.fechaTramite))
+                .slice(0, 10);
+
+            tbody.innerHTML = recentPrestamos.map(prestamo => {
+                const capitalPagado = abonosData
+                    .filter(abono => abono.prestamo === prestamo.idprestamo)
+                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                
+                const saldo = prestamo.monto - capitalPagado;
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-2 lg:px-3 py-2 text-xs lg:text-sm text-gray-900">${prestamo.nombreCliente}</td>
+                        <td class="px-2 lg:px-3 py-2 text-xs lg:text-sm text-gray-900">${formatCurrency(prestamo.monto)}</td>
+                        <td class="px-2 lg:px-3 py-2 text-xs lg:text-sm text-gray-900 hidden sm:table-cell">${formatCurrency(capitalPagado)}</td>
+                        <td class="px-2 lg:px-3 py-2 text-xs lg:text-sm text-gray-900">${formatCurrency(Math.max(0, saldo))}</td>
+                        <td class="px-2 lg:px-3 py-2 text-xs lg:text-sm hidden md:table-cell">
+                            <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(prestamo.estatus)}">
+                                ${prestamo.estatus}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePagosTable() {
+            const tbody = document.getElementById('pagosTable');
+            const recentPagos = abonosData
+                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                .slice(0, 10);
+
+            tbody.innerHTML = recentPagos.map((pago) => {
+                const saldoActual = (pago.saldoAnterior || 0) - (pago.pagoCapital || 0);
+                
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-2 py-2 text-xs lg:text-sm text-gray-900">${pago.nombreCliente}</td>
+                        <td class="px-2 py-2 text-xs lg:text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
+                        <td class="px-2 py-2 text-xs lg:text-sm text-gray-900 hidden sm:table-cell">${formatCurrency(pago.pagoCapital || 0)}</td>
+                        <td class="px-2 py-2 text-xs lg:text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
+                        <td class="px-2 py-2 text-xs lg:text-sm text-gray-900 hidden md:table-cell">${formatDate(pago.fecha)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'Aprobado': 'bg-green-100 text-green-800',
+                'Pendiente': 'bg-yellow-100 text-yellow-800',
+                'Rechazado': 'bg-red-100 text-red-800',
+                'En Proceso': 'bg-blue-100 text-blue-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Modal functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        function showAllPrestamos() {
+            const content = `
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. Préstamo</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cuota</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital Pagado</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés Pagado</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${prestamosData.map(prestamo => {
+                                const capitalPagado = abonosData
+                                    .filter(abono => abono.prestamo === prestamo.idprestamo)
+                                    .reduce((total, abono) => total + (abono.pagoCapital || 0), 0);
+                                
+                                const interesPagado = abonosData
+                                    .filter(abono => abono.prestamo === prestamo.idprestamo)
+                                    .reduce((total, abono) => total + (abono.interes || 0), 0);
+                                
+                                const saldo = prestamo.monto - capitalPagado;
+                                
+                                return `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-3 py-2 text-sm text-gray-900">${prestamo.noPrestamo}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${prestamo.nombreCliente}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(prestamo.monto)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(prestamo.cuota)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(capitalPagado)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(interesPagado)}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldo))}</td>
+                                        <td class="px-3 py-2 text-sm text-gray-900">${formatDate(prestamo.fechaTramite)}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            showModal('Todos los Préstamos', content);
+        }
+
+        function showAllPagos() {
+            const content = `
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">No Cuota</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo Anterior</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Saldo</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                                <th class="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">Medio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${abonosData.map(pago => {
+                                const saldoAnterior = pago.saldoAnterior || 0;
+                                const saldoActual = saldoAnterior - (pago.pagoCapital || 0);
+                                
+                                return `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.noCuota || '-'}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.interes || 0)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoAnterior))}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(pago.pagoCapital || 0)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatCurrency(Math.max(0, saldoActual))}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
+                                        <td class="px-2 py-2 text-sm text-gray-900">${pago.medioPago}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            showModal('Todos los Pagos', content);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Número de cuenta copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+    </script>
+</body>
+</html>
