@@ -108,6 +108,46 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
+
+        /* Fix navbar layout - prevent Tailwind from overriding */
+        .nav-container {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+            gap: 1rem !important;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-container {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+            }
+        }
+
+        .nav-items-wrapper {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 0.75rem !important;
+            width: 100% !important;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-items-wrapper {
+                flex-direction: row !important;
+                width: auto !important;
+            }
+        }
+
+        .nav-buttons {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -166,7 +206,7 @@
         <!-- Navigation -->
         <nav class="gradient-bg shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <div class="nav-container">
                     <!-- Brand -->
                     <div class="flex items-center">
                         <div class="navbar-brand text-white text-center lg:text-left">
@@ -177,14 +217,14 @@
                     </div>
                     
                     <!-- Navigation Items -->
-                    <div class="flex flex-col lg:flex-row items-center gap-3 w-full lg:w-auto">
+                    <div class="nav-items-wrapper">
                         <!-- User Welcome -->
                         <span class="text-white text-sm text-center lg:text-left">
                             Bienvenido, <span id="userWelcome" class="font-semibold"></span>
                         </span>
                         
                         <!-- Action Buttons -->
-                        <div class="flex flex-wrap items-center justify-center gap-2">
+                        <div class="nav-buttons">
                             <a href="https://rimedhn.github.io/grupodeinversionesm/calculadoradeprestamo" 
                                class="inline-flex items-center gap-1 px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-sm whitespace-nowrap">
                                 <i class="fas fa-calculator"></i>
