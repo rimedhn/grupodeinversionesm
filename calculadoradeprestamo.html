@@ -31,8 +31,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
         }
 
         .logo-section {
@@ -51,29 +49,6 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #667eea;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         .container {
@@ -791,17 +766,6 @@
                 padding: 1rem;
             }
 
-            .nav-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .nav-btn {
-                flex: 1;
-                text-align: center;
-                min-width: 100px;
-            }
-
             .container {
                 padding: 0 0.5rem;
             }
@@ -830,15 +794,10 @@
  </head>
  <body>
   <nav class="navbar">
-   <div class="logo-section"><img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" class="logo" onerror="this.style.display='none'">
+   <div class="logo-section"><img src="https://github.com/rimedhn/grupodeinversionesm/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" class="logo" onerror="this.style.display='none';">
     <div class="business-name" id="navBusinessName">
      GRUPO DE INVERSIONES MÚLTIPLES
     </div>
-   </div>
-   <div class="nav-buttons">
-    <a href="https://rimedhn.github.io/grupodeinversionesm/" class="nav-btn">🏠 Sitio Principal</a>
-    <a href="https://rimedhn.github.io/grupodeinversionesm/socios.html" class="nav-btn">👥 Portal de Socios</a>
-    <a href="https://rimedhn.github.io/grupodeinversionesm/clientes.html" class="nav-btn">💼 Portal de Clientes</a>
    </div>
   </nav>
   <div class="container">
@@ -884,9 +843,9 @@
     </div>
     <div class="step-content" id="step2">
      <h2 style="margin-bottom: 1.5rem; color: #667eea;">Paso 2: Datos del Préstamo</h2>
-     <div class="form-group"><label for="loanType">Tipo de Préstamo *</label> <select id="loanType" onchange="handleLoanTypeChange()"> <option value="amortizado">Amortizado (Cuotas Niveladas)</option> <option value="capitalFijo">Capital Fijo (Cuota Decreciente)</option> <option value="capitalMasInteres">Capital + Interés (Tabla Simple)</option> <option value="soloInteres">Solo Interés + Capital al Final</option> </select>
+     <div class="form-group"><label for="loanType">Tipo de Préstamo *</label> <select id="loanType" onchange="handleLoanTypeChange()"> <option value="amortizado">Amortizado (Cuotas Niveladas)</option> <option value="abierto">Abierto (Pago Flexible)</option> </select>
      </div>
-     <div class="form-group"><label for="interestType">Tipo de Interés *</label> <select id="interestType"> <option value="simple">Simple</option> <option value="redescontado">Redescontado</option> <option value="compuesto">Compuesto</option> </select>
+     <div class="form-group"><label for="interestType">Tipo de Interés *</label> <select id="interestType"> <option value="simple">Simple</option> <option value="redescontado">Redescontado</option> </select>
      </div>
      <div class="form-group"><label for="rateType">Tipo de Tasa *</label> <select id="rateType"> <option value="diaria">Diaria</option> <option value="semanal">Semanal</option> <option value="quincenal">Quincenal</option> <option value="mensual">Mensual</option> <option value="anual">Anual</option> </select>
      </div>
@@ -914,7 +873,7 @@
    <div class="result-section" id="resultSection">
     <div class="card">
      <div class="print-section print-header" id="printHeaderSection">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.5rem;"><img id="printLogo" src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo" style="width: 60px; height: 60px; object-fit: contain;" onerror="this.style.display='none'">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.5rem;"><img id="printLogo" src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" style="width: 50px; height: 50px; object-fit: contain;" onerror="this.style.display='none';">
        <h1 id="printBusinessName" style="margin: 0;">Nombre del Negocio</h1>
       </div>
       <div style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">
@@ -1039,452 +998,1120 @@
        <tr>
         <td class="label-cell">Tasa de Interés</td>
         <td id="resultInterestRateTable"></td>
-        <td class="label-cell">Total de Intereses</td>
-        <td id="resultTotalInterestTable"></td>
-       </tr>
-       <tr>
-        <td class="label-cell">Total a Pagar</td>
-        <td id="resultTotalAmountTable"></td>
         <td class="label-cell" id="monthlyPaymentLabelTable">Cuota</td>
         <td id="resultMonthlyPaymentTable"></td>
        </tr>
+       <tr>
+        <td class="label-cell">Total de Intereses</td>
+        <td id="resultTotalInterestTable"></td>
+        <td class="label-cell">Total a Pagar</td>
+        <td id="resultTotalAmountTable"></td>
+       </tr>
       </tbody>
      </table>
-     <div class="payment-schedule" id="scheduleSection">
-      <h3 style="margin-bottom: 1rem; color: #667eea;">Plan de Pagos</h3>
+     <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #667eea;">Plan de Pagos Proyectado</h3>
+     <div class="payment-schedule">
       <table id="paymentTable">
        <thead>
         <tr>
-         <th>Pago #</th>
+         <th>No.</th>
          <th>Fecha</th>
+         <th>Saldo Inicial</th>
          <th>Cuota</th>
          <th>Capital</th>
          <th>Interés</th>
-         <th>Saldo</th>
+         <th>Saldo Final</th>
         </tr>
        </thead>
        <tbody id="paymentTableBody">
        </tbody>
       </table>
      </div>
-     <div class="signature-section" id="signatureSection">
+     <div class="signature-section">
       <div class="signature-box">
        <div class="signature-line"></div>
-       <div class="signature-name" id="signatureName">Nombre del Cliente</div>
-       <div class="signature-label">Firma y Fecha</div>
+       <div class="signature-name" id="signatureName"></div>
+       <div class="signature-label">
+        Firma del Cliente
+       </div>
       </div>
      </div>
-     <div class="button-group print-hide" style="margin-top: 2rem;"><button class="btn btn-secondary" onclick="resetCalculator()">Nueva Cotización</button> <button class="btn btn-primary" onclick="window.print()">Imprimir / Guardar PDF</button>
+     <div class="button-group"><button class="btn btn-secondary" onclick="resetCalculator()">Nuevo Cálculo</button> <button class="btn btn-primary" onclick="window.print()">Imprimir Reporte</button>
      </div>
     </div>
    </div>
   </div>
-  <div class="modal-overlay" id="printSettingsModal">
-   <div class="modal-content">
-    <div class="modal-header">
-     <h2>Configuración de Reporte PDF</h2><button class="close-btn" onclick="closePrintSettings()">×</button>
-    </div>
-    <div class="config-section">
-     <h3>Encabezado del Reporte</h3>
-     <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showPrintHeader" checked> <label for="showPrintHeader">Mostrar encabezado completo</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showPrintLogo" checked> <label for="showPrintLogo">Mostrar logo</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showPrintDate" checked> <label for="showPrintDate">Mostrar fecha</label>
-      </div>
-     </div>
-    </div>
-    <div class="config-section">
-     <h3>Información del Cliente</h3>
-     <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showClientInfo" checked> <label for="showClientInfo">Mostrar información completa</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientName" checked> <label for="showClientName">Mostrar nombre</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientPhone" checked> <label for="showClientPhone">Mostrar teléfono</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientAddress" checked> <label for="showClientAddress">Mostrar dirección</label>
-      </div>
-     </div>
-    </div>
-    <div class="config-section">
-     <h3>Información del Gestor</h3>
-     <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showManagerInfo" checked> <label for="showManagerInfo">Mostrar información completa</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showManagerName" checked> <label for="showManagerName">Mostrar nombre</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showManagerPhone" checked> <label for="showManagerPhone">Mostrar teléfono</label>
-      </div>
-     </div>
-    </div>
-    <div class="config-section">
-     <h3>Resumen del Préstamo</h3>
-     <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showLoanType" checked> <label for="showLoanType">Tipo de préstamo</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showLoanAmount" checked> <label for="showLoanAmount">Monto solicitado</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showDownPayment" checked> <label for="showDownPayment">Prima</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showFinancedAmount" checked> <label for="showFinancedAmount">Monto a financiar</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showInterestRate" checked> <label for="showInterestRate">Tasa de interés</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showTotalInterest" checked> <label for="showTotalInterest">Total de intereses</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showTotalAmount" checked> <label for="showTotalAmount">Total a pagar</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showMonthlyPayment" checked> <label for="showMonthlyPayment">Cuota</label>
-      </div>
-     </div>
-    </div>
-    <div class="config-section">
-     <h3>Otros Elementos</h3>
-     <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showSchedule" checked> <label for="showSchedule">Plan de pagos</label>
-      </div>
-      <div class="checkbox-item"><input type="checkbox" id="showSignature" checked> <label for="showSignature">Sección de firma</label>
-      </div>
-     </div>
-    </div>
-    <div class="button-group"><button class="btn btn-secondary" onclick="resetPrintSettings()">Restablecer</button> <button class="btn btn-primary" onclick="applyPrintSettings()">Aplicar Configuración</button>
-    </div>
-   </div>
-  </div><button class="print-float" id="printFloatBtn" onclick="window.print()"> 🖨️ </button> <a href="https://wa.me/50433488648" class="whatsapp-float" target="_blank"> 💬 </a>
   <footer class="footer">
    <div class="footer-content">
     <div class="footer-info">
-     <div class="footer-item">📍 Juticalpa, Olancho, Honduras</div>
-     <div class="footer-item">📞 +504 3348-8648</div>
-     <div class="footer-item">📧 info@grupoinversiones.com</div>
+     <div class="footer-item"><span>📞</span> <span id="footerPhone">9359-3126</span>
+     </div>
+     <div class="footer-item"><span>📧</span> <span id="footerEmail">indime.hn@gmail.com</span>
+     </div>
+     <div class="footer-item"><span>📍</span> <span id="footerAddress">La Ceiba, Atlantida</span>
+     </div>
     </div>
-    <div class="social-links"><a href="#" class="social-link">f</a> <a href="#" class="social-link">in</a> <a href="https://wa.me/50433488648" class="social-link" target="_blank">W</a>
+    <div class="social-links" id="socialLinks"></div>
+    <div class="credits">
+     Desarrollado por <strong>Rimed Digital</strong><br>
+      📧 gerencia@rimeddigital.com | 📞 +504 9359-3126
     </div>
-    <div class="credits">© 2025 Grupo de Inversiones Múltiples. Todos los derechos reservados.</div>
    </div>
-  </footer>
+  </footer><button class="print-float" id="printFloat" onclick="window.print()"> 🖨️ </button> <a href="#" class="whatsapp-float" id="whatsappFloat" target="_blank" rel="noopener noreferrer">
+   <svg viewbox="0 0 32 32" width="32" height="32" fill="white"><path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 7.933-2.127c2.42 1.37 5.173 2.127 8.067 2.127 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.467c-2.482 0-4.908-0.646-7.07-1.87l-0.507-0.292-5.247 1.408 1.408-5.227-0.323-0.53c-1.33-2.166-2.028-4.671-2.028-7.256 0-7.636 6.213-13.85 13.85-13.85s13.85 6.213 13.85 13.85c0 7.636-6.213 13.85-13.85 13.85zM23.401 19.892c-0.398-0.201-2.348-1.158-2.713-1.291-0.365-0.133-0.63-0.199-0.896 0.199s-1.029 1.291-1.261 1.557c-0.232 0.265-0.464 0.298-0.862 0.097-0.398-0.199-1.68-0.619-3.199-1.976-1.182-1.054-1.981-2.356-2.213-2.754s-0.025-0.613 0.175-0.812c0.179-0.179 0.398-0.464 0.597-0.696 0.199-0.232 0.265-0.398 0.398-0.663 0.133-0.265 0.066-0.497-0.033-0.696s-0.896-2.159-1.228-2.956c-0.323-0.776-0.652-0.671-0.896-0.684-0.232-0.012-0.497-0.015-0.762-0.015s-0.696 0.099-1.061 0.497c-0.365 0.398-1.394 1.361-1.394 3.319s1.427 3.852 1.627 4.117c0.199 0.265 2.807 4.283 6.802 6.008 0.95 0.411 1.691 0.656 2.269 0.839 0.955 0.303 1.824 0.26 2.512 0.158 0.766-0.115 2.348-0.96 2.679-1.887s0.331-1.723 0.232-1.887c-0.099-0.165-0.365-0.265-0.762-0.464z" />
+   </svg></a> <!-- Modal de Configuración -->
+  <div class="modal-overlay" id="printSettingsModal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2>⚙️ Configuración del Reporte PDF</h2><button class="close-btn" onclick="closePrintSettings()">×</button>
+    </div>
+    <div class="config-section">
+     <h3>📋 Información del Negocio</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="check_logo" onchange="updatePrintConfig('show_logo', this.checked)"> <label for="check_logo">Mostrar Logo</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_business_name" onchange="updatePrintConfig('show_business_name', this.checked)"> <label for="check_business_name">Mostrar Nombre del Negocio</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_business_address" onchange="updatePrintConfig('show_business_address', this.checked)"> <label for="check_business_address">Mostrar Dirección</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_business_phone" onchange="updatePrintConfig('show_business_phone', this.checked)"> <label for="check_business_phone">Mostrar Teléfono</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_business_email" onchange="updatePrintConfig('show_business_email', this.checked)"> <label for="check_business_email">Mostrar Email</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>👤 Información del Cliente</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="check_client_name" onchange="updatePrintConfig('show_client_name', this.checked)"> <label for="check_client_name">Mostrar Nombre</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_client_phone" onchange="updatePrintConfig('show_client_phone', this.checked)"> <label for="check_client_phone">Mostrar Teléfono</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_client_address" onchange="updatePrintConfig('show_client_address', this.checked)"> <label for="check_client_address">Mostrar Dirección</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>🧑‍💼 Información del Gestor</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="check_manager_name" onchange="updatePrintConfig('show_manager_name', this.checked)"> <label for="check_manager_name">Mostrar Nombre</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_manager_phone" onchange="updatePrintConfig('show_manager_phone', this.checked)"> <label for="check_manager_phone">Mostrar Teléfono</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>💰 Datos del Préstamo</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="check_loan_type" onchange="updatePrintConfig('show_loan_type', this.checked)"> <label for="check_loan_type">Tipo de Préstamo</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_loan_amount" onchange="updatePrintConfig('show_loan_amount', this.checked)"> <label for="check_loan_amount">Monto Solicitado</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_down_payment" onchange="updatePrintConfig('show_down_payment', this.checked)"> <label for="check_down_payment">Prima/Enganche</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_financed_amount" onchange="updatePrintConfig('show_financed_amount', this.checked)"> <label for="check_financed_amount">Monto a Financiar</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_interest_rate" onchange="updatePrintConfig('show_interest_rate', this.checked)"> <label for="check_interest_rate">Tasa de Interés</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_monthly_payment" onchange="updatePrintConfig('show_monthly_payment', this.checked)"> <label for="check_monthly_payment">Cuota Mensual</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_total_interest" onchange="updatePrintConfig('show_total_interest', this.checked)"> <label for="check_total_interest">Total de Intereses</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_total_amount" onchange="updatePrintConfig('show_total_amount', this.checked)"> <label for="check_total_amount">Total a Pagar</label>
+      </div>
+     </div>
+    </div>
+    <div class="config-section">
+     <h3>📊 Tabla y Firma</h3>
+     <div class="checkbox-group">
+      <div class="checkbox-item"><input type="checkbox" id="check_payment_schedule" onchange="updatePrintConfig('show_payment_schedule', this.checked)"> <label for="check_payment_schedule">Tabla de Amortización</label>
+      </div>
+      <div class="checkbox-item"><input type="checkbox" id="check_signature" onchange="updatePrintConfig('show_signature', this.checked)"> <label for="check_signature">Sección de Firma</label>
+      </div>
+     </div>
+    </div>
+    <div class="button-group"><button class="btn btn-success" onclick="closePrintSettings()">Guardar Configuración</button>
+    </div>
+   </div>
+  </div>
   <script>
-        let currentStep = 1;
-        let printSettings = {
-            showPrintHeader: true,
-            showPrintLogo: true,
-            showPrintDate: true,
-            showClientInfo: true,
-            showClientName: true,
-            showClientPhone: true,
-            showClientAddress: true,
-            showManagerInfo: true,
-            showManagerName: true,
-            showManagerPhone: true,
-            showLoanType: true,
-            showLoanAmount: true,
-            showDownPayment: true,
-            showFinancedAmount: true,
-            showInterestRate: true,
-            showTotalInterest: true,
-            showTotalAmount: true,
-            showMonthlyPayment: true,
-            showSchedule: true,
-            showSignature: true
+        const defaultConfig = {
+            business_name: "GRUPO DE INVERSIONES MULTIPLES",
+            business_phone: "9359-3126",
+            business_email: "gim@correo.com",
+            business_address: "La Ceiba, Atlatida.",
+            whatsapp_number: "+50493593126",
+            facebook_url: "",
+            instagram_url: "",
+            twitter_url: ""
         };
 
-        function nextStep(step) {
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
-            document.getElementById(`step${currentStep}`).classList.remove('active');
+        // Configuración de visualización (qué mostrar en el PDF)
+        let printConfig = {
+            show_logo: true,
+            show_business_name: true,
+            show_business_address: true,
+            show_business_phone: true,
+            show_business_email: true,
+            show_client_name: true,
+            show_client_phone: true,
+            show_client_address: true,
+            show_manager_name: true,
+            show_manager_phone: true,
+            show_loan_type: true,
+            show_loan_amount: true,
+            show_down_payment: true,
+            show_financed_amount: true,
+            show_interest_rate: true,
+            show_monthly_payment: true,
+            show_total_interest: true,
+            show_total_amount: true,
+            show_payment_schedule: true,
+            show_signature: true
+        };
+
+        // Cargar configuración guardada
+        function loadPrintConfig() {
+            const saved = localStorage.getItem('printConfig');
+            if (saved) {
+                printConfig = { ...printConfig, ...JSON.parse(saved) };
+            }
+        }
+
+        // Guardar configuración
+        function savePrintConfig() {
+            localStorage.setItem('printConfig', JSON.stringify(printConfig));
+        }
+
+        loadPrintConfig();
+
+        let currentStep = 1;
+        let loanData = {};
+
+        // Funciones del modal
+        function openPrintSettings() {
+            loadCheckboxStates();
+            document.getElementById('printSettingsModal').classList.add('active');
+        }
+
+        function closePrintSettings() {
+            document.getElementById('printSettingsModal').classList.remove('active');
+        }
+
+        // Cerrar modal al hacer clic en el overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('printSettingsModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closePrintSettings();
+                }
+            });
+        });
+
+        function updatePrintConfig(key, value) {
+            printConfig[key] = value;
+            savePrintConfig();
+            applyPrintConfig();
+        }
+
+        function loadCheckboxStates() {
+            document.getElementById('check_logo').checked = printConfig.show_logo;
+            document.getElementById('check_business_name').checked = printConfig.show_business_name;
+            document.getElementById('check_business_address').checked = printConfig.show_business_address;
+            document.getElementById('check_business_phone').checked = printConfig.show_business_phone;
+            document.getElementById('check_business_email').checked = printConfig.show_business_email;
+            document.getElementById('check_client_name').checked = printConfig.show_client_name;
+            document.getElementById('check_client_phone').checked = printConfig.show_client_phone;
+            document.getElementById('check_client_address').checked = printConfig.show_client_address;
+            document.getElementById('check_manager_name').checked = printConfig.show_manager_name;
+            document.getElementById('check_manager_phone').checked = printConfig.show_manager_phone;
+            document.getElementById('check_loan_type').checked = printConfig.show_loan_type;
+            document.getElementById('check_loan_amount').checked = printConfig.show_loan_amount;
+            document.getElementById('check_down_payment').checked = printConfig.show_down_payment;
+            document.getElementById('check_financed_amount').checked = printConfig.show_financed_amount;
+            document.getElementById('check_interest_rate').checked = printConfig.show_interest_rate;
+            document.getElementById('check_monthly_payment').checked = printConfig.show_monthly_payment;
+            document.getElementById('check_total_interest').checked = printConfig.show_total_interest;
+            document.getElementById('check_total_amount').checked = printConfig.show_total_amount;
+            document.getElementById('check_payment_schedule').checked = printConfig.show_payment_schedule;
+            document.getElementById('check_signature').checked = printConfig.show_signature;
+        }
+
+        function applyPrintConfig() {
+            // Las configuraciones SOLO afectan el PDF, NO el sitio web
+            // Solo trabajamos con elementos que tienen clases específicas para impresión
             
+            // Encabezado del negocio (solo en impresión)
+            const printHeaderSection = document.getElementById('printHeaderSection');
+            if (printHeaderSection) {
+                if (!printConfig.show_logo && !printConfig.show_business_name && 
+                    !printConfig.show_business_address && !printConfig.show_business_phone && !printConfig.show_business_email) {
+                    printHeaderSection.classList.add('print-hide');
+                } else {
+                    printHeaderSection.classList.remove('print-hide');
+                }
+            }
+
+            const printLogo = document.getElementById('printLogo');
+            if (printLogo) {
+                if (!printConfig.show_logo) {
+                    printLogo.classList.add('print-hide');
+                } else {
+                    printLogo.classList.remove('print-hide');
+                }
+            }
+
+            const printBusinessName = document.getElementById('printBusinessName');
+            if (printBusinessName) {
+                if (!printConfig.show_business_name) {
+                    printBusinessName.classList.add('print-hide');
+                } else {
+                    printBusinessName.classList.remove('print-hide');
+                }
+            }
+
+            const printBusinessAddress = document.getElementById('printBusinessAddress');
+            if (printBusinessAddress) {
+                if (!printConfig.show_business_address) {
+                    printBusinessAddress.classList.add('print-hide');
+                } else {
+                    printBusinessAddress.classList.remove('print-hide');
+                }
+            }
+
+            const printBusinessContact = document.getElementById('printBusinessContact');
+            if (printBusinessContact) {
+                if (!printConfig.show_business_phone && !printConfig.show_business_email) {
+                    printBusinessContact.classList.add('print-hide');
+                } else {
+                    printBusinessContact.classList.remove('print-hide');
+                }
+            }
+
+            // Tabla de pagos
+            const paymentScheduleSection = document.querySelector('.payment-schedule');
+            if (paymentScheduleSection) {
+                const scheduleTitle = paymentScheduleSection.previousElementSibling;
+                if (!printConfig.show_payment_schedule) {
+                    paymentScheduleSection.classList.add('print-hide');
+                    if (scheduleTitle && scheduleTitle.tagName === 'H3') {
+                        scheduleTitle.classList.add('print-hide');
+                    }
+                } else {
+                    paymentScheduleSection.classList.remove('print-hide');
+                    if (scheduleTitle && scheduleTitle.tagName === 'H3') {
+                        scheduleTitle.classList.remove('print-hide');
+                    }
+                }
+            }
+
+            // Sección de firma
+            const signatureSection = document.querySelector('.signature-section');
+            if (signatureSection) {
+                if (!printConfig.show_signature) {
+                    signatureSection.classList.add('print-hide');
+                } else {
+                    signatureSection.classList.remove('print-hide');
+                }
+            }
+
+            // Aplicar configuración a las tablas de impresión
+            applyInfoTableVisibility();
+            applySummaryTableVisibility();
+        }
+
+        function applyInfoTableVisibility() {
+            const clientInfoTablePrint = document.getElementById('clientInfoTablePrint');
+            const managerInfoTablePrint = document.getElementById('managerInfoTablePrint');
+            
+            // Tabla de información del cliente
+            if (clientInfoTablePrint) {
+                const clientNameRow = document.getElementById('clientNameRowTable');
+                const clientPhoneRow = document.getElementById('clientPhoneRowTable');
+                const clientAddressRow = document.getElementById('clientAddressRowTable');
+                
+                // Aplicar configuración de visibilidad
+                if (!printConfig.show_client_name && clientNameRow) {
+                    clientNameRow.classList.add('print-hide');
+                } else if (clientNameRow) {
+                    clientNameRow.classList.remove('print-hide');
+                }
+                
+                if (!printConfig.show_client_phone && clientPhoneRow) {
+                    clientPhoneRow.classList.add('print-hide');
+                } else if (clientPhoneRow) {
+                    clientPhoneRow.classList.remove('print-hide');
+                }
+                
+                if (!printConfig.show_client_address && clientAddressRow) {
+                    clientAddressRow.classList.add('print-hide');
+                } else if (clientAddressRow) {
+                    clientAddressRow.classList.remove('print-hide');
+                }
+                
+                // Ocultar toda la tabla si todos los campos están ocultos
+                const allClientHidden = !printConfig.show_client_name && 
+                                       !printConfig.show_client_phone && 
+                                       !printConfig.show_client_address;
+                if (allClientHidden) {
+                    clientInfoTablePrint.classList.add('print-hide');
+                } else {
+                    clientInfoTablePrint.classList.remove('print-hide');
+                }
+            }
+            
+            // Tabla de información del gestor
+            if (managerInfoTablePrint) {
+                const managerNameRow = document.getElementById('managerNameRowTable');
+                const managerPhoneRow = document.getElementById('managerPhoneRowTable');
+                
+                // Aplicar configuración de visibilidad
+                if (!printConfig.show_manager_name && managerNameRow) {
+                    managerNameRow.classList.add('print-hide');
+                } else if (managerNameRow) {
+                    managerNameRow.classList.remove('print-hide');
+                }
+                
+                if (!printConfig.show_manager_phone && managerPhoneRow) {
+                    managerPhoneRow.classList.add('print-hide');
+                } else if (managerPhoneRow) {
+                    managerPhoneRow.classList.remove('print-hide');
+                }
+                
+                // Ocultar toda la tabla si todos los campos están ocultos
+                const allManagerHidden = !printConfig.show_manager_name && 
+                                        !printConfig.show_manager_phone;
+                if (allManagerHidden) {
+                    managerInfoTablePrint.classList.add('print-hide');
+                } else {
+                    managerInfoTablePrint.classList.remove('print-hide');
+                }
+            }
+        }
+
+        function applySummaryTableVisibility() {
+            const summaryTable = document.querySelector('.summary-table');
+            if (!summaryTable) return;
+
+            const rows = summaryTable.querySelectorAll('tr');
+            
+            // Primera fila: Tipo y Monto Solicitado
+            if (rows[0]) {
+                const cells = rows[0].cells;
+                // Tipo de Préstamo
+                if (cells[0] && cells[1]) {
+                    if (!printConfig.show_loan_type) {
+                        cells[0].classList.add('print-hide');
+                        cells[1].classList.add('print-hide');
+                    } else {
+                        cells[0].classList.remove('print-hide');
+                        cells[1].classList.remove('print-hide');
+                    }
+                }
+                // Monto Solicitado
+                if (cells[2] && cells[3]) {
+                    if (!printConfig.show_loan_amount) {
+                        cells[2].classList.add('print-hide');
+                        cells[3].classList.add('print-hide');
+                    } else {
+                        cells[2].classList.remove('print-hide');
+                        cells[3].classList.remove('print-hide');
+                    }
+                }
+                // Ocultar fila si todas las celdas están ocultas
+                if (!printConfig.show_loan_type && !printConfig.show_loan_amount) {
+                    rows[0].classList.add('print-hide');
+                } else {
+                    rows[0].classList.remove('print-hide');
+                }
+            }
+
+            // Segunda fila: Prima y Monto a Financiar
+            if (rows[1]) {
+                const cells = rows[1].cells;
+                // Prima
+                if (cells[0] && cells[1]) {
+                    if (!printConfig.show_down_payment) {
+                        cells[0].classList.add('print-hide');
+                        cells[1].classList.add('print-hide');
+                    } else {
+                        cells[0].classList.remove('print-hide');
+                        cells[1].classList.remove('print-hide');
+                    }
+                }
+                // Monto a Financiar
+                if (cells[2] && cells[3]) {
+                    if (!printConfig.show_financed_amount) {
+                        cells[2].classList.add('print-hide');
+                        cells[3].classList.add('print-hide');
+                    } else {
+                        cells[2].classList.remove('print-hide');
+                        cells[3].classList.remove('print-hide');
+                    }
+                }
+                // Ocultar fila si todas las celdas están ocultas
+                if (!printConfig.show_down_payment && !printConfig.show_financed_amount) {
+                    rows[1].classList.add('print-hide');
+                } else {
+                    rows[1].classList.remove('print-hide');
+                }
+            }
+
+            // Tercera fila: Tasa de Interés y Cuota
+            if (rows[2]) {
+                const cells = rows[2].cells;
+                // Tasa de Interés
+                if (cells[0] && cells[1]) {
+                    if (!printConfig.show_interest_rate) {
+                        cells[0].classList.add('print-hide');
+                        cells[1].classList.add('print-hide');
+                    } else {
+                        cells[0].classList.remove('print-hide');
+                        cells[1].classList.remove('print-hide');
+                    }
+                }
+                // Cuota Mensual
+                if (cells[2] && cells[3]) {
+                    if (!printConfig.show_monthly_payment) {
+                        cells[2].classList.add('print-hide');
+                        cells[3].classList.add('print-hide');
+                    } else {
+                        cells[2].classList.remove('print-hide');
+                        cells[3].classList.remove('print-hide');
+                    }
+                }
+                // Ocultar fila si todas las celdas están ocultas
+                if (!printConfig.show_interest_rate && !printConfig.show_monthly_payment) {
+                    rows[2].classList.add('print-hide');
+                } else {
+                    rows[2].classList.remove('print-hide');
+                }
+            }
+
+            // Cuarta fila: Total de Intereses y Total a Pagar
+            if (rows[3]) {
+                const cells = rows[3].cells;
+                // Total de Intereses
+                if (cells[0] && cells[1]) {
+                    if (!printConfig.show_total_interest) {
+                        cells[0].classList.add('print-hide');
+                        cells[1].classList.add('print-hide');
+                    } else {
+                        cells[0].classList.remove('print-hide');
+                        cells[1].classList.remove('print-hide');
+                    }
+                }
+                // Total a Pagar
+                if (cells[2] && cells[3]) {
+                    if (!printConfig.show_total_amount) {
+                        cells[2].classList.add('print-hide');
+                        cells[3].classList.add('print-hide');
+                    } else {
+                        cells[2].classList.remove('print-hide');
+                        cells[3].classList.remove('print-hide');
+                    }
+                }
+                // Ocultar fila si todas las celdas están ocultas
+                if (!printConfig.show_total_interest && !printConfig.show_total_amount) {
+                    rows[3].classList.add('print-hide');
+                } else {
+                    rows[3].classList.remove('print-hide');
+                }
+            }
+        }
+
+        function updateUI(config) {
+            const businessName = config.business_name || defaultConfig.business_name;
+            const businessPhone = config.business_phone || defaultConfig.business_phone;
+            const businessEmail = config.business_email || defaultConfig.business_email;
+            const businessAddress = config.business_address || defaultConfig.business_address;
+            const whatsappNumber = config.whatsapp_number || defaultConfig.whatsapp_number;
+            const facebookUrl = config.facebook_url || defaultConfig.facebook_url;
+            const instagramUrl = config.instagram_url || defaultConfig.instagram_url;
+            const twitterUrl = config.twitter_url || defaultConfig.twitter_url;
+
+            document.getElementById('navBusinessName').textContent = businessName;
+            document.getElementById('printBusinessName').textContent = businessName;
+            document.getElementById('footerPhone').textContent = businessPhone;
+            document.getElementById('footerEmail').textContent = businessEmail;
+            document.getElementById('footerAddress').textContent = businessAddress;
+
+            // Actualizar encabezado de impresión
+            document.getElementById('printBusinessAddress').textContent = businessAddress;
+            
+            let contactInfo = [];
+            if (businessPhone) contactInfo.push(`📞 ${businessPhone}`);
+            if (businessEmail) contactInfo.push(`📧 ${businessEmail}`);
+            document.getElementById('printBusinessContact').textContent = contactInfo.join(' | ');
+
+            const whatsappFloat = document.getElementById('whatsappFloat');
+            if (whatsappNumber && whatsappNumber.trim() !== '') {
+                whatsappFloat.href = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
+                whatsappFloat.classList.remove('hidden');
+            } else {
+                whatsappFloat.classList.add('hidden');
+            }
+
+            const socialLinksContainer = document.getElementById('socialLinks');
+            socialLinksContainer.innerHTML = '';
+
+            if (facebookUrl && facebookUrl.trim() !== '') {
+                const fbLink = document.createElement('a');
+                fbLink.href = facebookUrl;
+                fbLink.className = 'social-link';
+                fbLink.target = '_blank';
+                fbLink.rel = 'noopener noreferrer';
+                fbLink.innerHTML = '<span>📘</span>';
+                socialLinksContainer.appendChild(fbLink);
+            }
+
+            if (instagramUrl && instagramUrl.trim() !== '') {
+                const igLink = document.createElement('a');
+                igLink.href = instagramUrl;
+                igLink.className = 'social-link';
+                igLink.target = '_blank';
+                igLink.rel = 'noopener noreferrer';
+                igLink.innerHTML = '<span>📷</span>';
+                socialLinksContainer.appendChild(igLink);
+            }
+
+            if (twitterUrl && twitterUrl.trim() !== '') {
+                const twLink = document.createElement('a');
+                twLink.href = twitterUrl;
+                twLink.className = 'social-link';
+                twLink.target = '_blank';
+                twLink.rel = 'noopener noreferrer';
+                twLink.innerHTML = '<span>��</span>';
+                socialLinksContainer.appendChild(twLink);
+            }
+        }
+
+        function nextStep(step) {
+            if (step === 3 && !validateStep2()) {
+                showNotification('Por favor complete todos los campos requeridos del préstamo');
+                return;
+            }
+
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+
+            document.querySelectorAll('.step').forEach(stepEl => {
+                const stepNum = parseInt(stepEl.dataset.step);
+                stepEl.classList.remove('active');
+                if (stepNum < step) {
+                    stepEl.classList.add('completed');
+                } else if (stepNum === step) {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('completed');
+                }
+            });
+
             currentStep = step;
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-            document.getElementById(`step${currentStep}`).classList.add('active');
         }
 
         function previousStep(step) {
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            
-            currentStep = step;
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('completed');
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-            document.getElementById(`step${currentStep}`).classList.add('active');
+            nextStep(step);
+        }
+
+        function validateStep2() {
+            const amount = parseFloat(document.getElementById('loanAmount').value);
+            const rate = parseFloat(document.getElementById('interestRate').value);
+            const payments = parseInt(document.getElementById('numberOfPayments').value);
+            return amount > 0 && rate > 0 && payments > 0;
         }
 
         function handleLoanTypeChange() {
             const loanType = document.getElementById('loanType').value;
             const monthlyPaymentItem = document.getElementById('monthlyPaymentItem');
-            const monthlyPaymentLabel = monthlyPaymentItem.querySelector('.summary-label');
             
-            if (loanType === 'capitalFijo') {
-                monthlyPaymentLabel.textContent = 'Primera Cuota';
-            } else if (loanType === 'soloInteres') {
-                monthlyPaymentLabel.textContent = 'Cuota de Interés';
+            if (loanType === 'abierto') {
+                monthlyPaymentItem.style.display = 'none';
             } else {
-                monthlyPaymentLabel.textContent = 'Cuota';
+                monthlyPaymentItem.style.display = 'block';
             }
         }
 
-        function calculateLoan() {
-            const clientName = document.getElementById('clientName').value || 'No especificado';
-            const clientPhone = document.getElementById('clientPhone').value || 'No especificado';
-            const clientAddress = document.getElementById('clientAddress').value || 'No especificado';
-            const managerName = document.getElementById('managerName').value || 'No especificado';
-            const managerPhone = document.getElementById('managerPhone').value || 'No especificado';
-            
-            const loanType = document.getElementById('loanType').value;
-            const interestType = document.getElementById('interestType').value;
-            const rateType = document.getElementById('rateType').value;
-            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
-            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
-            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
-            const numberOfPayments = parseInt(document.getElementById('numberOfPayments').value) || 0;
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ff5252;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-            if (loanAmount <= 0 || interestRate <= 0 || numberOfPayments <= 0) {
-                alert('Por favor, complete todos los campos obligatorios con valores válidos.');
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function calculateLoan() {
+            if (!validateStep2()) {
+                showNotification('Por favor complete todos los campos requeridos del préstamo');
                 return;
             }
 
+            const loanType = document.getElementById('loanType').value;
+            const interestType = document.getElementById('interestType').value;
+            const rateType = document.getElementById('rateType').value;
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const numberOfPayments = parseInt(document.getElementById('numberOfPayments').value);
+
             const financedAmount = loanAmount - downPayment;
 
-            let periodicRate = interestRate / 100;
-            let rateTypeText = '';
-            let paymentFrequency = 1;
+            let paymentSchedule = [];
+            let totalInterest = 0;
+            let totalAmount = 0;
+            let monthlyPayment = 0;
 
-            switch(rateType) {
-                case 'diaria':
-                    rateTypeText = 'Diaria';
-                    paymentFrequency = 1;
-                    break;
-                case 'semanal':
-                    rateTypeText = 'Semanal';
-                    paymentFrequency = 7;
-                    break;
-                case 'quincenal':
-                    rateTypeText = 'Quincenal';
-                    paymentFrequency = 15;
-                    break;
-                case 'mensual':
-                    rateTypeText = 'Mensual';
-                    paymentFrequency = 30;
-                    break;
-                case 'anual':
-                    rateTypeText = 'Anual';
-                    paymentFrequency = 365;
-                    break;
+            if (loanType === 'amortizado') {
+                const result = calculateAmortized(financedAmount, interestRate, numberOfPayments, rateType, interestType);
+                paymentSchedule = result.schedule;
+                totalInterest = result.totalInterest;
+                totalAmount = result.totalAmount;
+                monthlyPayment = result.monthlyPayment;
+            } else {
+                const result = calculateOpen(financedAmount, interestRate, numberOfPayments, rateType, interestType);
+                paymentSchedule = result.schedule;
+                totalInterest = result.totalInterest;
+                totalAmount = result.totalAmount;
             }
 
-            let loanTypeText = '';
-            switch(loanType) {
-                case 'amortizado':
-                    loanTypeText = 'Amortizado (Cuotas Niveladas)';
-                    break;
-                case 'capitalFijo':
-                    loanTypeText = 'Capital Fijo (Cuota Decreciente)';
-                    break;
-                case 'capitalMasInteres':
-                    loanTypeText = 'Capital + Interés (Tabla Simple)';
-                    break;
-                case 'soloInteres':
-                    loanTypeText = 'Solo Interés + Capital al Final';
-                    break;
+            displayResults(loanType, loanAmount, downPayment, financedAmount, interestRate, rateType, interestType, totalInterest, totalAmount, monthlyPayment, paymentSchedule);
+
+            document.getElementById('resultSection').classList.add('active');
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateAmortized(principal, rate, payments, rateType, interestType) {
+            // Si la tasa es anual, se divide entre 12 para obtener la tasa mensual
+            let periodRate = rate / 100;
+            if (rateType === 'anual') {
+                periodRate = periodRate / 12;
             }
 
-            let interestTypeText = '';
-            switch(interestType) {
-                case 'simple':
-                    interestTypeText = 'Simple';
-                    break;
-                case 'redescontado':
-                    interestTypeText = 'Redescontado';
-                    break;
-                case 'compuesto':
-                    interestTypeText = 'Compuesto';
-                    break;
+            let monthlyPayment;
+            let totalInterest;
+            let schedule = [];
+
+            // INTERÉS SIMPLE: Cuando el usuario selecciona "simple"
+            if (interestType === 'simple') {
+                // Interés Simple: Capital × Tasa × Tiempo
+                // Total a pagar = Capital + Interés Total
+                // Cuota = Total a pagar / Cantidad de pagos
+                totalInterest = principal * periodRate * payments;
+                const totalAmount = principal + totalInterest;
+                monthlyPayment = totalAmount / payments;
+                
+                let balance = principal;
+                const principalPayment = principal / payments;
+                const interestPayment = totalInterest / payments;
+
+                for (let i = 1; i <= payments; i++) {
+                    const startBalance = balance;
+                    balance -= principalPayment;
+
+                    schedule.push({
+                        number: i,
+                        date: getPaymentDate(i, rateType),
+                        startBalance: startBalance,
+                        payment: monthlyPayment,
+                        principal: principalPayment,
+                        interest: interestPayment,
+                        endBalance: Math.max(0, balance)
+                    });
+                }
+            } 
+            // INTERÉS REDESCONTADO: Cuando el usuario selecciona "redescontado"
+            else {
+                // Interés Redescontado: Cada pago incluye interés sobre saldo restante + amortización de capital
+                // Fórmula de cuota fija: P = (Principal * r) / (1 - (1 + r)^-n)
+                if (periodRate === 0) {
+                    monthlyPayment = principal / payments;
+                } else {
+                    monthlyPayment = (principal * periodRate) / (1 - Math.pow(1 + periodRate, -payments));
+                }
+                
+                let balance = principal;
+                totalInterest = 0;
+
+                for (let i = 1; i <= payments; i++) {
+                    const interestPayment = balance * periodRate;
+                    const principalPayment = monthlyPayment - interestPayment;
+                    const startBalance = balance;
+                    balance -= principalPayment;
+                    totalInterest += interestPayment;
+
+                    schedule.push({
+                        number: i,
+                        date: getPaymentDate(i, rateType),
+                        startBalance: startBalance,
+                        payment: monthlyPayment,
+                        principal: principalPayment,
+                        interest: interestPayment,
+                        endBalance: Math.max(0, balance)
+                    });
+                }
+            }
+
+            const totalAmount = principal + totalInterest;
+
+            return { schedule, totalInterest, totalAmount, monthlyPayment };
+        }
+
+        function calculateOpen(principal, rate, payments, rateType, interestType) {
+            // Si la tasa es anual, se divide entre 12 para obtener la tasa mensual
+            let periodRate = rate / 100;
+            if (rateType === 'anual') {
+                periodRate = periodRate / 12;
             }
 
             let schedule = [];
             let totalInterest = 0;
-            let monthlyPayment = 0;
+            let balance = principal;
 
-            if (interestType === 'redescontado') {
-                totalInterest = financedAmount * periodicRate * numberOfPayments;
-                const totalAmount = financedAmount + totalInterest;
-                monthlyPayment = totalAmount / numberOfPayments;
+            // INTERÉS SIMPLE: Cuando el usuario selecciona "simple"
+            if (interestType === 'simple') {
+                // Interés Simple: Capital × Tasa × Tiempo
+                // Se paga el interés prorrateado en cada período y el capital al final
+                totalInterest = principal * periodRate * payments;
+                const interestPerPayment = totalInterest / payments;
 
-                let balance = totalAmount;
-                for (let i = 1; i <= numberOfPayments; i++) {
-                    const interest = (totalInterest / numberOfPayments);
-                    const principal = monthlyPayment - interest;
-                    balance -= monthlyPayment;
-
-                    schedule.push({
-                        payment: i,
-                        amount: monthlyPayment,
-                        principal: principal,
-                        interest: interest,
-                        balance: Math.max(0, balance)
-                    });
+                for (let i = 1; i <= payments; i++) {
+                    // Si es el ��ltimo pago, se incluye el principal
+                    if (i === payments) {
+                        schedule.push({
+                            number: i,
+                            date: getPaymentDate(i, rateType),
+                            startBalance: principal,
+                            payment: interestPerPayment + principal,
+                            principal: principal,
+                            interest: interestPerPayment,
+                            endBalance: 0
+                        });
+                    } else {
+                        schedule.push({
+                            number: i,
+                            date: getPaymentDate(i, rateType),
+                            startBalance: principal,
+                            payment: interestPerPayment,
+                            principal: 0,
+                            interest: interestPerPayment,
+                            endBalance: principal
+                        });
+                    }
                 }
-            } else if (loanType === 'amortizado') {
-                if (interestType === 'simple') {
-                    monthlyPayment = (financedAmount * periodicRate * (1 + periodicRate * numberOfPayments)) / numberOfPayments;
-                } else {
-                    monthlyPayment = financedAmount * (periodicRate * Math.pow(1 + periodicRate, numberOfPayments)) / (Math.pow(1 + periodicRate, numberOfPayments) - 1);
-                }
+            } 
+            // INTERÉS REDESCONTADO: Cuando el usuario selecciona "redescontado"
+            else {
+                // Préstamo Abierto con Interés Redescontado: Solo se pagan intereses en cada período
+                // El capital se paga completo al final
+                for (let i = 1; i <= payments; i++) {
+                    const interestPayment = principal * periodRate; // Interés siempre sobre el principal completo
+                    const startBalance = principal;
+                    totalInterest += interestPayment;
 
-                let balance = financedAmount;
-                for (let i = 1; i <= numberOfPayments; i++) {
-                    const interest = balance * periodicRate;
-                    const principal = monthlyPayment - interest;
-                    balance -= principal;
-                    totalInterest += interest;
-
-                    schedule.push({
-                        payment: i,
-                        amount: monthlyPayment,
-                        principal: principal,
-                        interest: interest,
-                        balance: Math.max(0, balance)
-                    });
-                }
-            } else if (loanType === 'capitalFijo') {
-                const principalPayment = financedAmount / numberOfPayments;
-                let balance = financedAmount;
-
-                for (let i = 1; i <= numberOfPayments; i++) {
-                    const interest = balance * periodicRate;
-                    const payment = principalPayment + interest;
-                    balance -= principalPayment;
-                    totalInterest += interest;
-
-                    schedule.push({
-                        payment: i,
-                        amount: payment,
-                        principal: principalPayment,
-                        interest: interest,
-                        balance: Math.max(0, balance)
-                    });
-                }
-                monthlyPayment = schedule[0].amount;
-            } else if (loanType === 'capitalMasInteres') {
-                totalInterest = financedAmount * periodicRate * numberOfPayments;
-                const totalAmount = financedAmount + totalInterest;
-                monthlyPayment = totalAmount / numberOfPayments;
-
-                const principalPayment = financedAmount / numberOfPayments;
-                const interestPayment = totalInterest / numberOfPayments;
-                let balance = financedAmount;
-
-                for (let i = 1; i <= numberOfPayments; i++) {
-                    balance -= principalPayment;
-
-                    schedule.push({
-                        payment: i,
-                        amount: monthlyPayment,
-                        principal: principalPayment,
-                        interest: interestPayment,
-                        balance: Math.max(0, balance)
-                    });
-                }
-            } else if (loanType === 'soloInteres') {
-                monthlyPayment = financedAmount * periodicRate;
-                totalInterest = monthlyPayment * numberOfPayments;
-
-                for (let i = 1; i <= numberOfPayments; i++) {
-                    const isLastPayment = i === numberOfPayments;
-                    const payment = isLastPayment ? monthlyPayment + financedAmount : monthlyPayment;
-                    const principal = isLastPayment ? financedAmount : 0;
-                    const balance = isLastPayment ? 0 : financedAmount;
-
-                    schedule.push({
-                        payment: i,
-                        amount: payment,
-                        principal: principal,
-                        interest: monthlyPayment,
-                        balance: balance
-                    });
+                    // Si es el último pago, se incluye el principal
+                    if (i === payments) {
+                        schedule.push({
+                            number: i,
+                            date: getPaymentDate(i, rateType),
+                            startBalance: startBalance,
+                            payment: interestPayment + principal,
+                            principal: principal,
+                            interest: interestPayment,
+                            endBalance: 0
+                        });
+                    } else {
+                        schedule.push({
+                            number: i,
+                            date: getPaymentDate(i, rateType),
+                            startBalance: startBalance,
+                            payment: interestPayment,
+                            principal: 0,
+                            interest: interestPayment,
+                            endBalance: principal
+                        });
+                    }
                 }
             }
 
-            const totalAmount = financedAmount + totalInterest;
+            const totalAmount = principal + totalInterest;
 
-            document.getElementById('resultClientName').textContent = clientName;
-            document.getElementById('resultClientPhone').textContent = clientPhone;
-            document.getElementById('resultClientAddress').textContent = clientAddress;
-            document.getElementById('resultManagerName').textContent = managerName;
-            document.getElementById('resultManagerPhone').textContent = managerPhone;
+            return { schedule, totalInterest, totalAmount };
+        }
 
-            document.getElementById('resultClientNameTable').textContent = clientName;
-            document.getElementById('resultClientPhoneTable').textContent = clientPhone;
-            document.getElementById('resultClientAddressTable').textContent = clientAddress;
-            document.getElementById('resultManagerNameTable').textContent = managerName;
-            document.getElementById('resultManagerPhoneTable').textContent = managerPhone;
-
-            document.getElementById('resultLoanType').textContent = loanTypeText;
-            document.getElementById('resultLoanTypeTable').textContent = loanTypeText;
-            document.getElementById('resultLoanAmount').textContent = `L ${loanAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultLoanAmountTable').textContent = `L ${loanAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultDownPayment').textContent = `L ${downPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultDownPaymentTable').textContent = `L ${downPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultFinancedAmount').textContent = `L ${financedAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultFinancedAmountTable').textContent = `L ${financedAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultInterestRate').textContent = `${interestRate}% ${rateTypeText} (${interestTypeText})`;
-            document.getElementById('resultInterestRateTable').textContent = `${interestRate}% ${rateTypeText} (${interestTypeText})`;
-            document.getElementById('resultTotalInterest').textContent = `L ${totalInterest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultTotalInterestTable').textContent = `L ${totalInterest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultTotalAmount').textContent = `L ${totalAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultTotalAmountTable').textContent = `L ${totalAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultMonthlyPayment').textContent = `L ${monthlyPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            document.getElementById('resultMonthlyPaymentTable').textContent = `L ${monthlyPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-            const monthlyPaymentLabel = document.querySelector('#monthlyPaymentItem .summary-label');
-            const monthlyPaymentLabelTable = document.getElementById('monthlyPaymentLabelTable');
-            if (loanType === 'capitalFijo') {
-                monthlyPaymentLabel.textContent = 'Primera Cuota';
-                monthlyPaymentLabelTable.textContent = 'Primera Cuota';
-            } else if (loanType === 'soloInteres') {
-                monthlyPaymentLabel.textContent = 'Cuota de Interés';
-                monthlyPaymentLabelTable.textContent = 'Cuota de Interés';
-            } else {
-                monthlyPaymentLabel.textContent = 'Cuota';
-                monthlyPaymentLabelTable.textContent = 'Cuota';
-            }
-
-            const tableBody = document.getElementById('paymentTableBody');
-            tableBody.innerHTML = '';
-            
+        function getPaymentDate(paymentNumber, rateType) {
             const today = new Date();
-            schedule.forEach(payment => {
-                const paymentDate = new Date(today);
-                paymentDate.setDate(today.getDate() + (payment.payment * paymentFrequency));
+            let date = new Date(today);
+
+            switch(rateType) {
+                case 'diaria':
+                    date.setDate(today.getDate() + paymentNumber);
+                    break;
+                case 'semanal':
+                    date.setDate(today.getDate() + (paymentNumber * 7));
+                    break;
+                case 'quincenal':
+                    date.setDate(today.getDate() + (paymentNumber * 15));
+                    break;
+                case 'mensual':
+                case 'anual':
+                    // Tanto mensual como anual usan pagos mensuales
+                    date.setMonth(today.getMonth() + paymentNumber);
+                    break;
+            }
+
+            return date.toLocaleDateString('es-HN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        }
+
+        function displayResults(loanType, loanAmount, downPayment, financedAmount, interestRate, rateType, interestType, totalInterest, totalAmount, monthlyPayment, paymentSchedule) {
+            const clientName = document.getElementById('clientName').value.trim();
+            const clientPhone = document.getElementById('clientPhone').value.trim();
+            const clientAddress = document.getElementById('clientAddress').value.trim();
+            const managerName = document.getElementById('managerName').value.trim();
+            const managerPhone = document.getElementById('managerPhone').value.trim();
+
+            // Mostrar u ocultar información del cliente
+            const hasClientInfo = clientName || clientPhone || clientAddress;
+            const clientInfoBox = document.getElementById('clientInfoBox');
+            
+            if (hasClientInfo) {
+                clientInfoBox.style.display = 'block';
                 
+                // Mostrar/ocultar cada campo individualmente
+                document.getElementById('clientNameRow').style.display = clientName ? 'flex' : 'none';
+                document.getElementById('clientPhoneRow').style.display = clientPhone ? 'flex' : 'none';
+                document.getElementById('clientAddressRow').style.display = clientAddress ? 'flex' : 'none';
+                
+                document.getElementById('resultClientName').textContent = clientName;
+                document.getElementById('resultClientPhone').textContent = clientPhone;
+                document.getElementById('resultClientAddress').textContent = clientAddress;
+                
+                document.getElementById('resultClientNameTable').textContent = clientName;
+                document.getElementById('resultClientPhoneTable').textContent = clientPhone;
+                document.getElementById('resultClientAddressTable').textContent = clientAddress;
+            } else {
+                clientInfoBox.style.display = 'none';
+            }
+
+            // Mostrar u ocultar información del gestor
+            const hasManagerInfo = managerName || managerPhone;
+            const managerInfoBox = document.getElementById('managerInfoBox');
+            
+            if (hasManagerInfo) {
+                managerInfoBox.style.display = 'block';
+                
+                // Mostrar/ocultar cada campo individualmente
+                document.getElementById('managerNameRow').style.display = managerName ? 'flex' : 'none';
+                document.getElementById('managerPhoneRow').style.display = managerPhone ? 'flex' : 'none';
+                
+                document.getElementById('resultManagerName').textContent = managerName;
+                document.getElementById('resultManagerPhone').textContent = managerPhone;
+                
+                document.getElementById('resultManagerNameTable').textContent = managerName;
+                document.getElementById('resultManagerPhoneTable').textContent = managerPhone;
+            } else {
+                managerInfoBox.style.display = 'none';
+            }
+
+            // Ocultar toda la sección info-section si no hay datos de cliente ni gestor
+            const infoSection = document.getElementById('infoSection');
+            const clientInfoTablePrint = document.getElementById('clientInfoTablePrint');
+            const managerInfoTablePrint = document.getElementById('managerInfoTablePrint');
+            
+            if (!hasClientInfo && !hasManagerInfo) {
+                infoSection.style.display = 'none';
+                if (clientInfoTablePrint) {
+                    clientInfoTablePrint.classList.add('print-hide');
+                }
+                if (managerInfoTablePrint) {
+                    managerInfoTablePrint.classList.add('print-hide');
+                }
+            } else {
+                infoSection.style.display = 'grid';
+                
+                // Mostrar u ocultar tabla de cliente según tenga datos
+                if (clientInfoTablePrint) {
+                    if (hasClientInfo) {
+                        clientInfoTablePrint.classList.remove('print-hide');
+                        // Ocultar filas individuales según datos Y según configuración
+                        const clientNameRowTable = document.getElementById('clientNameRowTable');
+                        const clientPhoneRowTable = document.getElementById('clientPhoneRowTable');
+                        const clientAddressRowTable = document.getElementById('clientAddressRowTable');
+                        
+                        if (clientName && printConfig.show_client_name) {
+                            clientNameRowTable.style.display = 'table-row';
+                            clientNameRowTable.classList.remove('print-hide');
+                        } else {
+                            clientNameRowTable.style.display = 'none';
+                            clientNameRowTable.classList.add('print-hide');
+                        }
+                        
+                        if (clientPhone && printConfig.show_client_phone) {
+                            clientPhoneRowTable.style.display = 'table-row';
+                            clientPhoneRowTable.classList.remove('print-hide');
+                        } else {
+                            clientPhoneRowTable.style.display = 'none';
+                            clientPhoneRowTable.classList.add('print-hide');
+                        }
+                        
+                        if (clientAddress && printConfig.show_client_address) {
+                            clientAddressRowTable.style.display = 'table-row';
+                            clientAddressRowTable.classList.remove('print-hide');
+                        } else {
+                            clientAddressRowTable.style.display = 'none';
+                            clientAddressRowTable.classList.add('print-hide');
+                        }
+                        
+                        // Verificar si todas las filas están ocultas
+                        const allClientRowsHidden = (!clientName || !printConfig.show_client_name) &&
+                                                   (!clientPhone || !printConfig.show_client_phone) &&
+                                                   (!clientAddress || !printConfig.show_client_address);
+                        if (allClientRowsHidden) {
+                            clientInfoTablePrint.classList.add('print-hide');
+                        }
+                    } else {
+                        clientInfoTablePrint.classList.add('print-hide');
+                    }
+                }
+                
+                // Mostrar u ocultar tabla de gestor según tenga datos
+                if (managerInfoTablePrint) {
+                    if (hasManagerInfo) {
+                        managerInfoTablePrint.classList.remove('print-hide');
+                        // Ocultar filas individuales según datos Y según configuración
+                        const managerNameRowTable = document.getElementById('managerNameRowTable');
+                        const managerPhoneRowTable = document.getElementById('managerPhoneRowTable');
+                        
+                        if (managerName && printConfig.show_manager_name) {
+                            managerNameRowTable.style.display = 'table-row';
+                            managerNameRowTable.classList.remove('print-hide');
+                        } else {
+                            managerNameRowTable.style.display = 'none';
+                            managerNameRowTable.classList.add('print-hide');
+                        }
+                        
+                        if (managerPhone && printConfig.show_manager_phone) {
+                            managerPhoneRowTable.style.display = 'table-row';
+                            managerPhoneRowTable.classList.remove('print-hide');
+                        } else {
+                            managerPhoneRowTable.style.display = 'none';
+                            managerPhoneRowTable.classList.add('print-hide');
+                        }
+                        
+                        // Verificar si todas las filas están ocultas
+                        const allManagerRowsHidden = (!managerName || !printConfig.show_manager_name) &&
+                                                     (!managerPhone || !printConfig.show_manager_phone);
+                        if (allManagerRowsHidden) {
+                            managerInfoTablePrint.classList.add('print-hide');
+                        }
+                    } else {
+                        managerInfoTablePrint.classList.add('print-hide');
+                    }
+                }
+            }
+            
+            // También ocultar el encabezado si no hay información
+            const summaryHeading = document.querySelector('#resultSection h2');
+            if (summaryHeading) {
+                if (!hasClientInfo && !hasManagerInfo) {
+                    // Mantener el encabezado visible pero sin margen extra
+                    summaryHeading.style.marginBottom = '1.5rem';
+                } else {
+                    summaryHeading.style.marginBottom = '1.5rem';
+                }
+            }
+
+            const loanTypeText = loanType === 'amortizado' ? 'Amortizado' : 'Abierto';
+            const rateTypeText = {
+                'diaria': 'Diaria',
+                'semanal': 'Semanal',
+                'quincenal': 'Quincenal',
+                'mensual': 'Mensual',
+                'anual': 'Anual'
+            }[rateType];
+            const interestTypeText = interestType === 'simple' ? 'Simple' : 'Redescontado';
+
+            const fullLoanType = `${loanTypeText} - ${interestTypeText}`;
+            const fullInterestRate = `${interestRate}% ${rateTypeText}`;
+
+            document.getElementById('resultLoanType').textContent = fullLoanType;
+            document.getElementById('resultLoanAmount').textContent = formatCurrency(loanAmount);
+            document.getElementById('resultDownPayment').textContent = formatCurrency(downPayment);
+            document.getElementById('resultFinancedAmount').textContent = formatCurrency(financedAmount);
+            document.getElementById('resultInterestRate').textContent = fullInterestRate;
+            document.getElementById('resultTotalInterest').textContent = formatCurrency(totalInterest);
+            document.getElementById('resultTotalAmount').textContent = formatCurrency(totalAmount);
+
+            document.getElementById('resultLoanTypeTable').textContent = fullLoanType;
+            document.getElementById('resultLoanAmountTable').textContent = formatCurrency(loanAmount);
+            document.getElementById('resultDownPaymentTable').textContent = formatCurrency(downPayment);
+            document.getElementById('resultFinancedAmountTable').textContent = formatCurrency(financedAmount);
+            document.getElementById('resultInterestRateTable').textContent = fullInterestRate;
+            document.getElementById('resultTotalInterestTable').textContent = formatCurrency(totalInterest);
+            document.getElementById('resultTotalAmountTable').textContent = formatCurrency(totalAmount);
+            
+            if (loanType === 'amortizado') {
+                document.getElementById('resultMonthlyPayment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('resultMonthlyPaymentTable').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('monthlyPaymentLabelTable').style.display = '';
+                document.getElementById('resultMonthlyPaymentTable').style.display = '';
+            } else {
+                document.getElementById('monthlyPaymentLabelTable').style.display = 'none';
+                document.getElementById('resultMonthlyPaymentTable').style.display = 'none';
+            }
+
+            const tbody = document.getElementById('paymentTableBody');
+            tbody.innerHTML = '';
+
+            paymentSchedule.forEach(payment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${payment.payment}</td>
-                    <td>${paymentDate.toLocaleDateString('es-HN')}</td>
-                    <td>L ${payment.amount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td>L ${payment.principal.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td>L ${payment.interest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                    <td>L ${payment.balance.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td>${payment.number}</td>
+                    <td>${payment.date}</td>
+                    <td>${formatCurrency(payment.startBalance)}</td>
+                    <td>${formatCurrency(payment.payment)}</td>
+                    <td>${formatCurrency(payment.principal)}</td>
+                    <td>${formatCurrency(payment.interest)}</td>
+                    <td>${formatCurrency(payment.endBalance)}</td>
                 `;
-                tableBody.appendChild(row);
+                tbody.appendChild(row);
             });
+
+            const printDate = new Date().toLocaleDateString('es-HN', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('printDate').textContent = `Generado: ${printDate}`;
 
             document.getElementById('signatureName').textContent = clientName;
 
-            const businessName = document.getElementById('navBusinessName').textContent;
-            document.getElementById('printBusinessName').textContent = businessName;
-            document.getElementById('printBusinessAddress').textContent = 'Juticalpa, Olancho, Honduras';
-            document.getElementById('printBusinessContact').textContent = 'Tel: +504 3348-8648 | info@grupoinversiones.com';
-            document.getElementById('printDate').textContent = `Fecha de emisión: ${today.toLocaleDateString('es-HN')}`;
+            document.getElementById('printFloat').classList.add('active');
 
-            const logoSrc = document.querySelector('.logo').src;
-            document.getElementById('printLogo').src = logoSrc;
+            // Aplicar configuración de visibilidad
+            applyPrintConfig();
+        }
 
-            document.getElementById('resultSection').classList.add('active');
-            document.getElementById('printFloatBtn').classList.add('active');
-            
-            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        function formatCurrency(amount) {
+            return `L ${amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
         }
 
         function resetCalculator() {
@@ -1497,95 +2124,41 @@
             document.getElementById('numberOfPayments').value = '';
             document.getElementById('managerName').value = '';
             document.getElementById('managerPhone').value = '';
-            
+
             document.getElementById('resultSection').classList.remove('active');
-            document.getElementById('printFloatBtn').classList.remove('active');
+            document.getElementById('printFloat').classList.remove('active');
             
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active', 'completed');
-            });
-            document.querySelectorAll('.step-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            currentStep = 1;
-            document.querySelector('[data-step="1"]').classList.add('active');
-            document.getElementById('step1').classList.add('active');
-            
+            nextStep(1);
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openPrintSettings() {
-            document.getElementById('printSettingsModal').classList.add('active');
-        }
-
-        function closePrintSettings() {
-            document.getElementById('printSettingsModal').classList.remove('active');
-        }
-
-        function applyPrintSettings() {
-            Object.keys(printSettings).forEach(key => {
-                const checkbox = document.getElementById(key);
-                if (checkbox) {
-                    printSettings[key] = checkbox.checked;
-                }
-            });
-
-            updatePrintVisibility();
-            closePrintSettings();
-        }
-
-        function resetPrintSettings() {
-            Object.keys(printSettings).forEach(key => {
-                printSettings[key] = true;
-                const checkbox = document.getElementById(key);
-                if (checkbox) {
-                    checkbox.checked = true;
-                }
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig: defaultConfig,
+                onConfigChange: async (config) => {
+                    updateUI(config);
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["business_name", config.business_name || defaultConfig.business_name],
+                    ["business_phone", config.business_phone || defaultConfig.business_phone],
+                    ["business_email", config.business_email || defaultConfig.business_email],
+                    ["business_address", config.business_address || defaultConfig.business_address],
+                    ["whatsapp_number", config.whatsapp_number || defaultConfig.whatsapp_number],
+                    ["facebook_url", config.facebook_url || defaultConfig.facebook_url],
+                    ["instagram_url", config.instagram_url || defaultConfig.instagram_url],
+                    ["twitter_url", config.twitter_url || defaultConfig.twitter_url]
+                ])
             });
         }
 
-        function updatePrintVisibility() {
-            document.getElementById('printHeaderSection').style.display = printSettings.showPrintHeader ? 'block' : 'none';
-            document.getElementById('printLogo').style.display = printSettings.showPrintLogo ? 'inline' : 'none';
-            document.getElementById('printDate').style.display = printSettings.showPrintDate ? 'block' : 'none';
-
-            const clientInfoBox = document.getElementById('clientInfoBox');
-            clientInfoBox.style.display = printSettings.showClientInfo ? 'block' : 'none';
-            document.getElementById('clientNameRow').style.display = printSettings.showClientName ? 'flex' : 'none';
-            document.getElementById('clientPhoneRow').style.display = printSettings.showClientPhone ? 'flex' : 'none';
-            document.getElementById('clientAddressRow').style.display = printSettings.showClientAddress ? 'flex' : 'none';
-
-            document.getElementById('clientNameRowTable').style.display = printSettings.showClientName ? 'table-row' : 'none';
-            document.getElementById('clientPhoneRowTable').style.display = printSettings.showClientPhone ? 'table-row' : 'none';
-            document.getElementById('clientAddressRowTable').style.display = printSettings.showClientAddress ? 'table-row' : 'none';
-
-            const managerInfoBox = document.getElementById('managerInfoBox');
-            managerInfoBox.style.display = printSettings.showManagerInfo ? 'block' : 'none';
-            document.getElementById('managerNameRow').style.display = printSettings.showManagerName ? 'flex' : 'none';
-            document.getElementById('managerPhoneRow').style.display = printSettings.showManagerPhone ? 'flex' : 'none';
-
-            document.getElementById('managerNameRowTable').style.display = printSettings.showManagerName ? 'table-row' : 'none';
-            document.getElementById('managerPhoneRowTable').style.display = printSettings.showManagerPhone ? 'table-row' : 'none';
-
-            document.getElementById('summaryLoanType').style.display = printSettings.showLoanType ? 'block' : 'none';
-            document.getElementById('summaryLoanAmount').style.display = printSettings.showLoanAmount ? 'block' : 'none';
-            document.getElementById('summaryDownPayment').style.display = printSettings.showDownPayment ? 'block' : 'none';
-            document.getElementById('summaryFinancedAmount').style.display = printSettings.showFinancedAmount ? 'block' : 'none';
-            document.getElementById('summaryInterestRate').style.display = printSettings.showInterestRate ? 'block' : 'none';
-            document.getElementById('summaryTotalInterest').style.display = printSettings.showTotalInterest ? 'block' : 'none';
-            document.getElementById('summaryTotalAmount').style.display = printSettings.showTotalAmount ? 'block' : 'none';
-            document.getElementById('monthlyPaymentItem').style.display = printSettings.showMonthlyPayment ? 'block' : 'none';
-
-            document.getElementById('scheduleSection').style.display = printSettings.showSchedule ? 'block' : 'none';
-            document.getElementById('signatureSection').style.display = printSettings.showSignature ? 'block' : 'none';
-        }
-
-        document.getElementById('printSettingsModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePrintSettings();
-            }
-        });
+        updateUI(defaultConfig);
     </script>
- </body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a0e3033e46e31c5',t:'MTc2MzUzOTM3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
