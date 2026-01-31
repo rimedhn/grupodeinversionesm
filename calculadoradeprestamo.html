@@ -830,8 +830,7 @@
  </head>
  <body>
   <nav class="navbar">
-   <div class="logo-section">
-    <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" class="logo" onerror="this.style.display='none'">
+   <div class="logo-section"><img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo del Negocio" class="logo" onerror="this.style.display='none'">
     <div class="business-name" id="navBusinessName">
      GRUPO DE INVERSIONES MÚLTIPLES
     </div>
@@ -885,11 +884,11 @@
     </div>
     <div class="step-content" id="step2">
      <h2 style="margin-bottom: 1.5rem; color: #667eea;">Paso 2: Datos del Préstamo</h2>
-     <div class="form-group"><label for="loanType">Tipo de Préstamo *</label> <select id="loanType" onchange="handleLoanTypeChange()"> <option value="amortizado">Amortizado (Cuotas Niveladas)</option> <option value="personalizado">Personalizado (Interés sobre Saldo)</option> </select>
+     <div class="form-group"><label for="loanType">Tipo de Préstamo *</label> <select id="loanType" onchange="handleLoanTypeChange()"> <option value="amortizado">Amortizado (Cuotas Niveladas)</option> <option value="capitalFijo">Capital Fijo (Cuota Decreciente)</option> <option value="capitalMasInteres">Capital + Interés (Tabla Simple)</option> <option value="soloInteres">Solo Interés + Capital al Final</option> </select>
      </div>
-     <div class="form-group"><label for="interestType">Tipo de Interés *</label> <select id="interestType"> <option value="simple">Simple</option> <option value="redescontado">Redescontado</option> </select>
+     <div class="form-group"><label for="interestType">Tipo de Interés *</label> <select id="interestType"> <option value="simple">Simple</option> <option value="redescontado">Redescontado</option> <option value="compuesto">Compuesto</option> </select>
      </div>
-     <div class="form-group"><label for="rateType">Tipo de Tasa *</label> <select id="rateType"> <option value="diaria">Diaria</option> <option value="semanal">Semanal</option> <option value="quincenal">Quincenal</option> <option value="mensual">Mensual</option> </select>
+     <div class="form-group"><label for="rateType">Tipo de Tasa *</label> <select id="rateType"> <option value="diaria">Diaria</option> <option value="semanal">Semanal</option> <option value="quincenal">Quincenal</option> <option value="mensual">Mensual</option> <option value="anual">Anual</option> </select>
      </div>
      <div class="form-group"><label for="loanAmount">Monto del Préstamo *</label> <input type="number" id="loanAmount" required placeholder="0.00" step="0.01" min="0">
      </div>
@@ -1046,36 +1045,36 @@
        <tr>
         <td class="label-cell">Total a Pagar</td>
         <td id="resultTotalAmountTable"></td>
-        <td class="label-cell">Cuota</td>
+        <td class="label-cell" id="monthlyPaymentLabelTable">Cuota</td>
         <td id="resultMonthlyPaymentTable"></td>
        </tr>
       </tbody>
      </table>
-     <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #667eea;">Tabla de Amortización</h3>
-     <div class="payment-schedule">
+     <div class="payment-schedule" id="scheduleSection">
+      <h3 style="margin-bottom: 1rem; color: #667eea;">Plan de Pagos</h3>
       <table id="paymentTable">
        <thead>
         <tr>
          <th>Pago #</th>
          <th>Fecha</th>
-         <th>Saldo Inicial</th>
          <th>Cuota</th>
+         <th>Capital</th>
          <th>Interés</th>
-         <th>Abono Capital</th>
-         <th>Saldo Final</th>
+         <th>Saldo</th>
         </tr>
        </thead>
-       <tbody id="paymentTableBody"></tbody>
+       <tbody id="paymentTableBody">
+       </tbody>
       </table>
      </div>
      <div class="signature-section" id="signatureSection">
       <div class="signature-box">
        <div class="signature-line"></div>
        <div class="signature-name" id="signatureName">Nombre del Cliente</div>
-       <div class="signature-label">Firma del Cliente</div>
+       <div class="signature-label">Firma y Fecha</div>
       </div>
      </div>
-     <div class="button-group print-hide"><button class="btn btn-secondary" onclick="resetCalculator()">Nueva Cotización</button>
+     <div class="button-group print-hide" style="margin-top: 2rem;"><button class="btn btn-secondary" onclick="resetCalculator()">Nueva Cotización</button> <button class="btn btn-primary" onclick="window.print()">Imprimir / Guardar PDF</button>
      </div>
     </div>
    </div>
@@ -1083,459 +1082,436 @@
   <div class="modal-overlay" id="printSettingsModal">
    <div class="modal-content">
     <div class="modal-header">
-     <h2>⚙️ Configurar Reporte PDF</h2><button class="close-btn" onclick="closePrintSettings()">×</button>
+     <h2>Configuración de Reporte PDF</h2><button class="close-btn" onclick="closePrintSettings()">×</button>
     </div>
     <div class="config-section">
-     <h3>📄 Encabezado del Reporte</h3>
+     <h3>Encabezado del Reporte</h3>
      <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showPrintHeader" checked> <label for="showPrintHeader">Mostrar Encabezado Completo</label>
+      <div class="checkbox-item"><input type="checkbox" id="showPrintHeader" checked> <label for="showPrintHeader">Mostrar encabezado completo</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showPrintLogo" checked> <label for="showPrintLogo">Mostrar Logo</label>
+      <div class="checkbox-item"><input type="checkbox" id="showPrintLogo" checked> <label for="showPrintLogo">Mostrar logo</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showPrintDate" checked> <label for="showPrintDate">Mostrar Fecha de Emisión</label>
+      <div class="checkbox-item"><input type="checkbox" id="showPrintDate" checked> <label for="showPrintDate">Mostrar fecha</label>
       </div>
      </div>
     </div>
     <div class="config-section">
-     <h3>👤 Información del Cliente</h3>
+     <h3>Información del Cliente</h3>
      <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showClientInfo" checked> <label for="showClientInfo">Mostrar Sección Completa</label>
+      <div class="checkbox-item"><input type="checkbox" id="showClientInfo" checked> <label for="showClientInfo">Mostrar información completa</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientName" checked> <label for="showClientName">Nombre del Cliente</label>
+      <div class="checkbox-item"><input type="checkbox" id="showClientName" checked> <label for="showClientName">Mostrar nombre</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientPhone" checked> <label for="showClientPhone">Teléfono del Cliente</label>
+      <div class="checkbox-item"><input type="checkbox" id="showClientPhone" checked> <label for="showClientPhone">Mostrar teléfono</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showClientAddress" checked> <label for="showClientAddress">Dirección del Cliente</label>
+      <div class="checkbox-item"><input type="checkbox" id="showClientAddress" checked> <label for="showClientAddress">Mostrar dirección</label>
       </div>
      </div>
     </div>
     <div class="config-section">
-     <h3>👨‍💼 Información del Gestor</h3>
+     <h3>Información del Gestor</h3>
      <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showManagerInfo" checked> <label for="showManagerInfo">Mostrar Sección Completa</label>
+      <div class="checkbox-item"><input type="checkbox" id="showManagerInfo" checked> <label for="showManagerInfo">Mostrar información completa</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showManagerName" checked> <label for="showManagerName">Nombre del Gestor</label>
+      <div class="checkbox-item"><input type="checkbox" id="showManagerName" checked> <label for="showManagerName">Mostrar nombre</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showManagerPhone" checked> <label for="showManagerPhone">Teléfono del Gestor</label>
+      <div class="checkbox-item"><input type="checkbox" id="showManagerPhone" checked> <label for="showManagerPhone">Mostrar teléfono</label>
       </div>
      </div>
     </div>
     <div class="config-section">
-     <h3>💰 Resumen del Préstamo</h3>
+     <h3>Resumen del Préstamo</h3>
      <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showLoanType" checked> <label for="showLoanType">Tipo de Préstamo</label>
+      <div class="checkbox-item"><input type="checkbox" id="showLoanType" checked> <label for="showLoanType">Tipo de préstamo</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showLoanAmount" checked> <label for="showLoanAmount">Monto Solicitado</label>
+      <div class="checkbox-item"><input type="checkbox" id="showLoanAmount" checked> <label for="showLoanAmount">Monto solicitado</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showDownPayment" checked> <label for="showDownPayment">Prima / Enganche</label>
+      <div class="checkbox-item"><input type="checkbox" id="showDownPayment" checked> <label for="showDownPayment">Prima</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showFinancedAmount" checked> <label for="showFinancedAmount">Monto a Financiar</label>
+      <div class="checkbox-item"><input type="checkbox" id="showFinancedAmount" checked> <label for="showFinancedAmount">Monto a financiar</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showInterestRate" checked> <label for="showInterestRate">Tasa de Interés</label>
+      <div class="checkbox-item"><input type="checkbox" id="showInterestRate" checked> <label for="showInterestRate">Tasa de interés</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showTotalInterest" checked> <label for="showTotalInterest">Total de Intereses</label>
+      <div class="checkbox-item"><input type="checkbox" id="showTotalInterest" checked> <label for="showTotalInterest">Total de intereses</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showTotalAmount" checked> <label for="showTotalAmount">Total a Pagar</label>
+      <div class="checkbox-item"><input type="checkbox" id="showTotalAmount" checked> <label for="showTotalAmount">Total a pagar</label>
       </div>
       <div class="checkbox-item"><input type="checkbox" id="showMonthlyPayment" checked> <label for="showMonthlyPayment">Cuota</label>
       </div>
      </div>
     </div>
     <div class="config-section">
-     <h3>📋 Otros Elementos</h3>
+     <h3>Otros Elementos</h3>
      <div class="checkbox-group">
-      <div class="checkbox-item"><input type="checkbox" id="showPaymentTable" checked> <label for="showPaymentTable">Tabla de Amortización</label>
+      <div class="checkbox-item"><input type="checkbox" id="showSchedule" checked> <label for="showSchedule">Plan de pagos</label>
       </div>
-      <div class="checkbox-item"><input type="checkbox" id="showSignature" checked> <label for="showSignature">Sección de Firma</label>
+      <div class="checkbox-item"><input type="checkbox" id="showSignature" checked> <label for="showSignature">Sección de firma</label>
       </div>
      </div>
     </div>
-    <div class="button-group"><button class="btn btn-secondary" onclick="closePrintSettings()">Cancelar</button> <button class="btn btn-primary" onclick="applyPrintSettings()">Aplicar y Cerrar</button>
+    <div class="button-group"><button class="btn btn-secondary" onclick="resetPrintSettings()">Restablecer</button> <button class="btn btn-primary" onclick="applyPrintSettings()">Aplicar Configuración</button>
     </div>
    </div>
-  </div><button class="print-float" id="printButton" onclick="window.print()"> 🖨️ </button> <a href="https://wa.me/50494482992?text=Hola,%20tengo%20una%20consulta%20sobre%20préstamos" class="whatsapp-float" target="_blank"> 📱 </a> <script>
+  </div><button class="print-float" id="printFloatBtn" onclick="window.print()"> 🖨️ </button> <a href="https://wa.me/50433488648" class="whatsapp-float" target="_blank"> 💬 </a>
+  <footer class="footer">
+   <div class="footer-content">
+    <div class="footer-info">
+     <div class="footer-item">📍 Juticalpa, Olancho, Honduras</div>
+     <div class="footer-item">📞 +504 3348-8648</div>
+     <div class="footer-item">📧 info@grupoinversiones.com</div>
+    </div>
+    <div class="social-links"><a href="#" class="social-link">f</a> <a href="#" class="social-link">in</a> <a href="https://wa.me/50433488648" class="social-link" target="_blank">W</a>
+    </div>
+    <div class="credits">© 2025 Grupo de Inversiones Múltiples. Todos los derechos reservados.</div>
+   </div>
+  </footer>
+  <script>
         let currentStep = 1;
-        let loanData = {};
+        let printSettings = {
+            showPrintHeader: true,
+            showPrintLogo: true,
+            showPrintDate: true,
+            showClientInfo: true,
+            showClientName: true,
+            showClientPhone: true,
+            showClientAddress: true,
+            showManagerInfo: true,
+            showManagerName: true,
+            showManagerPhone: true,
+            showLoanType: true,
+            showLoanAmount: true,
+            showDownPayment: true,
+            showFinancedAmount: true,
+            showInterestRate: true,
+            showTotalInterest: true,
+            showTotalAmount: true,
+            showMonthlyPayment: true,
+            showSchedule: true,
+            showSignature: true
+        };
 
         function nextStep(step) {
-            if (validateCurrentStep()) {
-                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
-                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
-                document.getElementById(`step${currentStep}`).classList.remove('active');
-
-                currentStep = step;
-                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
-                document.getElementById(`step${currentStep}`).classList.add('active');
-            }
-        }
-
-        function previousStep(step) {
-            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
-            if (currentStep !== 1) {
-                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('completed');
-            }
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
             document.getElementById(`step${currentStep}`).classList.remove('active');
-
+            
             currentStep = step;
-            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('completed');
-            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
             document.getElementById(`step${currentStep}`).classList.add('active');
         }
 
-        function validateCurrentStep() {
-            if (currentStep === 2) {
-                const loanAmount = document.getElementById('loanAmount').value;
-                const interestRate = document.getElementById('interestRate').value;
-                const numberOfPayments = document.getElementById('numberOfPayments').value;
-
-                if (!loanAmount || !interestRate || !numberOfPayments) {
-                    alert('Por favor complete todos los campos requeridos (*)');
-                    return false;
-                }
-
-                if (parseFloat(loanAmount) <= 0) {
-                    alert('El monto del préstamo debe ser mayor a 0');
-                    return false;
-                }
-
-                if (parseFloat(interestRate) <= 0) {
-                    alert('La tasa de interés debe ser mayor a 0');
-                    return false;
-                }
-
-                if (parseInt(numberOfPayments) <= 0) {
-                    alert('La cantidad de pagos debe ser mayor a 0');
-                    return false;
-                }
-            }
-            return true;
+        function previousStep(step) {
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            currentStep = step;
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('completed');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
         }
 
         function handleLoanTypeChange() {
             const loanType = document.getElementById('loanType').value;
             const monthlyPaymentItem = document.getElementById('monthlyPaymentItem');
-
-            if (loanType === 'personalizado') {
-                monthlyPaymentItem.style.display = 'none';
+            const monthlyPaymentLabel = monthlyPaymentItem.querySelector('.summary-label');
+            
+            if (loanType === 'capitalFijo') {
+                monthlyPaymentLabel.textContent = 'Primera Cuota';
+            } else if (loanType === 'soloInteres') {
+                monthlyPaymentLabel.textContent = 'Cuota de Interés';
             } else {
-                monthlyPaymentItem.style.display = 'block';
+                monthlyPaymentLabel.textContent = 'Cuota';
             }
         }
 
         function calculateLoan() {
-            if (!validateCurrentStep()) {
-                return;
-            }
-
             const clientName = document.getElementById('clientName').value || 'No especificado';
             const clientPhone = document.getElementById('clientPhone').value || 'No especificado';
             const clientAddress = document.getElementById('clientAddress').value || 'No especificado';
             const managerName = document.getElementById('managerName').value || 'No especificado';
             const managerPhone = document.getElementById('managerPhone').value || 'No especificado';
-
+            
             const loanType = document.getElementById('loanType').value;
             const interestType = document.getElementById('interestType').value;
             const rateType = document.getElementById('rateType').value;
-            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
-            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
             const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
-            const numberOfPayments = parseInt(document.getElementById('numberOfPayments').value);
+            const numberOfPayments = parseInt(document.getElementById('numberOfPayments').value) || 0;
+
+            if (loanAmount <= 0 || interestRate <= 0 || numberOfPayments <= 0) {
+                alert('Por favor, complete todos los campos obligatorios con valores válidos.');
+                return;
+            }
 
             const financedAmount = loanAmount - downPayment;
 
-            let ratePerPeriod = interestRate / 100;
-            let totalInterest, totalAmount, monthlyPayment;
-            let paymentSchedule = [];
+            let periodicRate = interestRate / 100;
+            let rateTypeText = '';
+            let paymentFrequency = 1;
 
-            const today = new Date();
-
-            if (interestType === 'simple') {
-                totalInterest = financedAmount * ratePerPeriod * numberOfPayments;
-                totalAmount = financedAmount + totalInterest;
-
-                if (loanType === 'amortizado') {
-                    monthlyPayment = totalAmount / numberOfPayments;
-
-                    let balance = financedAmount;
-                    for (let i = 1; i <= numberOfPayments; i++) {
-                        const interest = balance * ratePerPeriod;
-                        const principal = monthlyPayment - interest;
-                        const newBalance = balance - principal;
-
-                        const paymentDate = new Date(today);
-                        if (rateType === 'diaria') {
-                            paymentDate.setDate(paymentDate.getDate() + i);
-                        } else if (rateType === 'semanal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
-                        } else if (rateType === 'quincenal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
-                        } else if (rateType === 'mensual') {
-                            paymentDate.setMonth(paymentDate.getMonth() + i);
-                        }
-
-                        paymentSchedule.push({
-                            number: i,
-                            date: paymentDate,
-                            initialBalance: balance,
-                            payment: monthlyPayment,
-                            interest: interest,
-                            principal: principal,
-                            finalBalance: Math.max(0, newBalance)
-                        });
-
-                        balance = newBalance;
-                    }
-                } else {
-                    let balance = financedAmount;
-                    for (let i = 1; i <= numberOfPayments; i++) {
-                        const interest = balance * ratePerPeriod;
-                        const payment = interest + (financedAmount / numberOfPayments);
-                        const principal = financedAmount / numberOfPayments;
-                        const newBalance = balance - principal;
-
-                        const paymentDate = new Date(today);
-                        if (rateType === 'diaria') {
-                            paymentDate.setDate(paymentDate.getDate() + i);
-                        } else if (rateType === 'semanal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
-                        } else if (rateType === 'quincenal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
-                        } else if (rateType === 'mensual') {
-                            paymentDate.setMonth(paymentDate.getMonth() + i);
-                        }
-
-                        paymentSchedule.push({
-                            number: i,
-                            date: paymentDate,
-                            initialBalance: balance,
-                            payment: payment,
-                            interest: interest,
-                            principal: principal,
-                            finalBalance: Math.max(0, newBalance)
-                        });
-
-                        balance = newBalance;
-                    }
-
-                    monthlyPayment = 'Variable';
-                }
-            } else {
-                const totalInterestRediscounted = financedAmount * ratePerPeriod * numberOfPayments;
-                totalAmount = financedAmount + totalInterestRediscounted;
-                const amountReceived = financedAmount - totalInterestRediscounted;
-
-                if (loanType === 'amortizado') {
-                    monthlyPayment = totalAmount / numberOfPayments;
-
-                    let balance = financedAmount;
-                    for (let i = 1; i <= numberOfPayments; i++) {
-                        const interest = (totalInterestRediscounted / numberOfPayments);
-                        const principal = monthlyPayment - interest;
-                        const newBalance = balance - principal;
-
-                        const paymentDate = new Date(today);
-                        if (rateType === 'diaria') {
-                            paymentDate.setDate(paymentDate.getDate() + i);
-                        } else if (rateType === 'semanal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
-                        } else if (rateType === 'quincenal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
-                        } else if (rateType === 'mensual') {
-                            paymentDate.setMonth(paymentDate.getMonth() + i);
-                        }
-
-                        paymentSchedule.push({
-                            number: i,
-                            date: paymentDate,
-                            initialBalance: balance,
-                            payment: monthlyPayment,
-                            interest: interest,
-                            principal: principal,
-                            finalBalance: Math.max(0, newBalance)
-                        });
-
-                        balance = newBalance;
-                    }
-                } else {
-                    let balance = financedAmount;
-                    for (let i = 1; i <= numberOfPayments; i++) {
-                        const interest = (totalInterestRediscounted / numberOfPayments);
-                        const principal = financedAmount / numberOfPayments;
-                        const payment = interest + principal;
-                        const newBalance = balance - principal;
-
-                        const paymentDate = new Date(today);
-                        if (rateType === 'diaria') {
-                            paymentDate.setDate(paymentDate.getDate() + i);
-                        } else if (rateType === 'semanal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 7));
-                        } else if (rateType === 'quincenal') {
-                            paymentDate.setDate(paymentDate.getDate() + (i * 15));
-                        } else if (rateType === 'mensual') {
-                            paymentDate.setMonth(paymentDate.getMonth() + i);
-                        }
-
-                        paymentSchedule.push({
-                            number: i,
-                            date: paymentDate,
-                            initialBalance: balance,
-                            payment: payment,
-                            interest: interest,
-                            principal: principal,
-                            finalBalance: Math.max(0, newBalance)
-                        });
-
-                        balance = newBalance;
-                    }
-
-                    monthlyPayment = 'Variable';
-                }
-
-                totalInterest = totalInterestRediscounted;
+            switch(rateType) {
+                case 'diaria':
+                    rateTypeText = 'Diaria';
+                    paymentFrequency = 1;
+                    break;
+                case 'semanal':
+                    rateTypeText = 'Semanal';
+                    paymentFrequency = 7;
+                    break;
+                case 'quincenal':
+                    rateTypeText = 'Quincenal';
+                    paymentFrequency = 15;
+                    break;
+                case 'mensual':
+                    rateTypeText = 'Mensual';
+                    paymentFrequency = 30;
+                    break;
+                case 'anual':
+                    rateTypeText = 'Anual';
+                    paymentFrequency = 365;
+                    break;
             }
 
-            loanData = {
-                clientName,
-                clientPhone,
-                clientAddress,
-                managerName,
-                managerPhone,
-                loanType,
-                interestType,
-                rateType,
-                loanAmount,
-                interestRate,
-                downPayment,
-                financedAmount,
-                numberOfPayments,
-                totalInterest,
-                totalAmount,
-                monthlyPayment,
-                paymentSchedule
-            };
+            let loanTypeText = '';
+            switch(loanType) {
+                case 'amortizado':
+                    loanTypeText = 'Amortizado (Cuotas Niveladas)';
+                    break;
+                case 'capitalFijo':
+                    loanTypeText = 'Capital Fijo (Cuota Decreciente)';
+                    break;
+                case 'capitalMasInteres':
+                    loanTypeText = 'Capital + Interés (Tabla Simple)';
+                    break;
+                case 'soloInteres':
+                    loanTypeText = 'Solo Interés + Capital al Final';
+                    break;
+            }
 
-            displayResults();
-        }
+            let interestTypeText = '';
+            switch(interestType) {
+                case 'simple':
+                    interestTypeText = 'Simple';
+                    break;
+                case 'redescontado':
+                    interestTypeText = 'Redescontado';
+                    break;
+                case 'compuesto':
+                    interestTypeText = 'Compuesto';
+                    break;
+            }
 
-        function displayResults() {
-            document.getElementById('resultClientName').textContent = loanData.clientName;
-            document.getElementById('resultClientPhone').textContent = loanData.clientPhone;
-            document.getElementById('resultClientAddress').textContent = loanData.clientAddress;
-            document.getElementById('resultManagerName').textContent = loanData.managerName;
-            document.getElementById('resultManagerPhone').textContent = loanData.managerPhone;
+            let schedule = [];
+            let totalInterest = 0;
+            let monthlyPayment = 0;
 
-            document.getElementById('resultClientNameTable').textContent = loanData.clientName;
-            document.getElementById('resultClientPhoneTable').textContent = loanData.clientPhone;
-            document.getElementById('resultClientAddressTable').textContent = loanData.clientAddress;
-            document.getElementById('resultManagerNameTable').textContent = loanData.managerName;
-            document.getElementById('resultManagerPhoneTable').textContent = loanData.managerPhone;
+            if (interestType === 'redescontado') {
+                totalInterest = financedAmount * periodicRate * numberOfPayments;
+                const totalAmount = financedAmount + totalInterest;
+                monthlyPayment = totalAmount / numberOfPayments;
 
-            const loanTypeText = loanData.loanType === 'amortizado' ? 'Amortizado' : 'Personalizado';
-            const interestTypeText = loanData.interestType === 'simple' ? 'Simple' : 'Redescontado';
-            const rateTypeMap = {
-                'diaria': 'Diaria',
-                'semanal': 'Semanal',
-                'quincenal': 'Quincenal',
-                'mensual': 'Mensual'
-            };
-            const rateTypeText = rateTypeMap[loanData.rateType];
+                let balance = totalAmount;
+                for (let i = 1; i <= numberOfPayments; i++) {
+                    const interest = (totalInterest / numberOfPayments);
+                    const principal = monthlyPayment - interest;
+                    balance -= monthlyPayment;
 
-            document.getElementById('resultLoanType').textContent = `${loanTypeText} - ${interestTypeText}`;
-            document.getElementById('resultLoanAmount').textContent = formatCurrency(loanData.loanAmount);
-            document.getElementById('resultDownPayment').textContent = formatCurrency(loanData.downPayment);
-            document.getElementById('resultFinancedAmount').textContent = formatCurrency(loanData.financedAmount);
-            document.getElementById('resultInterestRate').textContent = `${loanData.interestRate}% ${rateTypeText}`;
-            document.getElementById('resultTotalInterest').textContent = formatCurrency(loanData.totalInterest);
-            document.getElementById('resultTotalAmount').textContent = formatCurrency(loanData.totalAmount);
+                    schedule.push({
+                        payment: i,
+                        amount: monthlyPayment,
+                        principal: principal,
+                        interest: interest,
+                        balance: Math.max(0, balance)
+                    });
+                }
+            } else if (loanType === 'amortizado') {
+                if (interestType === 'simple') {
+                    monthlyPayment = (financedAmount * periodicRate * (1 + periodicRate * numberOfPayments)) / numberOfPayments;
+                } else {
+                    monthlyPayment = financedAmount * (periodicRate * Math.pow(1 + periodicRate, numberOfPayments)) / (Math.pow(1 + periodicRate, numberOfPayments) - 1);
+                }
 
-            document.getElementById('resultLoanTypeTable').textContent = `${loanTypeText} - ${interestTypeText}`;
-            document.getElementById('resultLoanAmountTable').textContent = formatCurrency(loanData.loanAmount);
-            document.getElementById('resultDownPaymentTable').textContent = formatCurrency(loanData.downPayment);
-            document.getElementById('resultFinancedAmountTable').textContent = formatCurrency(loanData.financedAmount);
-            document.getElementById('resultInterestRateTable').textContent = `${loanData.interestRate}% ${rateTypeText}`;
-            document.getElementById('resultTotalInterestTable').textContent = formatCurrency(loanData.totalInterest);
-            document.getElementById('resultTotalAmountTable').textContent = formatCurrency(loanData.totalAmount);
+                let balance = financedAmount;
+                for (let i = 1; i <= numberOfPayments; i++) {
+                    const interest = balance * periodicRate;
+                    const principal = monthlyPayment - interest;
+                    balance -= principal;
+                    totalInterest += interest;
 
-            if (typeof loanData.monthlyPayment === 'number') {
-                document.getElementById('resultMonthlyPayment').textContent = formatCurrency(loanData.monthlyPayment);
-                document.getElementById('resultMonthlyPaymentTable').textContent = formatCurrency(loanData.monthlyPayment);
+                    schedule.push({
+                        payment: i,
+                        amount: monthlyPayment,
+                        principal: principal,
+                        interest: interest,
+                        balance: Math.max(0, balance)
+                    });
+                }
+            } else if (loanType === 'capitalFijo') {
+                const principalPayment = financedAmount / numberOfPayments;
+                let balance = financedAmount;
+
+                for (let i = 1; i <= numberOfPayments; i++) {
+                    const interest = balance * periodicRate;
+                    const payment = principalPayment + interest;
+                    balance -= principalPayment;
+                    totalInterest += interest;
+
+                    schedule.push({
+                        payment: i,
+                        amount: payment,
+                        principal: principalPayment,
+                        interest: interest,
+                        balance: Math.max(0, balance)
+                    });
+                }
+                monthlyPayment = schedule[0].amount;
+            } else if (loanType === 'capitalMasInteres') {
+                totalInterest = financedAmount * periodicRate * numberOfPayments;
+                const totalAmount = financedAmount + totalInterest;
+                monthlyPayment = totalAmount / numberOfPayments;
+
+                const principalPayment = financedAmount / numberOfPayments;
+                const interestPayment = totalInterest / numberOfPayments;
+                let balance = financedAmount;
+
+                for (let i = 1; i <= numberOfPayments; i++) {
+                    balance -= principalPayment;
+
+                    schedule.push({
+                        payment: i,
+                        amount: monthlyPayment,
+                        principal: principalPayment,
+                        interest: interestPayment,
+                        balance: Math.max(0, balance)
+                    });
+                }
+            } else if (loanType === 'soloInteres') {
+                monthlyPayment = financedAmount * periodicRate;
+                totalInterest = monthlyPayment * numberOfPayments;
+
+                for (let i = 1; i <= numberOfPayments; i++) {
+                    const isLastPayment = i === numberOfPayments;
+                    const payment = isLastPayment ? monthlyPayment + financedAmount : monthlyPayment;
+                    const principal = isLastPayment ? financedAmount : 0;
+                    const balance = isLastPayment ? 0 : financedAmount;
+
+                    schedule.push({
+                        payment: i,
+                        amount: payment,
+                        principal: principal,
+                        interest: monthlyPayment,
+                        balance: balance
+                    });
+                }
+            }
+
+            const totalAmount = financedAmount + totalInterest;
+
+            document.getElementById('resultClientName').textContent = clientName;
+            document.getElementById('resultClientPhone').textContent = clientPhone;
+            document.getElementById('resultClientAddress').textContent = clientAddress;
+            document.getElementById('resultManagerName').textContent = managerName;
+            document.getElementById('resultManagerPhone').textContent = managerPhone;
+
+            document.getElementById('resultClientNameTable').textContent = clientName;
+            document.getElementById('resultClientPhoneTable').textContent = clientPhone;
+            document.getElementById('resultClientAddressTable').textContent = clientAddress;
+            document.getElementById('resultManagerNameTable').textContent = managerName;
+            document.getElementById('resultManagerPhoneTable').textContent = managerPhone;
+
+            document.getElementById('resultLoanType').textContent = loanTypeText;
+            document.getElementById('resultLoanTypeTable').textContent = loanTypeText;
+            document.getElementById('resultLoanAmount').textContent = `L ${loanAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultLoanAmountTable').textContent = `L ${loanAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultDownPayment').textContent = `L ${downPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultDownPaymentTable').textContent = `L ${downPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultFinancedAmount').textContent = `L ${financedAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultFinancedAmountTable').textContent = `L ${financedAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultInterestRate').textContent = `${interestRate}% ${rateTypeText} (${interestTypeText})`;
+            document.getElementById('resultInterestRateTable').textContent = `${interestRate}% ${rateTypeText} (${interestTypeText})`;
+            document.getElementById('resultTotalInterest').textContent = `L ${totalInterest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultTotalInterestTable').textContent = `L ${totalInterest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultTotalAmount').textContent = `L ${totalAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultTotalAmountTable').textContent = `L ${totalAmount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultMonthlyPayment').textContent = `L ${monthlyPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('resultMonthlyPaymentTable').textContent = `L ${monthlyPayment.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            const monthlyPaymentLabel = document.querySelector('#monthlyPaymentItem .summary-label');
+            const monthlyPaymentLabelTable = document.getElementById('monthlyPaymentLabelTable');
+            if (loanType === 'capitalFijo') {
+                monthlyPaymentLabel.textContent = 'Primera Cuota';
+                monthlyPaymentLabelTable.textContent = 'Primera Cuota';
+            } else if (loanType === 'soloInteres') {
+                monthlyPaymentLabel.textContent = 'Cuota de Interés';
+                monthlyPaymentLabelTable.textContent = 'Cuota de Interés';
             } else {
-                document.getElementById('resultMonthlyPayment').textContent = loanData.monthlyPayment;
-                document.getElementById('resultMonthlyPaymentTable').textContent = loanData.monthlyPayment;
+                monthlyPaymentLabel.textContent = 'Cuota';
+                monthlyPaymentLabelTable.textContent = 'Cuota';
             }
 
             const tableBody = document.getElementById('paymentTableBody');
             tableBody.innerHTML = '';
-
-            loanData.paymentSchedule.forEach(payment => {
+            
+            const today = new Date();
+            schedule.forEach(payment => {
+                const paymentDate = new Date(today);
+                paymentDate.setDate(today.getDate() + (payment.payment * paymentFrequency));
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${payment.number}</td>
-                    <td>${formatDate(payment.date)}</td>
-                    <td>${formatCurrency(payment.initialBalance)}</td>
-                    <td>${formatCurrency(payment.payment)}</td>
-                    <td>${formatCurrency(payment.interest)}</td>
-                    <td>${formatCurrency(payment.principal)}</td>
-                    <td>${formatCurrency(payment.finalBalance)}</td>
+                    <td>${payment.payment}</td>
+                    <td>${paymentDate.toLocaleDateString('es-HN')}</td>
+                    <td>L ${payment.amount.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td>L ${payment.principal.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td>L ${payment.interest.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td>L ${payment.balance.toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 `;
                 tableBody.appendChild(row);
             });
 
-            const printDate = new Date().toLocaleDateString('es-HN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('printDate').textContent = `Fecha de emisión: ${printDate}`;
+            document.getElementById('signatureName').textContent = clientName;
 
             const businessName = document.getElementById('navBusinessName').textContent;
             document.getElementById('printBusinessName').textContent = businessName;
+            document.getElementById('printBusinessAddress').textContent = 'Juticalpa, Olancho, Honduras';
+            document.getElementById('printBusinessContact').textContent = 'Tel: +504 3348-8648 | info@grupoinversiones.com';
+            document.getElementById('printDate').textContent = `Fecha de emisión: ${today.toLocaleDateString('es-HN')}`;
 
-            document.getElementById('signatureName').textContent = loanData.clientName;
+            const logoSrc = document.querySelector('.logo').src;
+            document.getElementById('printLogo').src = logoSrc;
 
             document.getElementById('resultSection').classList.add('active');
-            document.getElementById('printButton').classList.add('active');
-
-            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function formatCurrency(amount) {
-            return `L ${amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
-        }
-
-        function formatDate(date) {
-            return date.toLocaleDateString('es-HN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
+            document.getElementById('printFloatBtn').classList.add('active');
+            
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
         }
 
         function resetCalculator() {
-            currentStep = 1;
-            loanData = {};
-
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientPhone').value = '';
+            document.getElementById('clientAddress').value = '';
+            document.getElementById('loanAmount').value = '';
+            document.getElementById('interestRate').value = '';
+            document.getElementById('downPayment').value = '0';
+            document.getElementById('numberOfPayments').value = '';
+            document.getElementById('managerName').value = '';
+            document.getElementById('managerPhone').value = '';
+            
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('printFloatBtn').classList.remove('active');
+            
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active', 'completed');
             });
-            document.querySelector(`.step[data-step="1"]`).classList.add('active');
-
             document.querySelectorAll('.step-content').forEach(content => {
                 content.classList.remove('active');
             });
+            
+            currentStep = 1;
+            document.querySelector('[data-step="1"]').classList.add('active');
             document.getElementById('step1').classList.add('active');
-
-            document.querySelectorAll('input').forEach(input => {
-                if (input.type !== 'checkbox') {
-                    input.value = '';
-                }
-            });
-
-            document.getElementById('downPayment').value = '0';
-
-            document.getElementById('resultSection').classList.remove('active');
-            document.getElementById('printButton').classList.remove('active');
-
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1548,83 +1524,68 @@
         }
 
         function applyPrintSettings() {
-            const showPrintHeader = document.getElementById('showPrintHeader').checked;
-            document.getElementById('printHeaderSection').style.display = showPrintHeader ? 'block' : 'none';
+            Object.keys(printSettings).forEach(key => {
+                const checkbox = document.getElementById(key);
+                if (checkbox) {
+                    printSettings[key] = checkbox.checked;
+                }
+            });
 
-            const showPrintLogo = document.getElementById('showPrintLogo').checked;
-            document.getElementById('printLogo').style.display = showPrintLogo ? 'block' : 'none';
-
-            const showPrintDate = document.getElementById('showPrintDate').checked;
-            document.getElementById('printDate').style.display = showPrintDate ? 'block' : 'none';
-
-            const showClientInfo = document.getElementById('showClientInfo').checked;
-            document.getElementById('clientInfoBox').style.display = showClientInfo ? 'block' : 'none';
-            document.getElementById('clientInfoTablePrint').style.display = showClientInfo ? 'table' : 'none';
-
-            const showClientName = document.getElementById('showClientName').checked;
-            document.getElementById('clientNameRow').style.display = showClientName ? 'flex' : 'none';
-            document.getElementById('clientNameRowTable').style.display = showClientName ? 'table-row' : 'none';
-
-            const showClientPhone = document.getElementById('showClientPhone').checked;
-            document.getElementById('clientPhoneRow').style.display = showClientPhone ? 'flex' : 'none';
-            document.getElementById('clientPhoneRowTable').style.display = showClientPhone ? 'table-row' : 'none';
-
-            const showClientAddress = document.getElementById('showClientAddress').checked;
-            document.getElementById('clientAddressRow').style.display = showClientAddress ? 'flex' : 'none';
-            document.getElementById('clientAddressRowTable').style.display = showClientAddress ? 'table-row' : 'none';
-
-            const showManagerInfo = document.getElementById('showManagerInfo').checked;
-            document.getElementById('managerInfoBox').style.display = showManagerInfo ? 'block' : 'none';
-            document.getElementById('managerInfoTablePrint').style.display = showManagerInfo ? 'table' : 'none';
-
-            const showManagerName = document.getElementById('showManagerName').checked;
-            document.getElementById('managerNameRow').style.display = showManagerName ? 'flex' : 'none';
-            document.getElementById('managerNameRowTable').style.display = showManagerName ? 'table-row' : 'none';
-
-            const showManagerPhone = document.getElementById('showManagerPhone').checked;
-            document.getElementById('managerPhoneRow').style.display = showManagerPhone ? 'flex' : 'none';
-            document.getElementById('managerPhoneRowTable').style.display = showManagerPhone ? 'table-row' : 'none';
-
-            const showLoanType = document.getElementById('showLoanType').checked;
-            document.getElementById('summaryLoanType').style.display = showLoanType ? 'block' : 'none';
-
-            const showLoanAmount = document.getElementById('showLoanAmount').checked;
-            document.getElementById('summaryLoanAmount').style.display = showLoanAmount ? 'block' : 'none';
-
-            const showDownPayment = document.getElementById('showDownPayment').checked;
-            document.getElementById('summaryDownPayment').style.display = showDownPayment ? 'block' : 'none';
-
-            const showFinancedAmount = document.getElementById('showFinancedAmount').checked;
-            document.getElementById('summaryFinancedAmount').style.display = showFinancedAmount ? 'block' : 'none';
-
-            const showInterestRate = document.getElementById('showInterestRate').checked;
-            document.getElementById('summaryInterestRate').style.display = showInterestRate ? 'block' : 'none';
-
-            const showTotalInterest = document.getElementById('showTotalInterest').checked;
-            document.getElementById('summaryTotalInterest').style.display = showTotalInterest ? 'block' : 'none';
-
-            const showTotalAmount = document.getElementById('showTotalAmount').checked;
-            document.getElementById('summaryTotalAmount').style.display = showTotalAmount ? 'block' : 'none';
-
-            const showMonthlyPayment = document.getElementById('showMonthlyPayment').checked;
-            document.getElementById('monthlyPaymentItem').style.display = showMonthlyPayment ? 'block' : 'none';
-
-            const showPaymentTable = document.getElementById('showPaymentTable').checked;
-            document.querySelector('.payment-schedule').parentElement.querySelector('h3').style.display = showPaymentTable ? 'block' : 'none';
-            document.querySelector('.payment-schedule').style.display = showPaymentTable ? 'block' : 'none';
-
-            const showSignature = document.getElementById('showSignature').checked;
-            document.getElementById('signatureSection').style.display = showSignature ? 'block' : 'none';
-
+            updatePrintVisibility();
             closePrintSettings();
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('printSettingsModal');
-            if (event.target === modal) {
+        function resetPrintSettings() {
+            Object.keys(printSettings).forEach(key => {
+                printSettings[key] = true;
+                const checkbox = document.getElementById(key);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        }
+
+        function updatePrintVisibility() {
+            document.getElementById('printHeaderSection').style.display = printSettings.showPrintHeader ? 'block' : 'none';
+            document.getElementById('printLogo').style.display = printSettings.showPrintLogo ? 'inline' : 'none';
+            document.getElementById('printDate').style.display = printSettings.showPrintDate ? 'block' : 'none';
+
+            const clientInfoBox = document.getElementById('clientInfoBox');
+            clientInfoBox.style.display = printSettings.showClientInfo ? 'block' : 'none';
+            document.getElementById('clientNameRow').style.display = printSettings.showClientName ? 'flex' : 'none';
+            document.getElementById('clientPhoneRow').style.display = printSettings.showClientPhone ? 'flex' : 'none';
+            document.getElementById('clientAddressRow').style.display = printSettings.showClientAddress ? 'flex' : 'none';
+
+            document.getElementById('clientNameRowTable').style.display = printSettings.showClientName ? 'table-row' : 'none';
+            document.getElementById('clientPhoneRowTable').style.display = printSettings.showClientPhone ? 'table-row' : 'none';
+            document.getElementById('clientAddressRowTable').style.display = printSettings.showClientAddress ? 'table-row' : 'none';
+
+            const managerInfoBox = document.getElementById('managerInfoBox');
+            managerInfoBox.style.display = printSettings.showManagerInfo ? 'block' : 'none';
+            document.getElementById('managerNameRow').style.display = printSettings.showManagerName ? 'flex' : 'none';
+            document.getElementById('managerPhoneRow').style.display = printSettings.showManagerPhone ? 'flex' : 'none';
+
+            document.getElementById('managerNameRowTable').style.display = printSettings.showManagerName ? 'table-row' : 'none';
+            document.getElementById('managerPhoneRowTable').style.display = printSettings.showManagerPhone ? 'table-row' : 'none';
+
+            document.getElementById('summaryLoanType').style.display = printSettings.showLoanType ? 'block' : 'none';
+            document.getElementById('summaryLoanAmount').style.display = printSettings.showLoanAmount ? 'block' : 'none';
+            document.getElementById('summaryDownPayment').style.display = printSettings.showDownPayment ? 'block' : 'none';
+            document.getElementById('summaryFinancedAmount').style.display = printSettings.showFinancedAmount ? 'block' : 'none';
+            document.getElementById('summaryInterestRate').style.display = printSettings.showInterestRate ? 'block' : 'none';
+            document.getElementById('summaryTotalInterest').style.display = printSettings.showTotalInterest ? 'block' : 'none';
+            document.getElementById('summaryTotalAmount').style.display = printSettings.showTotalAmount ? 'block' : 'none';
+            document.getElementById('monthlyPaymentItem').style.display = printSettings.showMonthlyPayment ? 'block' : 'none';
+
+            document.getElementById('scheduleSection').style.display = printSettings.showSchedule ? 'block' : 'none';
+            document.getElementById('signatureSection').style.display = printSettings.showSignature ? 'block' : 'none';
+        }
+
+        document.getElementById('printSettingsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
                 closePrintSettings();
             }
-        }
+        });
     </script>
  </body>
 </html>
