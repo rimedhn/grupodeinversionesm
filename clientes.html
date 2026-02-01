@@ -671,9 +671,9 @@
                 console.log('Prestamos rows:', prestamosJson.table.rows.length);
                 console.log('Abonos rows:', abonosJson.table.rows.length);
 
-                // Process prestamos data
+                // Process prestamos data - SIN FILTRAR POR USUARIO
                 prestamosData = prestamosJson.table.rows
-                    .filter(row => row.c && row.c[10]?.v !== 'Anulado') // Filter out cancelled loans
+                    .filter(row => row.c && row.c[10]?.v !== 'Anulado') // Solo filtrar préstamos anulados
                     .map(row => ({
                         idprestamo: row.c[0]?.v || '',
                         noPrestamo: row.c[1]?.v || '',
@@ -694,51 +694,37 @@
                         fechaFinal: row.c[29]?.v || ''
                     }));
 
-                // Process abonos data - CORRECCIÓN AQUÍ
-                const allAbonosRows = abonosJson.table.rows;
-                console.log('Total abonos rows before filtering:', allAbonosRows.length);
-                
-                abonosData = allAbonosRows
+                // Process abonos data - CORRECCIÓN: SOLO FILTRAR POR ESTADO ACTIVO
+                abonosData = abonosJson.table.rows
                     .filter(row => {
                         // Verificar que la fila tenga datos
                         if (!row.c || row.c.length === 0) return false;
                         
-                        // Verificar que no esté anulado o cancelado
-                        const estado = row.c[31]?.v || '';
-                        if (estado === 'Anulado' || estado === 'Cancelado') return false;
+                        // CORRECCIÓN: Solo verificar que el estado sea "Activo"
+                        const estado = (row.c[31]?.v || 'Activo').toString().trim();
                         
-                        // Verificar que tenga ID de préstamo
+                        // Verificar que tenga ID de préstamo válido
                         const prestamo = row.c[3]?.v || '';
                         if (!prestamo) return false;
                         
-                        return true;
+                        // Incluir solo si el estado es "Activo"
+                        return estado === 'Activo' || estado === '' || !row.c[31]?.v;
                     })
                     .map((row) => {
-                        // Intentar obtener el capital pagado de múltiples columnas
-                        let pagoCapital = parseFloat(row.c[7]?.v || 0); // Columna original
+                        // CORRECCIÓN: Sumar Capital (columna 5) + Abono Capital (columna 7)
+                        const capital = parseFloat(row.c[5]?.v || 0); // Columna Capital
+                        const abonoCapital = parseFloat(row.c[7]?.v || 0); // Columna Abono Capital
+                        const totalCapitalPagado = capital + abonoCapital;
                         
-                        // Si no hay valor en columna 7, intentar columna 45
-                        if (pagoCapital === 0 && row.c[45]?.v) {
-                            pagoCapital = parseFloat(row.c[45].v);
-                        }
-                        
-                        // Si aún no hay valor, usar el monto como capital (para abonos completos)
-                        if (pagoCapital === 0) {
-                            const monto = parseFloat(row.c[4]?.v || 0);
-                            const interes = parseFloat(row.c[6]?.v || 0);
-                            const recargo = parseFloat(row.c[9]?.v || 0);
-                            pagoCapital = monto - interes - recargo;
-                        }
-                        
-                        return {
+                        const abono = {
                             idabono: row.c[0]?.v || '',
                             cliente: row.c[1]?.v || '',
                             nombreCliente: row.c[2]?.v || '',
                             prestamo: row.c[3]?.v || '',
                             monto: parseFloat(row.c[4]?.v || 0),
-                            capital: parseFloat(row.c[5]?.v || 0),
+                            capital: capital,
                             interes: parseFloat(row.c[6]?.v || 0),
-                            abonoCapital: parseFloat(row.c[7]?.v || 0),
+                            abonoCapital: abonoCapital,
                             recargo: parseFloat(row.c[9]?.v || 0),
                             noCuota: parseInt(row.c[24]?.v || 0),
                             fecha: row.c[13]?.v || '',
@@ -746,14 +732,17 @@
                             cajero: row.c[26]?.v || '',
                             nombreCajero: row.c[27]?.v || '',
                             estado: row.c[31]?.v || 'Activo',
-                            pagoCapital: pagoCapital,
+                            totalCapitalPagado: totalCapitalPagado, // Capital + Abono Capital
                             saldoAnterior: parseFloat(row.c[10]?.v || 0)
                         };
+                        
+                        return abono;
                     });
 
-                console.log('Processed prestamos:', prestamosData.length);
-                console.log('Processed abonos:', abonosData.length);
-                console.log('Sample abonos data:', abonosData.slice(0, 5));
+                console.log('=== DATOS PROCESADOS ===');
+                console.log('Préstamos totales:', prestamosData.length);
+                console.log('Abonos totales con estado Activo:', abonosData.length);
+                console.log('Muestra de abonos:', abonosData.slice(0, 3));
 
                 updateDashboard();
                 updateLastUpdateTime();
@@ -788,10 +777,9 @@
             const totalPrestamos = prestamosData.length;
             const montoTotal = prestamosData.reduce((sum, p) => sum + p.monto, 0);
             
-            // CORRECCIÓN: Calcular correctamente el capital pagado total
+            // CORRECCIÓN: Usar totalCapitalPagado que es Capital + Abono Capital
             const totalCapitalPagado = abonosData.reduce((sum, a) => {
-                const capitalPagado = a.pagoCapital || a.abonoCapital || 0;
-                return sum + capitalPagado;
+                return sum + (a.totalCapitalPagado || 0);
             }, 0);
             
             const totalCobrado = abonosData.reduce((sum, a) => sum + (a.monto || 0), 0);
@@ -808,11 +796,13 @@
             const recargoCobrado = abonosData.reduce((sum, a) => sum + (a.recargo || 0), 0);
 
             // Log para debugging
-            console.log('=== ESTADÍSTICAS ===');
-            console.log('Monto Total Prestado:', montoTotal);
-            console.log('Total Capital Pagado:', totalCapitalPagado);
-            console.log('Saldo Pendiente:', saldoPendiente);
-            console.log('Total Cobrado (incluye capital + interés + recargo):', totalCobrado);
+            console.log('=== ESTADÍSTICAS CALCULADAS ===');
+            console.log('Monto Total Prestado:', formatCurrency(montoTotal));
+            console.log('Total Capital Pagado (Capital + Abono Capital):', formatCurrency(totalCapitalPagado));
+            console.log('Saldo Pendiente:', formatCurrency(saldoPendiente));
+            console.log('Total Cobrado:', formatCurrency(totalCobrado));
+            console.log('Interés Cobrado:', formatCurrency(interesCobrado));
+            console.log('Recargo Cobrado:', formatCurrency(recargoCobrado));
 
             document.getElementById('totalPrestamos').textContent = totalPrestamos.toLocaleString();
             document.getElementById('montoTotal').textContent = formatCurrency(montoTotal);
@@ -968,13 +958,10 @@
                 .slice(0, 10);
 
             tbody.innerHTML = recentPrestamos.map(prestamo => {
-                // CORRECCIÓN: Calcular correctamente el capital pagado por préstamo
+                // CORRECCIÓN: Usar totalCapitalPagado para cada préstamo
                 const capitalPagado = abonosData
                     .filter(abono => abono.prestamo === prestamo.idprestamo)
-                    .reduce((total, abono) => {
-                        const capital = abono.pagoCapital || abono.abonoCapital || 0;
-                        return total + capital;
-                    }, 0);
+                    .reduce((total, abono) => total + (abono.totalCapitalPagado || 0), 0);
                 
                 const saldo = prestamo.monto - capitalPagado;
                 
@@ -1001,7 +988,7 @@
                 .slice(0, 10);
 
             tbody.innerHTML = recentPagos.map((pago) => {
-                const capitalPagado = pago.pagoCapital || pago.abonoCapital || 0;
+                const capitalPagado = pago.totalCapitalPagado || 0;
                 const saldoActual = (pago.saldoAnterior || 0) - capitalPagado;
                 
                 return `
@@ -1057,7 +1044,7 @@
                                 .map(prestamo => {
                                     const capitalPagado = abonosData
                                         .filter(abono => abono.prestamo === prestamo.idprestamo)
-                                        .reduce((total, abono) => total + (abono.pagoCapital || abono.abonoCapital || 0), 0);
+                                        .reduce((total, abono) => total + (abono.totalCapitalPagado || 0), 0);
                                     
                                     const saldo = prestamo.monto - capitalPagado;
                                     
@@ -1092,6 +1079,8 @@
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Monto Total</th>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Capital</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Abono Capital</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total Cap. Pagado</th>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Interés</th>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Recargo</th>
                                 <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
@@ -1101,13 +1090,13 @@
                             ${abonosData
                                 .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
                                 .map(pago => {
-                                    const capitalPagado = pago.pagoCapital || pago.abonoCapital || 0;
-                                    
                                     return `
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-3 py-2 text-sm text-gray-900">${pago.nombreCliente}</td>
                                             <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(pago.monto)}</td>
-                                            <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(capitalPagado)}</td>
+                                            <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(pago.capital)}</td>
+                                            <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(pago.abonoCapital)}</td>
+                                            <td class="px-3 py-2 text-sm text-gray-900 font-semibold">${formatCurrency(pago.totalCapitalPagado)}</td>
                                             <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(pago.interes)}</td>
                                             <td class="px-3 py-2 text-sm text-gray-900">${formatCurrency(pago.recargo)}</td>
                                             <td class="px-3 py-2 text-sm text-gray-900">${formatDate(pago.fecha)}</td>
