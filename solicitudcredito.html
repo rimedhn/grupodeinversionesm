@@ -1,533 +1,230 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
     <style type="text/css">
-      #letter-size {
-        width: 5.5in;
-        margin: 0in;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        margin-left: 0.2in;
-        margin-right: 0.2in;
-        margin-top: 0.5in;
-        margin-bottom: 0.5in;
-      }
-
-      .label {
-        text-align: center;
-        font-size: 18px;
-        margin-bottom: 10px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        word-break: break-word; /* Para direcciones largas de cliente */
-        white-space: normal;
-        overflow-wrap: break-word;
-      }
-
-      .sin-bordes {
-      border-collapse: collapse;
-      border: 0px;
-      }
-      
-      table,
-      th,
-      td {
-        border: 1px solid black;
-        padding: 8px;
-        word-break: break-word; /* Para direcciones largas de cliente */
-        white-space: normal;
-        overflow-wrap: break-word;
-      }
-
-      #detailhead .line1 {
-        text-align: left;
-        width: 50%;
-      }
-
-      .detail1 {
-        text-align: right;
-        width: 50%;
-      }
-
-      .Fact {
-        text-align: left;
-      }
-
-      .listitem {
-        font-size: 16px;
-        text-align: left;
-      }
-
-      #listitemhead {
-        font-size: 5px;
-        text-align: center;
-      }
-
-      .descriptions {
-        text-align: left;
-      }
-
-      .Price,
-      .Desc,
-      .Isv,
-      .Amount {
-        text-align: right;
-      }
-
-      #letter-size h2 {
-        font-size: 22px;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-
-      #letter-size .informasi {
-        text-align: left;
-        font-size: 16px;
-        margin-bottom: 5px;
-      }
-
-      #letter-size .bawah {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 18px;
-      }
-
-      .mi-imagen {
-        width: 100px;
-        height: 100px;
-        padding: auto;
-        align: center;
-        vertical-align: center;
-      }
+        body { font-family: Arial, sans-serif; font-size: 10px; margin: 0; padding: 0; }
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            padding: 0.3in;
+            margin: auto;
+            background: white;
+            page-break-after: always;
+        }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 8px; table-layout: fixed; }
+        th, td { border: 1px solid black; padding: 4px; overflow: hidden; word-wrap: break-word; }
+        .section-title { background-color: #f0f0f0; text-align: center; font-weight: bold; text-transform: uppercase; font-size: 11px; }
+        .label { font-weight: bold; font-size: 9px; }
+        .no-border { border: none !important; }
+        .mi-logo { width: 70px; height: 70px; }
+        .signature-container { display: flex; justify-content: space-around; margin-top: 30px; text-align: center; }
+        .sig-box { width: 30%; border-top: 1px solid black; padding-top: 5px; }
+        h1 { margin: 0; font-size: 18px; }
+        
+        /* Estilo para tablas financieras dinámicas */
+        .fin-table td { vertical-align: top; border: 1px solid black; }
+        .item-row { display: flex; justify-content: space-between; border-bottom: 0.5px solid #eee; padding: 2px 0; }
     </style>
-  </head>
-  <body>
-    <div class="label">    
-      <table style="width: 100%; border-collapse: collapse;
-    border: none;" class="sin-bordes">
-        <tr>
-          <th colspan="3" style="width: 10%">
-            <img src="https://github.com/rimedhn/servicredith/blob/main/servicredith%20logo.jpeg?raw=true" alt="Mi imagen" class="mi-imagen" />
-          </th>
-          <th colspan="9" style="width: 90%; text-align: left">
-            <b style="font-size: 30px" id="empresa"></b><br />
-            <b>RTN: <span id="rtn"></span></b><br />
-            <b>Direccion: <span id="direccion"></span></b><br />
-            <b>Telefono: <span id="telefono"></span></b><br />
-            <b>Email: <span id="email"></span></b>
-            <b id="razon"></b>
-          </th>
-        </tr>
-      </table>
+</head>
+<body>
 
-      <table style="width: 100%">
+<div class="page" id="page1">
+    <table class="no-border">
         <tr>
-          <th colspan="12">
-            <b><h2 id="tipodoc"></h2></b>
-          </th>
+            <td class="no-border" style="width: 15%;"><img src="https://github.com/rimedhn/servicredith/blob/main/servicredith%20logo.jpeg?raw=true" class="mi-logo" /></td>
+            <td class="no-border" style="text-align: center;">
+                <h1>SOLICITUD DE CRÉDITO</h1>
+                <h2 style="margin:0">SERFIN</h2>
+            </td>
+            <td class="no-border" style="width: 20%; text-align: right;"><b>Fecha:</b> <span class="date-val"></span></td>
         </tr>
-        <tr>
-          <th colspan="6" style="width: 50%; white-space: nowrap">
-            Datos cliente
-          </th>
-          <th colspan="6" style="width: 50%; white-space: nowrap">
-            Datos factura
-          </th>
-        </tr>
-        <tr>
-          <td colspan="6" style="width: 50%; white-space: nowrap; word-break: break-word; white-space: normal; overflow-wrap: break-word;">
-            <div style="text-align: left">
-              <b>Cliente: <span id="cliente"></span></b><br />
-              <b>RTN: <span id="rtncliente"></span></b><br />
-              <b>Telefono: <span id="telefonocliente"></span></b><br />
-              <b>Direccion: <span id="direccioncliente"></span></b><br />
-              <b>Vendedor: <span id="vendedor"></span></b><br />
-            </div>
-          </td>
-          <td colspan="6" style="width: 50%;  white-space: nowrap; word-break: break-word; white-space: normal; overflow-wrap: break-word;">
-            <div style="text-align: left">
-              <b>Factura: <span id="factura"></span></b><br />
-              <b>Fecha: <span id="date"></span></b><br />
-              <b>CAI: <span id="cai"></span></b><br />
-              <b>Rango autorizado: <span id="rango"></span></b><br />
-              <b>Fecha limite de emision: <span id="limite"></span></b><br />
-              <b>Cajero: <span id="cajero"></span></b><br />
-            </div>
-          </td>
-        </tr>
-      </table>
+    </table>
 
-      <table style="width: 100%">
+    <table id="datos-generales-cliente">
         <tr>
-          <td style="text-align: center; class="detalleproducts" colspan="6">Detalle</td>
+            <td colspan="3"><span class="label">Nombre completo:</span> <span id="c_nombre"></span></td>
+            <td><span class="label"># DNI:</span> <span id="c_dni"></span></td>
         </tr>
         <tr>
-          <td  style="text-align: center; width: 10%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Cant
-            </h2>
-          </td>
-          <td  style="text-align: left; width: 40%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Descripcion
-            </h2>
-          </td>
-          <td  style="text-align: right; width: 11%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Precio
-            </h2>
-          </td>
-          <td  style="text-align: right; width: 14%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Subt.
-            </h2>
-          </td>
-          <td  style="text-align: right; width: 11%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Isv
-            </h2>
-          </td>
-          <td  style="text-align: right; width: 14%">
-            <h2 style="font-size: 4mm; text-align: Center; line-height: 0.1">
-              Monto
-            </h2>
-          </td>
+            <td><span class="label">Estado civil:</span> <span id="c_civil"></span></td>
+            <td><span class="label">Ciclo:</span> <span id="c_ciclo"></span></td>
+            <td><span class="label">Ocupación:</span> <span id="c_ocupacion"></span></td>
+            <td><span class="label">Edad:</span> <span id="c_edad"></span></td>
         </tr>
-        <tbody id="productList"></tbody>
         <tr>
-          <td
-            colspan="2"
-            style="
-              border-top: 1px solid black;
-              text-align: left;
-              vertical-align: text-top;
-            "
-          >
-            <span id="motor"></span><br />
-            <span id="chasis"></span><br />
-            <span id="color"></span><br />
-            <span id="año"></span><br />
-            <span id="marca"></span>&nbsp;&nbsp;<span id="modelo"></span>&nbsp;&nbsp;<span id="combustible"></span>
+            <td><span class="label">Sexo:</span> <span id="c_sexo"></span></td>
+            <td><span class="label">Celular:</span> <span id="c_cel"></span></td>
+            <td><span class="label">Monto:</span> L. <span id="c_monto"></span></td>
+            <td><span class="label">Plazo:</span> <span id="c_plazo"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span class="label">Destino:</span> <span id="c_destino"></span></td>
+            <td><span class="label">Frecuencia:</span> <span id="c_frecuencia"></span></td>
+            <td><span class="label">Cuota:</span> L. <span id="c_cuota"></span></td>
+        </tr>
+    </table>
 
-            <div align="left">
-              --------------------------------------------------------------------------------------------------
-            </div>
-            Observaciones: <span id="observacion"></span>
-            <div align="left">
-              --------------------------------------------------------------------------------------------------
-            </div>
-            <b>Datos del cliente exonerado</b><br />
-            <span>Orden de compra exenta: <b id="ocexe"></b></span>&nbsp;&nbsp;
-            <span>No. Registro exonerado: <b id="ocexo"></b></span>&nbsp;&nbsp;
-            <span>No. Registro SAG: <b id="nosag"></b></span>
-           
-            <div align="left">
-              --------------------------------------------------------------------------------------------------
-            </div>
-            <b>Condiciones de pago</b><br />
-            <span>Formado de pago: <b id="formapago"></b></span>
-            <span>Plazo en dias: <b id="plazo"></b></span><br />
-            <span>Cantidad de pagos: <b id="pagos"></b></span>
-            <span
-              >Cuota por pago: <b>L <span id="cuota"></span></b
-            ></span>
-
-          </td>
-          <td
-            colspan="2"
-            style="
-              white-space: nowrap;
-              border-top: 1px solid black;
-              text-align: right;
-            "
-          >
-            Subtotal:<br />
-            Descuentos y rebajas:<br />
-            Valor exento:<br />
-            Valor exonerado:<br />
-            Gravado con 15%:<br />
-            Gravado con 18%:<br />
-            Isv 15%:<br />
-            Isv 18%:<br />
-            <b>Total venta:</b>
-          </td>
-          <td
-            colspan="2"
-            style="
-              white-space: nowrap;
-              border-top: 1px solid black;
-              text-align: right;
-            "
-          >
-            L<span id="subtotal"></span><br />
-            L<span id="descuento"></span><br />
-            L<span id="subtotalexe"></span><br />
-            L<span id="subtotalexo"></span><br />
-            L<span id="subtotalisv15"></span><br />
-            L<span id="subtotalisv18"></span><br />
-            L<span id="isv15"></span><br />
-            L<span id="isv18"></span><br />
-            <b>L<span id="total"></span></b>
-          </td>
-        </tr>
-        <tr>
-          <td
-            colspan="12"
-            style="
-              white-space: nowrap;
-              border-top: 1px solid black;
-              text-align: center;
-            "
-          >
-            MONTO EN LETRAS: <span id="montoLetras"></span>
-          </td>
-        </tr>
-        <tr>
-          <td
-            colspan="12"
-            style="
-              white-space: nowrap;
-              border-top: 1px solid black;
-              text-align: center;
-            "
-          >
-            <div>
-              Gracias por su preferencia!!
-              <br />
-            </div>
-          </td>
-        </tr>
-      </table>
-
-      <table style="padding: 0; border: none; border-collapse: collapse">
-        <tr style="border: none; border-collapse: collapse">
-          <td
-            colspan="3"
-            style="
-              text-align: left;
-              vertical-align: top;
-              border: none;
-              border-collapse: collapse;
-            "
-          >
-            <b>Original: cliente, Copia: emisor</b>
-            <br /><span>www.rmposhn.com</span><br />
-            <span>indime.hn@gmail.com</span>
-            <span>(+504) 9359-3126</span>
-          </td>
-          <td
-            colspan="3"
-            style="white-space: nowrap; border: none; border-collapse: collapse"
-          >
-            <div style="text-align: right">
-              <img alt="Barcode Generator TEC-IT" id="barcode" />
-            </div>
-          </td>
-        </tr>
-      </table>
+    <div class="section-title">Información Financiera Dinámica</div>
+    <table class="fin-table">
+        <thead>
+            <tr class="section-title">
+                <th>ACTIVOS</th>
+                <th>INGRESOS</th>
+                <th>EGRESOS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="c_list_activos"></td>
+                <td id="c_list_ingresos"></td>
+                <td id="c_list_egresos"></td>
+            </tr>
+            <tr style="font-weight: bold; background: #fafafa;">
+                <td>Total Activos: L. <span id="c_total_act"></span></td>
+                <td>Total Ingresos: L. <span id="c_total_ing"></span></td>
+                <td>Total Egresos: L. <span id="c_total_egr"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align: right; font-weight: bold; padding: 5px; font-size: 12px;">
+        DISPONIBILIDAD: L. <span id="c_dispo"></span>
     </div>
 
-    <script>
-      function getQueryParam(param) {
-        var urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-      }
+    <div class="section-title">Asalariados</div>
+    <table id="c_asalariado_table">
+        <tr>
+            <td><span class="label">Empresa:</span> <span id="c_empresa_t"></span></td>
+            <td><span class="label">Jefe:</span> <span id="c_jefe"></span></td>
+            <td><span class="label">Teléfono:</span> <span id="c_tel_t"></span></td>
+        </tr>
+    </table>
 
-      function fillData() {
-        document.getElementById("empresa").textContent =
-          getQueryParam("empresa");
-        document.getElementById("razon").textContent = getQueryParam("razon");
-        document.getElementById("rtn").textContent = getQueryParam("rtn");
-        document.getElementById("direccion").textContent =
-          getQueryParam("direccion");
-        document.getElementById("telefono").textContent =
-          getQueryParam("telefono");
-        document.getElementById("email").textContent = getQueryParam("email");
-        document.getElementById("tipodoc").textContent =
-          getQueryParam("tipodoc");
-        document.getElementById("cliente").textContent =
-          getQueryParam("cliente");
-        document.getElementById("rtncliente").textContent =
-          getQueryParam("rtncliente");
-        document.getElementById("telefonocliente").textContent =
-          getQueryParam("telefonocliente");
-        document.getElementById("direccioncliente").textContent =
-          getQueryParam("direccioncliente");
-        document.getElementById("vendedor").textContent =
-          getQueryParam("vendedor");
-        document.getElementById("factura").textContent =
-          getQueryParam("factura");
-        document.getElementById("date").textContent = getQueryParam("date");
-        document.getElementById("cai").textContent = getQueryParam("cai");
-        document.getElementById("rango").textContent = getQueryParam("rango");
-        document.getElementById("limite").textContent = getQueryParam("limite");
-        document.getElementById("cajero").textContent = getQueryParam("cajero");
-        document.getElementById("ocexe").textContent = getQueryParam("ocexe");
-        document.getElementById("ocexo").textContent = getQueryParam("ocexo");
-        document.getElementById("nosag").textContent = getQueryParam("nosag");
-        document.getElementById("formapago").textContent = getQueryParam("formapago");
-        document.getElementById("plazo").textContent = getQueryParam("plazo");
-        document.getElementById("pagos").textContent = getQueryParam("pagos");
-        document.getElementById("cuota").textContent = getQueryParam("cuota");
-        document.getElementById("motor").textContent = getQueryParam("motor");
-        document.getElementById("chasis").textContent = getQueryParam("chasis");
-        document.getElementById("color").textContent = getQueryParam("color");
-        document.getElementById("año").textContent = getQueryParam("año");
-        document.getElementById("marca").textContent = getQueryParam("marca");
-        document.getElementById("modelo").textContent = getQueryParam("modelo");
-        document.getElementById("combustible").textContent = getQueryParam("combustible");
-        document.getElementById("observacion").textContent = getQueryParam("observacion");
-        document.getElementById("subtotal").textContent = getQueryParam("subtotal");
-        document.getElementById("descuento").textContent = getQueryParam("descuento");
-        document.getElementById("subtotalexe").textContent = getQueryParam("subtotalexe");
-        document.getElementById("subtotalexo").textContent = getQueryParam("subtotalexo");
-        document.getElementById("subtotalisv15").textContent = getQueryParam("subtotalisv15");
-        document.getElementById("subtotalisv18").textContent = getQueryParam("subtotalisv18");
-        document.getElementById("isv15").textContent = getQueryParam("isv15");
-        document.getElementById("isv18").textContent = getQueryParam("isv18");
-        document.getElementById("total").textContent = getQueryParam("total");
+    <div class="signature-container">
+        <div class="sig-box">Firma Cliente</div>
+        <div class="sig-box">Asesor de Crédito</div>
+        <div class="sig-box">Autorizado SERFIN</div>
+    </div>
+</div>
 
-        // Set barcode
-        document.getElementById("barcode").src =
-          "https://barcode.tec-it.com/barcode.ashx?data=" +
-          getQueryParam("Folio_1");
+<div class="page" id="page2">
+    <table class="no-border">
+        <tr>
+            <td class="no-border" style="width: 15%;"><img src="https://github.com/rimedhn/servicredith/blob/main/servicredith%20logo.jpeg?raw=true" class="mi-logo" /></td>
+            <td class="no-border" style="text-align: center;">
+                <h1>FICHA DE AVAL</h1>
+                <h2 style="margin:0">SERFIN</h2>
+            </td>
+            <td class="no-border" style="width: 20%; text-align: right;"><b>Fecha:</b> <span class="date-val"></span></td>
+        </tr>
+    </table>
 
-        // Fill product list
-        var descriptions = getQueryParam("descriptions").split(",");
-        var quantitys = getQueryParam("quantitys").split(",");
-        var price = getQueryParam("price").split(",");
-        var subtproducto = getQueryParam("subtproducto").split(",");
-        var isvproducto = getQueryParam("isvproducto").split(",");
-        var amounts = getQueryParam("amounts").split(",");
+    <table>
+        <tr>
+            <td colspan="3"><span class="label">Nombre Aval:</span> <span id="a_nombre"></span></td>
+            <td><span class="label"># DNI:</span> <span id="a_dni"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Parentesco:</span> <span id="a_parentesco"></span></td>
+            <td><span class="label">Celular:</span> <span id="a_cel"></span></td>
+            <td colspan="2"><span class="label">Dirección:</span> <span id="a_direccion"></span></td>
+        </tr>
+    </table>
 
-        var productList = document.getElementById("productList");
-        for (var i = 0; i < descriptions.length; i++) {
-          var row = productList.insertRow();
-          row.insertCell(0).textContent = quantitys[i];
-          row.insertCell(1).textContent = descriptions[i];
-          row.insertCell(2).textContent = price[i];
-          row.insertCell(3).textContent = subtproducto[i];
-          row.insertCell(4).textContent = isvproducto[i];
-          row.insertCell(5).textContent = amounts[i];
-        }
+    <div class="section-title">Información Financiera del Aval</div>
+    <table class="fin-table">
+        <thead>
+            <tr class="section-title">
+                <th>ACTIVOS</th>
+                <th>INGRESOS</th>
+                <th>EGRESOS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="a_list_activos"></td>
+                <td id="a_list_ingresos"></td>
+                <td id="a_list_egresos"></td>
+            </tr>
+            <tr style="font-weight: bold; background: #fafafa;">
+                <td>Total Activos: L. <span id="a_total_act"></span></td>
+                <td>Total Ingresos: L. <span id="a_total_ing"></span></td>
+                <td>Total Egresos: L. <span id="a_total_egr"></span></td>
+            </tr>
+        </tbody>
+    </table>
 
-        // Convert amount to words (simplified version)
-        var total = parseFloat(getQueryParam("total"));
-        var words = numberToWords(total);
-        document.getElementById("montoLetras").textContent = words;
-      }
+    <div class="signature-container" style="margin-top: 100px;">
+        <div class="sig-box">Firma de Aval</div>
+        <div class="sig-box">Asesor de Créditos</div>
+        <div class="sig-box">Sello SERFIN</div>
+    </div>
+</div>
 
-      function numberToWords(number) {
-        var units = [
-          "",
-          "UN ",
-          "DOS ",
-          "TRES ",
-          "CUATRO ",
-          "CINCO ",
-          "SEIS ",
-          "SIETE ",
-          "OCHO ",
-          "NUEVE ",
-          "DIEZ ",
-          "ONCE ",
-          "DOCE ",
-          "TRECE ",
-          "CATORCE ",
-          "QUINCE ",
-          "DIECISEIS ",
-          "DIECISIETE ",
-          "DIECIOCHO ",
-          "DIECINUEVE ",
-        ];
-        var tens = [
-          "",
-          "",
-          "VEINTE ",
-          "TREINTA ",
-          "CUARENTA ",
-          "CINCUENTA ",
-          "SESENTA ",
-          "SETENTA ",
-          "OCHENTA ",
-          "NOVENTA ",
-        ];
-        var hundreds = [
-          "",
-          "CIENTO ",
-          "DOSCIENTOS ",
-          "TRESCIENTOS ",
-          "CUATROCIENTOS ",
-          "QUINIENTOS ",
-          "SEISCIENTOS ",
-          "SETECIENTOS ",
-          "OCHOCIENTOS ",
-          "NOVECIENTOS ",
-        ];
-        var scales = ["", "MIL ", "MILLON ", "MIL MILLONES ", "BILLON "];
+<script>
+    function getParam(p) {
+        return new URLSearchParams(window.location.search).get(p) || "";
+    }
 
-        if (number === 0) return "CERO LEMPIRAS";
+    function buildFinList(containerId, namesStr, valuesStr) {
+        const container = document.getElementById(containerId);
+        if (!namesStr) return;
+        
+        const names = namesStr.split(",");
+        const values = valuesStr.split(",");
+        
+        let html = "";
+        names.forEach((name, i) => {
+            html += `<div class="item-row">
+                        <span>${name.trim()}</span>
+                        <span>L. ${values[i] ? values[i].trim() : "0.00"}</span>
+                     </div>`;
+        });
+        container.innerHTML = html;
+    }
 
-        var words = "";
-        var scaleIndex = 0;
+    function fillAll() {
+        // Datos Cliente [cite: 2]
+        const c_map = {
+            "c_nombre": "nombre_c", "c_dni": "dni_c", "c_civil": "civil_c",
+            "c_ciclo": "ciclo_c", "c_ocupacion": "ocupacion_c", "c_edad": "edad_c",
+            "c_sexo": "sexo_c", "c_cel": "cel_c", "c_monto": "monto",
+            "c_plazo": "plazo", "c_destino": "destino", "c_frecuencia": "frecuencia",
+            "c_cuota": "cuota", "c_empresa_t": "empresa_t", "c_jefe": "jefe_t",
+            "c_tel_t": "tel_t", "c_total_act": "total_act_c", "c_total_ing": "total_ing_c",
+            "c_total_egr": "total_egr_c", "c_dispo": "dispo_c"
+        };
 
-        while (number > 0) {
-          if (number % 1000 !== 0) {
-            var scale = scales[scaleIndex];
-            var partWords = numberToWordsLessThanThousand(number % 1000);
+        // Datos Aval [cite: 79, 80]
+        const a_map = {
+            "a_nombre": "nombre_a", "a_dni": "dni_a", "a_parentesco": "parent_a",
+            "a_cel": "cel_a", "a_direccion": "dir_a", "a_total_act": "total_act_a",
+            "a_total_ing": "total_ing_a", "a_total_egr": "total_egr_a"
+        };
 
-            // Special case for thousands
-            if (scaleIndex === 1 && number % 1000 === 1) {
-              words = scale + words;
-            } else {
-              words = partWords + scale + words;
-            }
-          }
-          number = Math.floor(number / 1000);
-          scaleIndex++;
-        }
+        Object.keys(c_map).forEach(id => document.getElementById(id).textContent = getParam(c_map[id]));
+        Object.keys(a_map).forEach(id => document.getElementById(id).textContent = getParam(a_map[id]));
+        
+        // Fecha para ambas hojas [cite: 2, 86]
+        const hoy = getParam("fecha") || new Date().toLocaleDateString();
+        document.querySelectorAll(".date-val").forEach(el => el.textContent = hoy);
 
-        return words.trim() + " LEMPIRAS";
+        // Lógica Dinámica Financiera (Arrays separados por comas) [cite: 5, 107]
+        // Cliente
+        buildFinList("c_list_activos", getParam("c_act_nombres"), getParam("c_act_valores"));
+        buildFinList("c_list_ingresos", getParam("c_ing_nombres"), getParam("c_ing_valores"));
+        buildFinList("c_list_egresos", getParam("c_egr_nombres"), getParam("c_egr_valores"));
+        
+        // Aval
+        buildFinList("a_list_activos", getParam("a_act_nombres"), getParam("a_act_valores"));
+        buildFinList("a_list_ingresos", getParam("a_ing_nombres"), getParam("a_ing_valores"));
+        buildFinList("a_list_egresos", getParam("a_egr_nombres"), getParam("a_egr_valores"));
+    }
 
-        function numberToWordsLessThanThousand(n) {
-          var words = "";
-
-          if (n >= 100) {
-            if (n === 100) {
-              words += "CIEN ";
-            } else {
-              words += hundreds[Math.floor(n / 100)];
-            }
-            n %= 100;
-          }
-
-          if (n >= 20) {
-            words += tens[Math.floor(n / 10)];
-            if (n % 10 !== 0) {
-              if (Math.floor(n / 10) === 2) {
-                words = words.slice(0, -1); // Remove space for "VEINTI"
-                words += "I";
-              } else {
-                words += "Y ";
-              }
-              words += units[n % 10];
-            }
-          } else if (n >= 1) {
-            words += units[n];
-          }
-
-          return words;
-        }
-      }
-
-      window.onload = function () {
-        fillData();
-        window.print();
-      };
-    </script>
-  </body>
+    window.onload = () => {
+        fillAll();
+        // window.print(); // Activa para imprimir automáticamente
+    };
+</script>
+</body>
 </html>
