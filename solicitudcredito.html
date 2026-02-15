@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud de crédito</title>
+    <link rel="icon" type="image/png" href="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true">
+    
+    <style type="text/css">
+        body { font-family: Arial, sans-serif; font-size: 9px; margin: 0; padding: 0; background-color: #f0f0f0; }
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            padding: 0.4in;
+            margin: 0.2in auto;
+            background: white;
+            page-break-after: always;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 5px; table-layout: fixed; }
+        th, td { border: 1px solid black; padding: 3px; vertical-align: top; overflow: hidden; }
+        .header-title { text-align: center; font-weight: bold; font-size: 16px; margin: 0; }
+        .section-title { background-color: #e0e0e0; text-align: center; font-weight: bold; text-transform: uppercase; padding: 2px; border: 1px solid black; margin-top: 5px; }
+        .label { font-weight: bold; font-size: 8px; display: block; text-transform: uppercase; margin-bottom: 2px; }
+        .no-border { border: none !important; }
+        .mi-logo { width: 80px; height: auto; }
+        .check-box { display: inline-block; width: 10px; height: 10px; border: 1px solid black; margin-right: 2px; text-align: center; line-height: 10px; font-size: 8px; vertical-align: middle; }
+        .footer-sig { margin-top: 20px; display: flex; justify-content: space-around; text-align: center; }
+        .sig-line { border-top: 1px solid black; width: 180px; margin-top: 35px; padding-top: 5px; }
+        .data-val { font-size: 10px; min-height: 12px; display: block; color: #1a1a1a; }
+        .declaracion { font-style: italic; font-weight: bold; margin-top: 5px; text-align: center; border: 1px solid black; padding: 5px; font-size: 8.5px; }
+        
+        @media print {
+            body { background: none; }
+            .page { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <table class="no-border">
+        <tr>
+            <td class="no-border" style="width: 20%;">
+                <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" class="mi-logo" />
+            </td>
+            <td class="no-border" style="text-align: center;">
+                <h1 class="header-title">SOLICITUD DE CRÉDITO</h1>
+                <div style="font-weight: bold; font-size: 14px;">SERFIN</div>
+            </td>
+            <td class="no-border" style="width: 20%; text-align: right;">
+                <span class="label">Fecha</span> <span id="fecha_p1" class="data-val"></span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos Generales</div>
+    <table>
+        <tr>
+            <td colspan="2"><span class="label">Nombre completo</span><span id="c_nombre" class="data-val"></span></td>
+            <td><span class="label"># DNI</span><span id="c_dni" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Estado civil</span><span id="c_civil" class="data-val"></span></td>
+            <td><span class="label">Ocupación</span><span id="c_ocupacion" class="data-val"></span></td>
+            <td><span class="label">Edad</span><span id="c_edad" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Sexo</span><span id="c_sexo" class="data-val"></span></td>
+            <td><span class="label">Celular</span><span id="c_cel" class="data-val"></span></td>
+            <td><span class="label">Dependientes</span><span id="c_dependientes" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="label">Casa de habitación</span>
+                <span class="check-box" id="c_cp"></span> Propia &nbsp; 
+                <span class="check-box" id="c_ca"></span> Alquilada
+            </td>
+            <td><span class="label">Ciclo</span><span id="c_ciclo" class="data-val"></span></td>
+        </tr>
+        <tr><td colspan="3"><span class="label">Dirección exacta del domicilio con punto de referencia</span><span id="c_dir_dom" class="data-val"></span></td></tr>
+        <tr>
+            <td colspan="2"><span class="label">Referencia Personal y dirección</span><span id="c_ref_p" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="c_tel_p" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span class="label">Referencia Familiar y dirección</span><span id="c_ref_f" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="c_tel_f" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos del Préstamo</div>
+    <table>
+        <tr>
+            <td><span class="label">Monto Solicitado</span><span id="c_monto" class="data-val"></span></td>
+            <td><span class="label">Cuota</span><span id="c_cuota" class="data-val"></span></td>
+            <td><span class="label">Plazo</span><span id="c_plazo" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Frecuencia</span><span id="c_frecuencia" class="data-val"></span></td>
+            <td><span class="label">Destino</span><span id="c_destino" class="data-val"></span></td>
+            <td><span class="label">Producto</span><span id="c_producto" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos del Negocio</div>
+    <table>
+        <tr>
+            <td><span class="label">Tipo de negocio</span><span id="c_tipo_negocio" class="data-val"></span></td>
+            <td><span class="label">Nombre del negocio</span><span id="c_neg_nom" class="data-val"></span></td>
+            <td>
+                <span class="label">Local del Negocio</span>
+                <span class="check-box" id="c_lp"></span> Propio &nbsp; 
+                <span class="check-box" id="c_la"></span> Alquilado
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Antigüedad del negocio</span><span id="c_neg_ant" class="data-val"></span></td>
+            <td colspan="2"><span class="label"># de empleados</span><span id="c_empleados" class="data-val"></span></td>
+        </tr>
+        <tr><td colspan="3"><span class="label">Dirección exacta del negocio con punto de referencia</span><span id="c_dir_neg" class="data-val"></span></td></tr>
+    </table>
+
+    <div class="section-title">Asalariados</div>
+    <table>
+        <tr>
+            <td><span class="label">Nombre de la empresa</span><span id="c_emp_t" class="data-val"></span></td>
+            <td><span class="label">Jefe inmediato</span><span id="c_jefe" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="c_tel_t" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Cargo</span><span id="c_cargo" class="data-val"></span></td>
+            <td><span class="label">Antigüedad</span><span id="c_ant_lab" class="data-val"></span></td>
+            <td><span class="label">Tipo de contrato</span><span id="c_contrato" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Información Financiera</div>
+    <table>
+        <thead>
+            <tr style="font-weight: bold; background: #f2f2f2;">
+                <th style="width: 33%;">ACTIVOS</th>
+                <th style="width: 33%;">INGRESOS</th>
+                <th style="width: 34%;">EGRESOS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="c_list_act"></td>
+                <td id="c_list_ing"></td>
+                <td id="c_list_egr"></td>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>TOTAL: L. <span id="c_tot_act"></span></td>
+                <td>TOTAL INGRESOS: L. <span id="c_tot_ing"></span></td>
+                <td>TOTAL GASTOS: L. <span id="c_tot_egr"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="border: 1px solid black; padding: 5px; text-align: right; font-weight: bold; font-size: 11px;">
+        DISPONIBILIDAD: L. <span id="c_dispo"></span>
+    </div>
+    <div class="declaracion">Certifico que la información anterior es verdadera y autorizo para que sea confirmada.</div>
+
+    <div style="margin-top: 5px;">
+        <span class="label">Análisis del asesor</span>
+        <div id="c_analisis" style="min-height: 25px; border: 1px solid black; padding: 3px;"></div>
+    </div>
+
+    <div style="margin-top: 5px;">
+        <span class="label">Observación de aprobación</span>
+        <div id="c_observacion_aprob" style="min-height: 25px; border: 1px solid black; padding: 3px;"></div>
+    </div>
+
+    <div class="footer-sig">
+        <div><div class="sig-line"></div>Firma cliente</div>
+        <div><div class="sig-line"></div>Firma asesor de créditos</div>
+        <div><div class="sig-line"></div>Autorizado SERFIN</div>
+    </div>
+</div>
+
+<div class="page">
+    <table class="no-border">
+        <tr>
+            <td class="no-border" style="width: 20%;">
+                <img src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" class="mi-logo" />
+            </td>
+            <td class="no-border" style="text-align: center;">
+                <h1 class="header-title">FICHA DE AVAL</h1>
+                <div style="font-weight: bold; font-size: 14px;">SERFIN</div>
+            </td>
+            <td class="no-border" style="width: 20%; text-align: right;">
+                <span class="label">Fecha</span> <span id="fecha_p2" class="data-val"></span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos Generales del Aval</div>
+    <table>
+        <tr>
+            <td colspan="2"><span class="label">Nombre completo del aval</span><span id="a_nombre" class="data-val"></span></td>
+            <td><span class="label"># DNI</span><span id="a_dni" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Estado civil</span><span id="a_civil" class="data-val"></span></td>
+            <td><span class="label">Ocupación</span><span id="a_ocupacion" class="data-val"></span></td>
+            <td><span class="label">Edad</span><span id="a_edad" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Sexo</span><span id="a_sexo" class="data-val"></span></td>
+            <td><span class="label">Celular</span><span id="a_cel" class="data-val"></span></td>
+            <td><span class="label">Parentesco con el cliente</span><span id="a_parentesco" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span class="label">Casa de habitación</span>
+                <span class="check-box" id="a_cp"></span> Propia &nbsp; 
+                <span class="check-box" id="a_ca"></span> Alquilada
+            </td>
+        </tr>
+        <tr><td colspan="3"><span class="label">Dirección exacta del domicilio con punto de referencia</span><span id="a_dir_dom" class="data-val"></span></td></tr>
+        <tr>
+            <td colspan="2"><span class="label">Referencia Personal y dirección</span><span id="a_ref_p" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="a_tel_p" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span class="label">Referencia Familiar y dirección</span><span id="a_ref_f" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="a_tel_f" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos del Préstamo (Vinculación)</div>
+    <table>
+        <tr>
+            <td colspan="2"><span class="label">Nombre del Cliente Solicitante</span><span id="a_vinculo_nombre_display" class="data-val"></span></td>
+            <td><span class="label">DNI del Cliente</span><span id="a_vinculo_dni_display" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Monto Solicitado</span><span id="a_monto_display" class="data-val"></span></td>
+            <td><span class="label">Cuota</span><span id="a_cuota_display" class="data-val"></span></td>
+            <td><span class="label">Plazo</span><span id="a_plazo_display" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Frecuencia</span><span id="a_frecuencia_display" class="data-val"></span></td>
+            <td><span class="label">Destino</span><span id="a_destino_display" class="data-val"></span></td>
+            <td><span class="label">Producto</span><span id="a_producto_display" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Datos del Negocio del Aval</div>
+    <table>
+        <tr>
+            <td><span class="label">Tipo de negocio</span><span id="a_tipo_negocio" class="data-val"></span></td>
+            <td><span class="label">Nombre del negocio</span><span id="a_neg_nom" class="data-val"></span></td>
+            <td>
+                <span class="label">Local del Negocio</span>
+                <span class="check-box" id="a_lp"></span> Propio &nbsp; 
+                <span class="check-box" id="a_la"></span> Alquilado
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Antigüedad del negocio</span><span id="a_neg_ant" class="data-val"></span></td>
+            <td colspan="2"><span class="label"># de empleados</span><span id="a_empleados" class="data-val"></span></td>
+        </tr>
+        <tr><td colspan="3"><span class="label">Dirección exacta del negocio con punto de referencia</span><span id="a_dir_neg" class="data-val"></span></td></tr>
+    </table>
+
+    <div class="section-title">Asalariados (Aval)</div>
+    <table>
+        <tr>
+            <td><span class="label">Nombre de la empresa</span><span id="a_emp_t" class="data-val"></span></td>
+            <td><span class="label">Jefe inmediato</span><span id="a_jefe" class="data-val"></span></td>
+            <td><span class="label">Teléfono</span><span id="a_tel_t" class="data-val"></span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Cargo</span><span id="a_cargo" class="data-val"></span></td>
+            <td><span class="label">Antigüedad</span><span id="a_ant_lab" class="data-val"></span></td>
+            <td><span class="label">Tipo de contrato</span><span id="a_contrato" class="data-val"></span></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Información Financiera (Aval)</div>
+    <table>
+        <thead>
+            <tr style="font-weight: bold; background: #f2f2f2;">
+                <th style="width: 33%;">ACTIVOS</th>
+                <th style="width: 33%;">INGRESOS</th>
+                <th style="width: 34%;">EGRESOS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="a_list_act"></td>
+                <td id="a_list_ing"></td>
+                <td id="a_list_egr"></td>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td>TOTAL: L. <span id="a_tot_act"></span></td>
+                <td>TOTAL INGRESOS: L. <span id="a_tot_ing"></span></td>
+                <td>TOTAL GASTOS: L. <span id="a_tot_egr"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="border: 1px solid black; padding: 5px; text-align: right; font-weight: bold; font-size: 11px;">
+        DISPONIBILIDAD: L. <span id="a_dispo"></span>
+    </div>
+    <div class="declaracion">Certifico que la información anterior es verdadera y autorizo para que sea confirmada.</div>
+
+    <div style="margin-top: 5px;">
+        <span class="label">Análisis del asesor</span>
+        <div id="a_analisis" style="min-height: 25px; border: 1px solid black; padding: 3px;"></div>
+    </div>
+
+    <div style="margin-top: 5px;">
+        <span class="label">Observación de aprobación</span>
+        <div id="a_observacion_aprob" style="min-height: 25px; border: 1px solid black; padding: 3px;"></div>
+    </div>
+
+    <div class="footer-sig" style="margin-top: 50px;">
+        <div><div class="sig-line"></div>Firma de aval</div>
+        <div><div class="sig-line"></div>Firma asesor de créditos</div>
+        <div><div class="sig-line"></div>Sello SERFIN</div>
+    </div>
+</div>
+
+<script>
+    function getParam(p) {
+        return new URLSearchParams(window.location.search).get(p) || "";
+    }
+
+    function renderFin(id, nStr, vStr) {
+        if (!nStr) return;
+        const names = nStr.split(",");
+        const values = vStr.split(",");
+        const container = document.getElementById(id);
+        let html = "";
+        names.forEach((n, i) => {
+            html += `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; margin-bottom:2px;">
+                        <span>${n.trim()}</span>
+                        <span>L. ${values[i] ? values[i].trim() : "0.00"}</span>
+                     </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function fill() {
+        const fields = [
+            "c_nombre", "c_dni", "c_civil", "c_ocupacion", "c_edad", "c_sexo", "c_cel", "c_dependientes", "c_ciclo", "c_dir_dom", "c_ref_p", "c_tel_p", "c_ref_f", "c_tel_f",
+            "c_monto", "c_cuota", "c_plazo", "c_frecuencia", "c_destino", "c_producto",
+            "c_tipo_negocio", "c_neg_nom", "c_neg_ant", "c_empleados", "c_dir_neg",
+            "c_emp_t", "c_jefe", "c_tel_t", "c_cargo", "c_ant_lab", "c_contrato",
+            "c_tot_act", "c_tot_ing", "c_tot_egr", "c_dispo", "c_analisis", "c_observacion_aprob",
+            "a_nombre", "a_dni", "a_civil", "a_ocupacion", "a_edad", "a_sexo", "a_cel", "a_parentesco", "a_dir_dom", "a_ref_p", "a_tel_p", "a_ref_f", "a_tel_f",
+            "a_tipo_negocio", "a_neg_nom", "a_neg_ant", "a_empleados", "a_dir_neg",
+            "a_emp_t", "a_jefe", "a_tel_t", "a_cargo", "a_ant_lab", "a_contrato",
+            "a_tot_act", "a_tot_ing", "a_tot_egr", "a_dispo", "a_analisis", "a_observacion_aprob"
+        ];
+
+        fields.forEach(f => {
+            const el = document.getElementById(f);
+            if(el) el.textContent = getParam(f);
+        });
+
+        // LÓGICA DE ESPEJO: Copia los datos del cliente a la sección de vinculación del aval
+        const mirrorMapping = {
+            "a_vinculo_nombre_display": "c_nombre",
+            "a_vinculo_dni_display": "c_dni",
+            "a_monto_display": "c_monto",
+            "a_cuota_display": "c_cuota",
+            "a_plazo_display": "c_plazo",
+            "a_frecuencia_display": "c_frecuencia",
+            "a_destino_display": "c_destino",
+            "a_producto_display": "c_producto"
+        };
+
+        for (let targetId in mirrorMapping) {
+            const sourceParam = mirrorMapping[targetId];
+            const el = document.getElementById(targetId);
+            if(el) el.textContent = getParam(sourceParam);
+        }
+
+        const checks = ["c_cp", "c_ca", "c_lp", "c_la", "a_cp", "a_ca", "a_lp", "a_la"];
+        checks.forEach(c => { if(getParam(c)) document.getElementById(c).textContent = "X"; });
+
+        renderFin("c_list_act", getParam("c_act_n"), getParam("c_act_v"));
+        renderFin("c_list_ing", getParam("c_ing_n"), getParam("c_ing_v"));
+        renderFin("c_list_egr", getParam("c_egr_n"), getParam("c_egr_v"));
+        renderFin("a_list_act", getParam("a_act_n"), getParam("a_act_v"));
+        renderFin("a_list_ing", getParam("a_ing_n"), getParam("a_ing_v"));
+        renderFin("a_list_egr", getParam("a_egr_n"), getParam("a_egr_v"));
+
+        const date = getParam("fecha") || new Date().toLocaleDateString();
+        document.getElementById("fecha_p1").textContent = date;
+        document.getElementById("fecha_p2").textContent = date;
+
+        setTimeout(() => { window.print(); }, 1200);
+    }
+    window.onload = fill;
+</script>
+</body>
+</html>
