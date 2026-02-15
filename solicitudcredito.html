@@ -45,7 +45,7 @@
             </td>
             <td class="no-border" style="text-align: center;">
                 <h1 class="header-title">SOLICITUD DE CRÉDITO</h1>
-                <div style="font-weight: bold; font-size: 14px;">SERFIN</div>
+                <div style="font-weight: bold; font-size: 14px;" id="c_nombre_empresa">SERFIN</div>
             </td>
             <td class="no-border" style="width: 20%; text-align: right;">
                 <span class="label">Fecha</span> <span id="fecha_p1" class="data-val"></span>
@@ -186,7 +186,7 @@
             </td>
             <td class="no-border" style="text-align: center;">
                 <h1 class="header-title">FICHA DE AVAL</h1>
-                <div style="font-weight: bold; font-size: 14px;">SERFIN</div>
+                <div style="font-weight: bold; font-size: 14px;" id="a_nombre_empresa_display">SERFIN</div>
             </td>
             <td class="no-border" style="width: 20%; text-align: right;">
                 <span class="label">Fecha</span> <span id="fecha_p2" class="data-val"></span>
@@ -352,7 +352,7 @@
             "a_nombre", "a_dni", "a_civil", "a_ocupacion", "a_edad", "a_sexo", "a_cel", "a_parentesco", "a_dir_dom", "a_ref_p", "a_tel_p", "a_ref_f", "a_tel_f",
             "a_tipo_negocio", "a_neg_nom", "a_neg_ant", "a_empleados", "a_dir_neg",
             "a_emp_t", "a_jefe", "a_tel_t", "a_cargo", "a_ant_lab", "a_contrato",
-            "a_tot_act", "a_tot_ing", "a_tot_egr", "a_dispo", "a_analisis", "a_observacion_aprob"
+            "a_tot_act", "a_tot_ing", "a_tot_egr", "a_dispo", "a_analisis", "a_observacion_aprob","c_nombre_empresa"
         ];
 
         fields.forEach(f => {
@@ -369,7 +369,8 @@
             "a_plazo_display": "c_plazo",
             "a_frecuencia_display": "c_frecuencia",
             "a_destino_display": "c_destino",
-            "a_producto_display": "c_producto"
+            "a_producto_display": "c_producto",
+            "a_nombre_empresa_display": "c_nombre_empresa"
         };
 
         for (let targetId in mirrorMapping) {
