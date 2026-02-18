@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AVISO DE COBRO</title>
+  <link rel="icon" href="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" type="image/x-icon">
+  <style>
+    body { 
+      font-family: 'Times New Roman', serif;
+      background: #f5f5f5; 
+      padding: 0; 
+      margin: 0; 
+    }
+    .aviso-container { 
+      width: 8.5in; 
+      margin: 20px auto; 
+      background: #fff; 
+      min-height: 11in; 
+      padding: 0.75in 0.75in; 
+      position: relative; 
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .header-logo-table { 
+      width: 100%; 
+      border: none; 
+      margin-bottom: 30px;
+    }
+    .logo-img { 
+      width: 100px; 
+      height: 100px; 
+      object-fit: contain; 
+    }
+    .empresa { 
+      font-size: 26px; 
+      font-weight: bold; 
+      letter-spacing: 2px; 
+      color: #1a1a1a;
+      margin-bottom: 8px;
+      text-align: right;
+    }
+    .empresa-info { 
+      font-size: 14px; 
+      color: #333; 
+      line-height: 1.8;
+      text-align: right;
+    }
+    .titulo-aviso {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      margin: 40px 0 30px 0;
+      letter-spacing: 1.5px;
+      color: #1a1a1a;
+      border-bottom: 3px double #000;
+      padding-bottom: 10px;
+    }
+    .fecha-aviso {
+      text-align: right;
+      font-size: 14px;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .destinatario {
+      margin-bottom: 30px;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .destinatario-nombre {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .cuerpo-aviso {
+      text-align: justify;
+      line-height: 2;
+      font-size: 15px;
+      margin-bottom: 40px;
+      color: #1a1a1a;
+    }
+    .valor-letras {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .valor-numeros {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .cuotas-detalle {
+      font-weight: bold;
+    }
+    .dias-mora {
+      font-weight: bold;
+      color: #c53030;
+    }
+    .firma-section {
+      margin-top: 80px;
+      text-align: center;
+    }
+    .linea-firma {
+      width: 300px;
+      margin: 0 auto;
+      border-top: 2px solid #000;
+      padding-top: 10px;
+      font-size: 14px;
+    }
+    .footer-info {
+      position: absolute;
+      bottom: 0.5in;
+      left: 0.75in;
+      right: 0.75in;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    @media print {
+      body { 
+        background: #fff !important; 
+      }
+      .aviso-container { 
+        page-break-after: always; 
+        box-shadow: none;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="aviso-container">
+    <table class="header-logo-table">
+      <tr>
+        <td style="width:120px;vertical-align:top;">
+          <img class="logo-img" src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo" />
+        </td>
+        <td style="vertical-align:top;">
+          <div class="empresa">GRUPO DE INVERSIONES M</div>
+          <div class="empresa-info">RTN. XXXXXXXXXXXXXXX</div>
+          <div class="empresa-info">Dirección del negocio</div>
+          <div class="empresa-info">Email: email@grupoinversiones.com</div>
+          <div class="empresa-info">Teléfonos: +504 XXXX-XXXX</div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="titulo-aviso" id="tituloAviso">AVISO DE COBRO</div>
+
+    <div class="fecha-aviso">
+      Fecha: <span id="fechaAviso"></span>
+    </div>
+
+    <div class="destinatario">
+      <div class="destinatario-nombre" id="nombreCliente"></div>
+      <div id="direccionCliente"></div>
+    </div>
+
+    <div class="cuerpo-aviso" id="cuerpoAviso">
+      <!-- El contenido se cargará dinámicamente -->
+    </div>
+
+    <div class="firma-section">
+      <div class="linea-firma">
+        Firma y Sello
+      </div>
+    </div>
+
+    <div class="footer-info">
+      Este es un documento oficial de cobro. Para cualquier consulta o aclaración, favor contactar a nuestras oficinas.
+    </div>
+  </div>
+
+  <script>
+    const openSheetAviso = "https://opensheet.elk.sh/1dFCk-ZMkBoeD2LRq9ENg61J7sBz-BZg_QIX5r7oKzZc/Hoja1";
+    const openSheetPrestamo = "https://opensheet.elk.sh/13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE/Prestamo";
+    const openSheetAbono = "https://opensheet.elk.sh/13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE/Abono prestamo";
+
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    function fetchJSON(url) {
+      return fetch(url).then(r => r.json());
+    }
+
+    function formatCurrency(num) {
+      if (isNaN(num)) return "L 0.00";
+      return "L " + parseFloat(num).toLocaleString('es-HN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    function parseNumber(val) {
+      if (val == undefined || val == null) return 0;
+      val = ("" + val).replace("L", "").replace("$", "").replace(/,/g, "").trim();
+      return parseFloat(val) || 0;
+    }
+
+    // Parse dd/mm/yyyy -> Date
+    function parseDateDMY(s) {
+      if (!s) return null;
+      let parts = s.split("/");
+      if (parts.length === 3) {
+        let dd = parseInt(parts[0], 10);
+        let mm = parseInt(parts[1], 10);
+        let yyyy = parseInt(parts[2], 10);
+        if (!isNaN(dd) && !isNaN(mm) && !isNaN(yyyy)) {
+          return new Date(yyyy, mm - 1, dd);
+        }
+      }
+      return null;
+    }
+
+    function formatFechaDMY(fechaStr) {
+      let d = parseDateDMY(fechaStr);
+      if (!d) return fechaStr || "";
+      let dd = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
+      let mm = (d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
+      let yyyy = d.getFullYear();
+      return dd + "/" + mm + "/" + yyyy;
+    }
+
+    function formatDateObjectDMY(d) {
+      if (!d) return "";
+      let dd = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
+      let mm = (d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
+      let yyyy = d.getFullYear();
+      return dd + "/" + mm + "/" + yyyy;
+    }
+
+    // Convertir número a letras en español (Lempiras)
+    function numeroALetras(num) {
+      const unidades = ['', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE'];
+      const decenas = ['', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
+      const especiales = ['DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE'];
+      const centenas = ['', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'];
+
+      if (num === 0) return 'CERO LEMPIRAS';
+
+      let entero = Math.floor(num);
+      let decimales = Math.round((num - entero) * 100);
+
+      function convertirGrupo(n) {
+        if (n === 0) return '';
+        if (n < 10) return unidades[n];
+        if (n < 20) return especiales[n - 10];
+        if (n < 100) {
+          let dec = Math.floor(n / 10);
+          let uni = n % 10;
+          if (uni === 0) return decenas[dec];
+          if (dec === 2) return 'VEINTI' + unidades[uni];
+          return decenas[dec] + ' Y ' + unidades[uni];
+        }
+        let cen = Math.floor(n / 100);
+        let resto = n % 100;
+        if (n === 100) return 'CIEN';
+        return centenas[cen] + (resto > 0 ? ' ' + convertirGrupo(resto) : '');
+      }
+
+      function convertirNumero(n) {
+        if (n === 0) return 'CERO';
+        if (n === 1) return 'UN';
+        
+        let miles = Math.floor(n / 1000);
+        let restoMiles = n % 1000;
+        
+        let textoMiles = '';
+        if (miles > 0) {
+          if (miles === 1) {
+            textoMiles = 'MIL';
+          } else {
+            textoMiles = convertirGrupo(miles) + ' MIL';
+          }
+        }
+        
+        let textoResto = convertirGrupo(restoMiles);
+        
+        if (textoMiles && textoResto) {
+          return textoMiles + ' ' + textoResto;
+        }
+        return textoMiles + textoResto;
+      }
+
+      let textoEntero = convertirNumero(entero);
+      let textoFinal = textoEntero + ' LEMPIRAS';
+      
+      if (decimales > 0) {
+        textoFinal += ' CON ' + decimales + '/100';
+      }
+      
+      return textoFinal;
+    }
+
+    // Calcular fechas de pago vencidas según último pago y periodo
+    function calcularFechasVencidas(ultimoPagoStr, periodo, cuotasPendientes) {
+      let ultimoPago = parseDateDMY(ultimoPagoStr);
+      if (!ultimoPago) return [];
+      
+      let periodoNum = parseInt(periodo) || 30; // Por defecto 30 días si no viene periodo
+      let fechas = [];
+      
+      for (let i = 1; i <= cuotasPendientes; i++) {
+        let fechaVenc = new Date(ultimoPago);
+        fechaVenc.setDate(ultimoPago.getDate() + (periodoNum * i));
+        fechas.push(formatDateObjectDMY(fechaVenc));
+      }
+      
+      return fechas;
+    }
+
+    // Calcular días en mora desde la primera cuota vencida
+    function calcularDiasMora(ultimoPagoStr, periodo) {
+      let ultimoPago = parseDateDMY(ultimoPagoStr);
+      if (!ultimoPago) return 0;
+      
+      let periodoNum = parseInt(periodo) || 30;
+      let primeraVencida = new Date(ultimoPago);
+      primeraVencida.setDate(ultimoPago.getDate() + periodoNum);
+      
+      let hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      
+      if (primeraVencida >= hoy) return 0;
+      
+      let diffTime = hoy - primeraVencida;
+      let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      return diffDays;
+    }
+
+    async function loadAvisoCobro() {
+      let idaviso = getQueryParam('idaviso');
+      if (!idaviso) {
+        alert("Falta el parámetro idaviso.");
+        return;
+      }
+
+      let avisos = await fetchJSON(openSheetAviso);
+      let aviso = avisos.find(a => String(a.idAviso) === String(idaviso));
+      
+      if (!aviso) {
+        alert("Aviso no encontrado.");
+        return;
+      }
+
+      // Datos básicos del aviso
+      document.getElementById("tituloAviso").textContent = aviso.Aviso || "AVISO DE COBRO";
+      document.getElementById("fechaAviso").textContent = formatFechaDMY(aviso.Fecha);
+      document.getElementById("nombreCliente").textContent = aviso.NombreCliente || "";
+      document.getElementById("direccionCliente").textContent = aviso.Direccion || "";
+
+      // Calcular valores
+      let montoPendiente = parseNumber(aviso.Monto);
+      let cuotasPendientes = parseInt(aviso.Cuotas) || 0;
+      let ultimoPago = aviso.UltimoPago || "";
+      let periodo = aviso.Periodo || "30";
+
+      // Calcular fechas vencidas y días en mora
+      let fechasVencidas = calcularFechasVencidas(ultimoPago, periodo, cuotasPendientes);
+      let diasMora = calcularDiasMora(ultimoPago, periodo);
+
+      // Preparar reemplazos
+      let valorLetras = numeroALetras(montoPendiente);
+      let valorNumeros = formatCurrency(montoPendiente);
+      let fechasTexto = fechasVencidas.join(", ");
+      let diasTexto = diasMora.toString();
+
+      // Procesar el texto del aviso
+      let textoAviso = aviso.TextoAviso || "";
+      
+      // Reemplazar placeholders
+      textoAviso = textoAviso.replace(/valor_pendiente/g, 
+        '<span class="valor-letras">' + valorLetras + '</span> <span class="valor-numeros">(' + valorNumeros + ')</span>');
+      
+      textoAviso = textoAviso.replace(/cuotas_pendientes/g, 
+        '<span class="cuotas-detalle">' + fechasTexto + '</span>');
+      
+      textoAviso = textoAviso.replace(/dias_pendientes/g, 
+        '<span class="dias-mora">' + diasTexto + '</span>');
+
+      // Insertar el texto procesado
+      document.getElementById("cuerpoAviso").innerHTML = textoAviso;
+
+      // Auto print after render
+      setTimeout(function() {
+        window.print();
+      }, 600);
+    }
+
+    window.onload = loadAvisoCobro;
+  </script>
+</body>
+</html>
