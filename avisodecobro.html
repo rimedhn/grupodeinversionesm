@@ -186,18 +186,40 @@
   </div>
 
   <script>
-    const openSheetAviso = "https://opensheet.elk.sh/1dFCk-ZMkBoeD2LRq9ENg61J7sBz-BZg_QIX5r7oKzZc/Hoja1";
+    const googleSheetId = "1dFCk-ZMkBoeD2LRq9ENg61J7sBz-BZg_QIX5r7oKzZc";
+    const sheetName = "Hoja1";
+    const apiUrl = `https://docs.google.com/spreadsheets/d/${googleSheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
-    function fetchJSON(url) {
-      return fetch(url).then(r => r.json()).catch(err => {
-        console.error("Error fetching data:", err);
-        return [];
+    function parseGoogleSheetData(jsonText) {
+      // Limpiar el response de Google (viene con wrapper)
+      const jsonString = jsonText.substring(47).slice(0, -2);
+      const data = JSON.parse(jsonString);
+      
+      const cols = data.table.cols.map(col => col.label || col.id);
+      const rows = data.table.rows.map(row => {
+        const rowData = {};
+        row.c.forEach((cell, idx) => {
+          rowData[cols[idx]] = cell ? cell.v : null;
+        });
+        return rowData;
       });
+      
+      return rows;
+    }
+
+    function fetchGoogleSheet() {
+      return fetch(apiUrl)
+        .then(response => response.text())
+        .then(text => parseGoogleSheetData(text))
+        .catch(err => {
+          console.error("Error fetching Google Sheet:", err);
+          return [];
+        });
     }
 
     function formatCurrency(num) {
@@ -368,7 +390,7 @@
 
       console.log("Cargando aviso con ID:", idaviso);
 
-      let avisos = await fetchJSON(openSheetAviso);
+      let avisos = await fetchGoogleSheet();
       console.log("Avisos obtenidos:", avisos);
 
       if (!avisos || avisos.length === 0) {
