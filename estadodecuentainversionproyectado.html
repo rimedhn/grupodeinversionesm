@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESTADO DE CUENTA PROYECTADO - PRÉSTAMO</title>
+  <link rel="icon" href="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" type="image/x-icon">
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f5f5f5; 
+      padding: 0; 
+      margin: 0; 
+    }
+    .estado-cuenta-container { 
+      width: 8in; 
+      margin: 20px auto; 
+      background: #fff; 
+      min-height: 10in; 
+      padding: 0.6in 0.5in; 
+      position: relative; 
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    .header-logo-table { 
+      width: 100%; 
+      border: none; 
+      margin-bottom: 20px;
+    }
+    .logo-img { 
+      width: 90px; 
+      height: 90px; 
+      object-fit: contain; 
+    }
+    .empresa { 
+      font-size: 24px; 
+      font-weight: bold; 
+      letter-spacing: 1.5px; 
+      color: #1a1a1a;
+      margin-bottom: 5px;
+    }
+    .empresa-info { 
+      font-size: 13px; 
+      color: #555; 
+      line-height: 1.6;
+    }
+    hr {
+      border: none;
+      border-top: 2px solid #1D70B7;
+      margin: 15px 0;
+    }
+    h2 { 
+      font-size: 20px; 
+      font-weight: bold; 
+      margin: 20px 0 15px 0; 
+      text-align: center; 
+      color: #1D70B7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .seccion-titulo { 
+      font-size: 16px; 
+      font-weight: bold; 
+      margin: 20px 0 10px 0; 
+      text-align: left; 
+      color: #1a1a1a;
+      border-left: 4px solid #1D70B7;
+      padding-left: 10px;
+      background: #f8f9fa;
+      padding: 8px 10px;
+    }
+    .datos-basicos { 
+      margin: 15px 0; 
+      font-size: 15px; 
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #e0e0e0;
+    }
+    .datos-basicos span {
+      display: inline-block;
+      margin-right: 30px;
+    }
+    .desc-lote-table-custom { 
+      width: 100%; 
+      table-layout: fixed; 
+      border: none; 
+      font-size: 14px; 
+      margin-top: 10px; 
+      background: #fff;
+    }
+    .desc-lote-table-custom td { 
+      border: none; 
+      background: #fff; 
+      padding: 8px 10px; 
+      vertical-align: top; 
+      line-height: 1.8;
+    }
+    .desc-lote-left { 
+      width: 55%; 
+    }
+    .desc-lote-right { 
+      width: 45%; 
+      text-align: right; 
+    }
+    .cuota-saldo-area { 
+      width: 70%; 
+      margin-left: auto;
+      margin-right: 0;
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-end; 
+      margin-bottom: 10px; 
+      margin-top: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+    }
+    .tasa-line { 
+      font-size: 14px; 
+      margin-bottom: 8px; 
+      font-weight: 500;
+    }
+    .cuota-line { 
+      font-size: 18px; 
+      font-weight: bold; 
+      padding-bottom: 5px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    .saldo-inicial {
+      font-size: 18px; 
+      font-weight: bold; 
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    .pagos-table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      font-size: 11px; 
+      margin-top: 5px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .pagos-table th { 
+      padding: 8px 4px; 
+      border: 1px solid #ccc; 
+      background: linear-gradient(to bottom, #4a5568 0%, #2d3748 100%); 
+      color: white;
+      font-size: 11px !important; 
+      text-align: center !important; 
+      white-space: nowrap; 
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pagos-table td { 
+      padding: 6px 4px; 
+      border: 1px solid #ddd; 
+      text-align: right; 
+      white-space: nowrap; 
+      font-size: 11px;
+    }
+    .pagos-table tbody tr:nth-child(even) { 
+      background: #f8f9fa; 
+    }
+    .pagos-table tbody tr:hover {
+      background: #e8f4f8;
+      transition: background 0.2s;
+    }
+    .pagos-table td.izq, .pagos-table th.izq { 
+      text-align: left; 
+      white-space: normal; 
+    }
+    /* Ajuste de ancho de columnas */
+    .pagos-table th.fecha-col, .pagos-table td.fecha-col { width: 9%; }
+    .pagos-table th.mes-col, .pagos-table td.mes-col { width: 12%; }
+    .pagos-table th.pago-col, .pagos-table td.pago-col { width: 8%; }
+    .pagos-table th.nocol-col, .pagos-table td.nocol-col { width: 5%; }
+    .pagos-table th.capital-col, .pagos-table td.capital-col { width: 11%; }
+    .pagos-table th.int-col, .pagos-table td.int-col { width: 10%; }
+    .pagos-table th.cuota-col, .pagos-table td.cuota-col { width: 10%; }
+    .pagos-table th.mora-col, .pagos-table td.mora-col { width: 8%; }
+    .pagos-table th.abonocap-col, .pagos-table td.abonocap-col { width: 8%; }
+    .pagos-table th.saldo-col, .pagos-table td.saldo-col { width: 11%; }
+    .pagos-table td.cuota-nivelada, .pagos-table th.cuota-nivelada { 
+      background: #ffe385; 
+      font-weight: bold; 
+    }
+    .pagos-table td.saldo-actual { 
+      font-weight: bold; 
+      color: #c53030; 
+      background: #fff5f5;
+    }
+    /* Colores para cuotas pagadas, vencidas y pendientes */
+    .pagos-table tr.cuota-pagada td {
+      color: #22863a;
+      font-weight: 500;
+    }
+    .pagos-table tr.cuota-vencida td {
+      color: #cb2431;
+      font-weight: 500;
+    }
+    .pagos-table tr.cuota-pendiente td {
+      color: #1a1a1a;
+    }
+    .footer-info {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e0e0e0;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+    @media print {
+      body { 
+        background: #fff !important; 
+      }
+      .estado-cuenta-container { 
+        page-break-after: always; 
+        box-shadow: none;
+        margin: 0;
+      }
+      .fecha-contrato { 
+        color: #c53030 !important;
+      }
+      .pagos-table { 
+        font-size: 10px !important; 
+      }
+      .pagos-table th { 
+        font-size: 10px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pagos-table td {
+        font-size: 10px !important;
+      }
+      .pagos-table tr.cuota-pagada td {
+        color: #22863a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pagos-table tr.cuota-vencida td {
+        color: #cb2431 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pagos-table tr.cuota-pendiente td {
+        color: #1a1a1a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .cuota-saldo-area {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="estado-cuenta-container">
+    <table class="header-logo-table">
+      <tr>
+        <td style="width:110px;vertical-align:top;">
+          <img class="logo-img" src="https://github.com/rimedhn/calculadora-de-prestamos/blob/main/Logo%20Demo%20Finan.png?raw=true" alt="Logo" />
+        </td>
+        <td>
+          <div class="empresa">GRUPO DE INVERSIONES M</div>
+          <div class="empresa-info">RTN. XXXXXXXXXXXXXXX</div>
+          <div class="empresa-info">Dirección del negocio</div>
+          <div class="empresa-info">email@grupoinversiones.com • Teléfonos: +504 XXXX-XXXX</div>
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <h2>Estado de Cuenta Proyectado</h2>
+    <div class="datos-basicos">
+      <span><b>Cliente:</b> <span id="NombreCliente"></span></span>
+      <span><b>No. de Préstamo:</b> <span id="NoPrestamo"></span></span>
+    </div>
+
+    <div class="seccion-titulo">DESCRIPCIÓN DEL PRÉSTAMO</div>
+    <table class="desc-lote-table-custom">
+      <tr>
+        <td class="desc-lote-left">
+          <b>Monto del Préstamo:</b> <span id="Monto"></span><br>
+          <b>Gastos Administrativos:</b> <span id="Gastos"></span><br>
+          <b>Monto Financiado:</b> <span id="Financiado"></span><br>
+          <b>Frecuencia de Pago:</b> <span id="PeriodoPago"></span>
+        </td>
+        <td class="desc-lote-right">
+          <b>Producto:</b> <span id="Producto"></span><br>
+          <b>Destino del Préstamo:</b> <span id="DestinoPrestamo"></span><br>
+          <b>Fecha de Aprobación:</b> <span class="fecha-contrato" id="FechaAprobado"></span><br>
+          <b>Plazo:</b> <span id="PlazoLetras"></span>
+        </td>
+      </tr>
+    </table>
+
+    <div class="seccion-titulo" style="margin-top:25px;">DETALLE DE PAGOS</div>
+    <div class="cuota-saldo-area">
+      <div class="tasa-line">Tasa: <span id="TasaDisplay"></span> | Tipo: <span id="TipoTasa"></span></div>
+      <div class="cuota-line">CUOTA CALCULADA: <span id="CuotaNiveladaCalculo"></span></div>
+      <div class="saldo-inicial">SALDO INICIAL: <span id="SaldoInicial"></span></div>
+    </div>
+
+    <table class="pagos-table" id="pagosTable">
+      <thead>
+        <tr>
+          <th class="izq fecha-col">Fecha</th>
+          <th class="mes-col">Mes</th>
+          <th class="pago-col">Pago</th>
+          <th class="nocol-col">No.</th>
+          <th class="capital-col">Capital</th>
+          <th class="int-col">Interés</th>
+          <th class="cuota-col">Cuota</th>
+          <th class="mora-col">Mora</th>
+          <th class="abonocap-col">Abono Cap.</th>
+          <th class="saldo-col saldo-actual">Saldo Actual</th>
+        </tr>
+      </thead>
+      <tbody id="detallePagosBody"></tbody>
+    </table>
+
+    <div class="footer-info">
+      Este documento es un estado de cuenta proyectado. <span style="color:#22863a;">Verde = Pagado</span> | <span style="color:#cb2431;">Rojo = Vencido</span> | <span style="color:#1a1a1a;">Negro = Pendiente</span>
+    </div>
+  </div>
+
+  <script>
+    const openSheetPrestamo = "https://opensheet.elk.sh/13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE/Prestamo";
+    const openSheetAbono = "https://opensheet.elk.sh/13bXFVitqBpkNmPTqK47USNRT2zeAeEltQiufuzKltpE/Abono prestamo";
+
+    function getQueryParam(param) {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+    function fetchJSON(url){ return fetch(url).then(r=>r.json()); }
+
+    function formatCurrency(num){ if(isNaN(num))return "L 0.00"; return "L "+parseFloat(num).toLocaleString('es-HN',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function parseNumber(val){ if(val==undefined || val==null) return 0; val=(""+val).replace("L","").replace("$","").replace(/,/g,"").trim(); return parseFloat(val)||0; }
+
+    // Parse dd/mm/yyyy -> Date
+    function parseDateDMY(s) {
+      if (!s) return null;
+      let parts = s.split("/");
+      if (parts.length === 3) {
+        let dd = parseInt(parts[0],10);
+        let mm = parseInt(parts[1],10);
+        let yyyy = parseInt(parts[2],10);
+        if (!isNaN(dd) && !isNaN(mm) && !isNaN(yyyy)) {
+          return new Date(yyyy,mm-1,dd);
+        }
+      }
+      return null;
+    }
+    function formatFechaDMY(fechaStr){
+      let d = parseDateDMY(fechaStr);
+      if (!d) return fechaStr || "";
+      let dd = d.getDate()>9?d.getDate():"0"+d.getDate();
+      let mm = (d.getMonth()+1)>9?(d.getMonth()+1):"0"+(d.getMonth()+1);
+      let yyyy=d.getFullYear();
+      return dd+"/"+mm+"/"+yyyy;
+    }
+
+    // Formato de fecha desde Date object
+    function formatDateObjectDMY(d) {
+      if (!d) return "";
+      let dd = d.getDate()>9?d.getDate():"0"+d.getDate();
+      let mm = (d.getMonth()+1)>9?(d.getMonth()+1):"0"+(d.getMonth()+1);
+      let yyyy=d.getFullYear();
+      return dd+"/"+mm+"/"+yyyy;
+    }
+
+    // Calcula la abreviatura del mes y año según la fecha de vencimiento calculada
+    function calcularMesAbrev(fechaVenc) {
+      if (!fechaVenc) return "";
+      const mesesAbrev = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      let nombreMes = mesesAbrev[fechaVenc.getMonth()];
+      let año = fechaVenc.getFullYear();
+      return nombreMes + ", " + año;
+    }
+
+    // Calcula la fecha de vencimiento de una cuota según la frecuencia de pago
+    function calcularFechaVencimiento(fechaInicial, idx, periodoPago, periodoPagoEnDias) {
+      if (!fechaInicial) return null;
+      
+      let fi = new Date(fechaInicial);
+      let diaOriginal = fi.getDate();
+      let fechaVenc = new Date(fi);
+
+      // Normalizar periodo de pago
+      let periodo = (periodoPago || "").toLowerCase().trim();
+
+      if (periodo === "diario" || periodo === "diaria") {
+        // Sumar días según "Periodo Pago en dias" o por defecto 1
+        let dias = periodoPagoEnDias || 1;
+        fechaVenc.setDate(fi.getDate() + (dias * (idx + 1)));
+      } 
+      else if (periodo === "semanal") {
+        // Sumar semanas (7 días por periodo)
+        let dias = periodoPagoEnDias || 7;
+        fechaVenc.setDate(fi.getDate() + (dias * (idx + 1)));
+      } 
+      else if (periodo === "quincenal") {
+        // Sumar quincenas (15 días por periodo)
+        let dias = periodoPagoEnDias || 15;
+        fechaVenc.setDate(fi.getDate() + (dias * (idx + 1)));
+      } 
+      else if (periodo === "mensual") {
+        // Sumar meses manteniendo el día original
+        fechaVenc.setMonth(fi.getMonth() + (idx + 1));
+        
+        // Manejar caso especial de febrero
+        let mesDestino = fechaVenc.getMonth();
+        let añoDestino = fechaVenc.getFullYear();
+        
+        // Si el día original es mayor al último día del mes destino
+        let ultimoDiaMes = new Date(añoDestino, mesDestino + 1, 0).getDate();
+        
+        if (diaOriginal > ultimoDiaMes) {
+          // Usar el último día del mes
+          fechaVenc.setDate(ultimoDiaMes);
+        } else {
+          // Usar el día original
+          fechaVenc.setDate(diaOriginal);
+        }
+      } 
+      else if (periodo === "anual") {
+        // Sumar años
+        fechaVenc.setFullYear(fi.getFullYear() + (idx + 1));
+        fechaVenc.setDate(diaOriginal);
+      }
+      else {
+        // Por defecto, usar "Periodo Pago en dias" si está disponible, sino mensual
+        if (periodoPagoEnDias && periodoPagoEnDias > 0) {
+          fechaVenc.setDate(fi.getDate() + (periodoPagoEnDias * (idx + 1)));
+        } else {
+          // Default mensual
+          fechaVenc.setMonth(fi.getMonth() + (idx + 1));
+          let ultimoDiaMes = new Date(fechaVenc.getFullYear(), fechaVenc.getMonth() + 1, 0).getDate();
+          if (diaOriginal > ultimoDiaMes) {
+            fechaVenc.setDate(ultimoDiaMes);
+          } else {
+            fechaVenc.setDate(diaOriginal);
+          }
+        }
+      }
+
+      return fechaVenc;
+    }
+
+    // Cálculo de cuota: si plazo = 0 o vacío, cuota = valorFinanciado * tasa; si no, cuota nivelada
+    function calcularCuota(principal, tasaCampo, plazo){
+      if(principal <= 0) return 0;
+      
+      let tasaNum = parseFloat(tasaCampo);
+      if (isNaN(tasaNum)) tasaNum = 0;
+
+      // Si plazo es 0 o vacío: Cuota = Valor financiado * tasa
+      if (!plazo || plazo <= 0) {
+        // Interpretación de la tasa
+        let tasaDecimal;
+        if (tasaNum > 1) tasaDecimal = tasaNum / 100.0; // porcentaje
+        else tasaDecimal = tasaNum; // ya decimal
+        return principal * tasaDecimal;
+      }
+
+      // Si plazo > 0: calcular cuota nivelada (anualidad)
+      if (tasaNum === 0) return principal / plazo;
+
+      // Interpretación:
+      // - si tasaNum > 1: se asume porcentaje anual (ej. 15 -> 15% anual)
+      // - si tasaNum > 0 && tasaNum <= 1: se asume decimal anual (ej. 0.15 -> 15% anual)
+      // Convertimos a tasa mensual en decimal
+      let tasaAnualDecimal;
+      if (tasaNum > 1) tasaAnualDecimal = tasaNum / 100.0;
+      else tasaAnualDecimal = tasaNum; // ya decimal anual
+
+      let tasaMensual = tasaAnualDecimal / 12.0;
+      let r = tasaMensual; // tasa mensual en decimal
+      let n = plazo; // meses
+
+      // fórmula de anualidad: cuota = P * (r(1+r)^n) / ((1+r)^n - 1)
+      if (r === 0) return principal / n;
+      let pow = Math.pow(1 + r, n);
+      let cuota = principal * (r * pow) / (pow - 1);
+      return cuota;
+    }
+
+    async function loadEstadoCuenta() {
+      let idprestamo = getQueryParam('idprestamo');
+      if (!idprestamo) { alert("Falta el parámetro idprestamo."); return; }
+
+      let [prestamos, abonos] = await Promise.all([
+        fetchJSON(openSheetPrestamo),
+        fetchJSON(openSheetAbono)
+      ]);
+
+      let prestamo = prestamos.find(p => String(p.idprestamo) == String(idprestamo));
+      if (!prestamo) { alert("Préstamo no encontrado."); return; }
+
+      // Valores y formato con separador de miles (con prefijo L)
+      let monto = parseNumber(prestamo.Monto);
+      let gastos = parseNumber(prestamo.Gastos);
+      let valorFinanciado = monto + gastos; // El financiado incluye monto + gastos
+      let plazo = parseInt(prestamo.Plazo) || 0;
+      let tasaRaw = prestamo.Tasa !== undefined && prestamo.Tasa !== "" ? prestamo.Tasa : 0;
+      let cuotaCalculada = calcularCuota(valorFinanciado, tasaRaw, plazo);
+      let periodoPago = prestamo.PeriodoPago || "Mensual";
+      let periodoPagoEnDias = parseInt(prestamo["Periodo Pago en dias"]) || 0;
+
+      document.getElementById("NombreCliente").textContent = prestamo.NombreCliente || "";
+      document.getElementById("NoPrestamo").textContent = prestamo.NoPrestamo || "";
+      document.getElementById("Producto").textContent = prestamo.Producto || "Préstamo Personal";
+      document.getElementById("DestinoPrestamo").textContent = prestamo.DestinoPrestamo || "N/A";
+      document.getElementById("Monto").textContent = formatCurrency(monto);
+      document.getElementById("Gastos").textContent = formatCurrency(gastos);
+      document.getElementById("Financiado").textContent = formatCurrency(valorFinanciado);
+      document.getElementById("PlazoLetras").textContent = (prestamo.Plazo ? prestamo.Plazo + " Periodos" : "N/A");
+      document.getElementById("FechaAprobado").textContent = formatFechaDMY(prestamo.FechaAprobado);
+      document.getElementById("TipoTasa").textContent = prestamo.TipoTasa || "Fija";
+      document.getElementById("PeriodoPago").textContent = periodoPago;
+
+      // Mostrar la tasa tal como vino (pero formateada)
+      let tasaDisplay = (tasaRaw === null || tasaRaw === undefined || String(tasaRaw).trim() === "") ? "0 %" : (String(tasaRaw).trim() + (String(tasaRaw).toString().includes("%") ? "" : " %"));
+      document.getElementById("TasaDisplay").textContent = tasaDisplay;
+      document.getElementById("CuotaNiveladaCalculo").textContent = formatCurrency(cuotaCalculada);
+      document.getElementById("SaldoInicial").textContent = formatCurrency(valorFinanciado);
+
+      // Ordenar abonos por campo Fecha (dd/mm/yyyy) y excluir Estado "Anulado"
+      let abonosPrestamo = abonos
+        .filter(a => String(a.Prestamo) == String(idprestamo) && String((a.Estado||"")).trim().toLowerCase() !== "anulado")
+        .sort((a,b) => {
+          let fa = parseDateDMY(a.Fecha || "") || new Date(0);
+          let fb = parseDateDMY(b.Fecha || "") || new Date(0);
+          return fa - fb;
+        });
+
+      let saldoActual = valorFinanciado;
+      let tbody = document.getElementById("detallePagosBody");
+      tbody.innerHTML = "";
+
+      let fechaAprobadoDate = parseDateDMY(prestamo.FechaAprobado);
+      let fechaHoy = new Date();
+      fechaHoy.setHours(0,0,0,0); // Normalizar a medianoche
+
+      // Calcular tasa mensual para amortización
+      let tasaNum = parseFloat(tasaRaw);
+      if (isNaN(tasaNum)) tasaNum = 0;
+      let tasaAnualDecimal;
+      if (tasaNum > 1) tasaAnualDecimal = tasaNum / 100.0;
+      else tasaAnualDecimal = tasaNum;
+      let tasaMensual = tasaAnualDecimal / 12.0;
+
+      // Crear un mapa de abonos pagados por número de cuota
+      let abonosPagados = {};
+      for (let ab of abonosPrestamo) {
+        let noCuota = parseInt(ab["No cuota"]) || 0;
+        if (noCuota > 0) {
+          if (!abonosPagados[noCuota]) {
+            abonosPagados[noCuota] = {
+              fecha: ab.Fecha,
+              pago: parseNumber(ab.Monto),
+              capital: parseNumber(ab.Capital),
+              interes: parseNumber(ab.Interes),
+              cuota: parseNumber(ab.Cuota),
+              mora: parseNumber(ab.Recargo),
+              abonoCapital: parseNumber(ab["Abono capital"])
+            };
+          }
+        }
+      }
+
+      // Proyectar todas las cuotas hasta el plazo
+      for (let i = 0; i < plazo; i++) {
+        let noCuota = i + 1;
+        
+        // Calcular fecha de vencimiento según frecuencia
+        let fechaVencimiento = calcularFechaVencimiento(fechaAprobadoDate, i, periodoPago, periodoPagoEnDias);
+        let fechaMostrar = fechaVencimiento ? formatDateObjectDMY(fechaVencimiento) : "";
+        let mesMostrar = calcularMesAbrev(fechaVencimiento);
+
+        let interes = saldoActual * tasaMensual;
+        let capital = cuotaCalculada - interes;
+        if (capital < 0) capital = 0;
+        if (capital > saldoActual) capital = saldoActual;
+
+        let pago = 0;
+        let cuota = 0;
+        let mora = 0;
+        let abonoCapital = 0;
+        let estadoCuota = "pendiente"; // por defecto
+
+        // Verificar si esta cuota fue pagada
+        if (abonosPagados[noCuota]) {
+          let abono = abonosPagados[noCuota];
+          fechaMostrar = formatFechaDMY(abono.fecha);
+          pago = abono.pago;
+          capital = abono.capital;
+          interes = abono.interes;
+          cuota = abono.cuota;
+          mora = abono.mora;
+          abonoCapital = abono.abonoCapital;
+          estadoCuota = "pagada";
+        } else {
+          // Cuota no pagada: verificar si está vencida
+          if (fechaVencimiento && fechaVencimiento < fechaHoy) {
+            estadoCuota = "vencida";
+          } else {
+            estadoCuota = "pendiente";
+          }
+          cuota = cuotaCalculada;
+        }
+
+        saldoActual -= (capital + abonoCapital);
+        if (saldoActual < 0) saldoActual = 0;
+
+        let fila = tbody.insertRow(-1);
+        
+        // Aplicar clase según estado
+        if (estadoCuota === "pagada") {
+          fila.className = "cuota-pagada";
+        } else if (estadoCuota === "vencida") {
+          fila.className = "cuota-vencida";
+        } else {
+          fila.className = "cuota-pendiente";
+        }
+
+        fila.insertCell().className = "izq fecha-col"; fila.cells[0].textContent = fechaMostrar;
+        fila.insertCell().className = "mes-col"; fila.cells[1].textContent = mesMostrar;
+        fila.insertCell().className = "pago-col"; fila.cells[2].textContent = formatCurrency(pago);
+        fila.insertCell().className = "nocol-col"; fila.cells[3].textContent = noCuota;
+        fila.insertCell().className = "capital-col"; fila.cells[4].textContent = formatCurrency(capital);
+        fila.insertCell().className = "int-col"; fila.cells[5].textContent = formatCurrency(interes);
+        fila.insertCell().className = "cuota-col"; fila.cells[6].textContent = formatCurrency(cuota);
+        fila.insertCell().className = "mora-col"; fila.cells[7].textContent = formatCurrency(mora);
+        fila.insertCell().className = "abonocap-col"; fila.cells[8].textContent = formatCurrency(abonoCapital);
+        fila.insertCell().className = "saldo-col saldo-actual"; fila.cells[9].textContent = formatCurrency(saldoActual);
+      }
+
+      // Auto print after render
+      setTimeout(function(){ window.print(); }, 600);
+    }
+
+    window.onload = loadEstadoCuenta;
+  </script>
+</body>
+</html>
