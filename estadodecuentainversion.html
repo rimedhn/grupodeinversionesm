@@ -409,7 +409,7 @@
       document.getElementById("Gastos").textContent = formatCurrency(gastos);
       document.getElementById("Financiado").textContent = formatCurrency(valorFinanciado);
       document.getElementById("PlazoLetras").textContent = (prestamo.Plazo ? prestamo.Plazo + " Periodos" : "N/A");
-      document.getElementById("FechaAprobado").textContent = formatFechaDMY(prestamo.FechaAprobado);
+      document.getElementById("FechaAprobado").textContent = formatFechaDMY(prestamo.FechaTramite);
       document.getElementById("TipoTasa").textContent = prestamo.TipoTasa || "Fija";
       document.getElementById("PeriodoPago").textContent = prestamo.PeriodoPago || "Mensual";
 
@@ -432,7 +432,7 @@
       let tbody = document.getElementById("detallePagosBody");
       tbody.innerHTML = "";
 
-      let fechaAprobado = prestamo.FechaTramite;
+      let fechaAprobado = prestamo.FechaAprobado;
 
       // Usaremos un contador para la columna "No." que se calcula automáticamente
       let contadorNo = 0;
